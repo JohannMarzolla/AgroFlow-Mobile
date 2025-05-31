@@ -6,40 +6,43 @@ import {
   useState,
 } from "react";
 import { useAuth } from "@/presentation/contexts/AuthContext";
-import { Produto } from "@/domain/models/Produto";
 import { ShowToast } from "../components/ui/Toast";
-import { ProdutoService } from "@/application/services/ProdutoService";
+import { Producao } from "@/domain/models/Producao";
+import { ProducaoAdicionarForm } from "@/domain/models/ProducaoAdicionarForm";
+import { ProducaoRepository } from "@/infrastructure/repositories/ProducaoRepository";
+import { ProducaoService } from "@/application/services/ProducaoService";
 import { ProdutoRepository } from "@/infrastructure/repositories/ProdutoRepository";
-import { ProdutoAdiconarForm } from "@/domain/models/ProdutoAdicionarForm";
+
 
 interface ProducaoContextData {
-  produtos: Produto[];
-  adicionarProduto(produto:ProdutoAdiconarForm): Promise<void>
+  producao: Producao[];
+  adicionarProducao(producao:ProducaoAdicionarForm): Promise<void>
 }
 
 const ProducaoContext = createContext<ProducaoContextData | undefined>(undefined);
 
 export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const { userId } = useAuth(); 
-  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [producao, setProducao] = useState<Producao[]>([]);
+  const producaoRepository = new ProducaoRepository();
   const produtoRepository = new ProdutoRepository();
-  const produtoService = new ProdutoService(produtoRepository);
+  const producaoService = new ProducaoService(produtoRepository, producaoRepository);
 
-  const carregarProdutos = async () => {
-    console.log("chamando carregar produtos")
+  const carregarProducao = async () => {
+    console.log("chamando carregar producao")
     try {
       if (!userId) return;
-      const produtosCarregados = await produtoService.get(userId);
-      setProdutos(produtosCarregados);
+      const producaoCarregados = await producaoService.get(userId);
+      setProducao(producaoCarregados);
     } catch (error) {
       ShowToast("error", "Erro ao carregar produtos.");
     }
   };
-  const adicionarProduto = async (produto: ProdutoAdiconarForm) => {
+  const adicionarProducao = async (producao: ProducaoAdicionarForm) => {
     try {
       if (!userId) return;
-      await produtoService.insert(userId, produto);
-      await carregarProdutos(); 
+      await producaoService.insert(userId, producao);
+      await carregarProducao(); 
       ShowToast("success", "Produto adicionado com sucesso.");
     } catch (error) {
       ShowToast("error", "Erro ao adicionar produto.");
@@ -47,11 +50,11 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   };
 
  useEffect(() => {
-    carregarProdutos();
+    carregarProducao();
   }, [userId]);
 
   return (
-    <ProducaoContext.Provider value={{ produtos, adicionarProduto }}>
+    <ProducaoContext.Provider value={{ producao, adicionarProducao }}>
       {children}
     </ProducaoContext.Provider>
   );
