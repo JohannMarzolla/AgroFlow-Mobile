@@ -8,7 +8,7 @@ interface IListaGenerica<T> {
   keyExtractor: (item: T) => string;
 }
 
-export default function ListaProdutos<T>({data, renderItem, keyExtractor}: IListaGenerica<T>) {
+export default function Lista<T>({data, renderItem, keyExtractor}: IListaGenerica<T>) {
   if (!data?.length ) {
     return (
       <Text className="text-fiap-gray text-center">Não há produtos</Text>

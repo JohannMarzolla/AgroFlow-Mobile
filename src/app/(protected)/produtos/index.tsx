@@ -4,9 +4,10 @@ import { View, Text, TouchableHighlight } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProdutosStackParamList } from "./ProdutosStack"; 
-import { ProdutosProvider, useProdutos } from "@/presentation/contexts/ProdutoContext";
-import ListaProdutos from "@/presentation/components/Produto/ListaProdutos";
+import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import ProdutoItem from "@/presentation/components/Produto/ProdutoItem";
+import Lista from "@/shared/utils/Lista";
+
 
 type ProdutosNavigationProp = NativeStackNavigationProp<ProdutosStackParamList, "Produtos">;
 
@@ -26,7 +27,7 @@ export  function TelaDeProdutos() {
         <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
       </TouchableHighlight>
 
-      <ListaProdutos data={produtos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <ProdutoItem produto={item} /> }/>
+      <Lista data={produtos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <ProdutoItem produto={item} /> }/>
     </View>
   );
 }
