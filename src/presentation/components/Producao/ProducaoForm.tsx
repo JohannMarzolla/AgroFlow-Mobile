@@ -9,7 +9,6 @@ import {
   Text,
   Pressable,
   TextInput,
-  ScrollView,
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { ShowToast } from "../ui/Toast";

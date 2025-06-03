@@ -1,7 +1,6 @@
 import { FlatList} from "react-native";
 import { Text } from "react-native";
 
-
 interface IListaGenerica<T> {
   data: T[]; 
   renderItem: ({ item }: { item: T }) => React.ReactElement; 
@@ -14,8 +13,6 @@ export default function Lista<T>({data, renderItem, keyExtractor}: IListaGeneric
       <Text className="text-fiap-gray text-center">Não há produtos</Text>
     );
   }
-
-  console.log("produtos em Lista generica", data)
   return (
     <FlatList
   style={{ flex: 1 }}

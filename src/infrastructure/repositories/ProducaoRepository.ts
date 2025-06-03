@@ -26,14 +26,10 @@ export class ProducaoRepository implements IProducaoRepository{
     } catch (error) {
       throw new Error("Erro ao buscar produção: " + (error as Error).message);
     }
-  }
-  
+  }  
   async insert(userId: string, producao: Producao): Promise<void> {
      if (!producao) throw new Error("Transação não especificada");
     if (!userId) throw new Error("Usuário não especificado");
-
-    console.log("insert producao repository ", producao)
-
     try {
       const producaoRef = collection(db, "users", userId, "producao");
       await addDoc(producaoRef, {

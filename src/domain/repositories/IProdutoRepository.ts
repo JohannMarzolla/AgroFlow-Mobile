@@ -4,6 +4,7 @@ import { ProdutoAdiconarForm } from "../models/ProdutoAdicionarForm";
 export interface IProdutoRepository{
     getAll(userId: string): Promise<Produto[]>;
     insert(userId: string, produto : ProdutoAdiconarForm): Promise<void>;
+    exists(userId: string , produtoId: string): Promise<boolean>
 
 
 }

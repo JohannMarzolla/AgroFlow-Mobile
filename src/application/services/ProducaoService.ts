@@ -10,8 +10,11 @@ export class ProducaoService {
    async get(userId:string){
     return await this.producaoRepo.getAll(userId);
 };
-   async insert(userId: string , producao:ProducaoAdicionarForm){
-      return await this.producaoRepo.insert(userId,producao)
-   
-    }
+  async insert(userId: string, producao: ProducaoAdicionarForm) {
+  const produtoExiste = await this.produtoRepo.exists(userId, producao.produto.id);
+  if (!produtoExiste) {
+    throw new Error("Produto não encontrado. Não é possível registrar a produção.");
+  }
+  return await this.producaoRepo.insert(userId, producao);
+}
   }

@@ -29,7 +29,6 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const producaoService = new ProducaoService(produtoRepository, producaoRepository);
 
   const carregarProducao = async () => {
-    console.log("chamando carregar producao")
     try {
       if (!userId) return;
       const producaoCarregados = await producaoService.get(userId);
@@ -39,7 +38,6 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   const adicionarProducao = async (producao: ProducaoAdicionarForm) => {
-    console.log("adicionar producao contexto ", producao)
     try {
       if (!userId) return;
       await producaoService.insert(userId, producao);
