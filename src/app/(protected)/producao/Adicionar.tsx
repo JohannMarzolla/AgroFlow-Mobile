@@ -2,6 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import ProdutoForm from "@/presentation/components/Produto/ProdutoForm";
 import { useNavigation } from "@react-navigation/native";
+import ProducaoForm from "@/presentation/components/Producao/ProducaoForm";
 
 
 export default function AdicionarProducao() {
@@ -9,7 +10,7 @@ export default function AdicionarProducao() {
    
   return (
     <View className="flex-1 p-6 bg-white">
-      <ProdutoForm/>
+      <ProducaoForm/>
       <Pressable
         className="bg-red-500 mt-6 p-3 rounded"
          onPress={() => navigation.goBack()} 

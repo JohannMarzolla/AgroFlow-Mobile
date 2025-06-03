@@ -13,7 +13,7 @@ type ProdutosNavigationProp = NativeStackNavigationProp<ProducaoStackParamList, 
 export  function TelaDeProducao() {
   const navigation = useNavigation<ProdutosNavigationProp>();
   const { producao } = useProducao();
-    
+  
   return (
     <View className="flex-1 pt-6 px-6">
       <TouchableHighlight

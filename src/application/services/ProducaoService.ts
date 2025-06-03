@@ -1,6 +1,5 @@
 import { IProdutoRepository } from "@/domain/repositories/IProdutoRepository";
 import { IProducaoRepository } from "@/domain/repositories/IProducaoRepository";
-import { Producao } from "@/domain/models/Producao";
 import { ProducaoAdicionarForm } from "@/domain/models/ProducaoAdicionarForm";
 
 export class ProducaoService {
@@ -12,10 +11,7 @@ export class ProducaoService {
     return await this.producaoRepo.getAll(userId);
 };
    async insert(userId: string , producao:ProducaoAdicionarForm){
-    const produtoExistente = await this.produtoRepo.getAll(userId);
-    if (produtoExistente){
-        
+      return await this.producaoRepo.insert(userId,producao)
+   
     }
-return
-}
-}
+  }

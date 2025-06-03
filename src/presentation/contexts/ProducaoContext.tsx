@@ -39,6 +39,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   const adicionarProducao = async (producao: ProducaoAdicionarForm) => {
+    console.log("adicionar producao contexto ", producao)
     try {
       if (!userId) return;
       await producaoService.insert(userId, producao);

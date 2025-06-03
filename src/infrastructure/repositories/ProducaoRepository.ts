@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs} from "firebase/firestore";
+import { addDoc, collection, getDocs, Timestamp} from "firebase/firestore";
 import { db } from "../services/FirebaseConfig";
 import { Producao } from "@/domain/models/Producao";
 import { IProducaoRepository } from "@/domain/repositories/IProducaoRepository";
@@ -32,17 +32,18 @@ export class ProducaoRepository implements IProducaoRepository{
      if (!producao) throw new Error("Transação não especificada");
     if (!userId) throw new Error("Usuário não especificado");
 
+    console.log("insert producao repository ", producao)
+
     try {
-      const produtosRef = collection(db, "users", userId, "produtos");
-      await addDoc(produtosRef, {
-        id: producao.id,
+      const producaoRef = collection(db, "users", userId, "producao");
+      await addDoc(producaoRef, {
         quantidade: producao.quantidade,
         status:producao.status,
-        data: producao.status,
+        data: Timestamp.fromDate(new Date(producao.data)),
         produto: producao.produto
       });
     } catch (error) {
-      throw new Error("Erro ao adicionar produto: " + (error as Error).message);
+      throw new Error("Erro ao adicionar produto re´pository: " + (error as Error).message);
     }
   }
 }
