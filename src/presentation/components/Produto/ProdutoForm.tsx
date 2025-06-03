@@ -5,6 +5,7 @@ import { View, Text, TextInput, Pressable, ActivityIndicator} from "react-native
 import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { ShowToast } from "../ui/Toast";
 import React, { useState } from "react";
+import { Loading } from "../ui/Loading";
 
 const produtoSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -32,13 +33,16 @@ export default function ProdutoForm() {
 
   const onSubmit = async (data: ProdutoFormData) => {
     try {
+      Loading.show()
       setLoading(true);
       await adicionarProduto(data);
       ShowToast("success", "Produto cadastrado com sucesso!");
       reset();
+      Loading.hide()
     } catch (error) {
       console.error("Erro ao adicionar produto", error);
       ShowToast("error", "Erro ao salvar o produto.");
+      Loading.hide()
     } finally {
       setLoading(false);
     }
@@ -96,13 +100,7 @@ export default function ProdutoForm() {
         onPress={handleSubmit(onSubmit)}
         disabled={loading}
       >
-        {loading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <>
-            <Text className="text-white font-medium">Salvar</Text>
-          </>
-        )}
+        <Text className="text-white font-medium">Salvar</Text>
       </Pressable>
     </View>
   );

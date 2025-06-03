@@ -9,9 +9,11 @@ import {
   Text,
   Pressable,
   TextInput,
+
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { ShowToast } from "../ui/Toast";
+import { Loading } from "../ui/Loading";
 
 
 const producaoSchema = z.object({
@@ -20,7 +22,7 @@ const producaoSchema = z.object({
     nome: z.string(),
     unidadeMedida: z.string(),
   }),
-  quantidade: z.coerce.number().positive("A quantidade deve ser positiva"),
+  quantidade: z.coerce.number().positive("A quantidade é obrigatoria"),
   status: z.string().min(1, "Status é obrigatório"),
 });
 
@@ -30,6 +32,7 @@ export default function ProducaoForm() {
   const [loading, setLoading] = useState(false);
   const { adicionarProducao } = useProducao();
   const { produtos } = useProdutos();
+  const lista = ["Aguardando colheita","Aguardando Execução", "Colhido", "Executado"]
 
   const {
     control,
@@ -46,6 +49,7 @@ export default function ProducaoForm() {
 
   const onSubmit = async (data: ProducaoFormData) => {
     try {
+      Loading.show()
       setLoading(true);
       await adicionarProducao({
         quantidade: data.quantidade,
@@ -55,9 +59,11 @@ export default function ProducaoForm() {
       });
       reset(); 
       ShowToast("success", "Produção adicionada com sucesso!");
+      Loading.hide()
     } catch (error) {
       console.error("Erro ao adicionar produto", error);
       ShowToast("error", "Erro ao adicionar produção");
+      Loading.hide()
     } finally {
       setLoading(false);
     }
@@ -119,15 +125,22 @@ export default function ProducaoForm() {
         <Controller
           control={control}
           name="status"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2"
-              placeholder="Ex: Em produção"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-              editable={!loading}
-            />
+          render={({ field: { onChange, value } }) => (
+            <Picker
+              selectedValue={value}
+              onValueChange={(itemValue) => onChange(itemValue)}
+              enabled={!loading}
+              className="border border-gray-300 rounded"
+            >
+              <Picker.Item label="Selecione um Status" value="" />
+              {lista.map((status) => (
+                <Picker.Item
+                  key={status}
+                  label={status}
+                  value={status}
+                />
+              ))}
+            </Picker>
           )}
         />
         {errors.status && (
