@@ -14,6 +14,8 @@ import ProducaoStack from "./producao/ProducaoStack";
 import { ProducaoProvider } from "@/presentation/contexts/ProducaoContext";
 import { FazendaProvider } from "@/presentation/contexts/FazendaContext";
 import FazendaStack from "./fazenda/FazendaStack";
+import MedidaStack from "./medidas/MedidasStack";
+import { MedidaProvider } from "@/presentation/contexts/MedidaContext";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +34,7 @@ export default function App() {
 
   return (
     <TransacaoProvider>
+      <MedidaProvider>
       <FazendaProvider>
       <ProdutosProvider>
        <ProducaoProvider>
@@ -41,12 +44,14 @@ export default function App() {
           <Drawer.Screen name="Fazendas" component={FazendaStack} />
           <Drawer.Screen name="Produtos" component={ProdutosStack} />
           <Drawer.Screen name="Produção" component={ProducaoStack} />
+          <Drawer.Screen name="Medidas" component={MedidaStack} />
           <Drawer.Screen name="Cadastro" component={Cadastro} />
           <Drawer.Screen name="Sair" component={Logout} />
         </Drawer.Navigator>
         </ProducaoProvider>
       </ProdutosProvider>
       </FazendaProvider>
+      </MedidaProvider>
     </TransacaoProvider>
   );
 }
