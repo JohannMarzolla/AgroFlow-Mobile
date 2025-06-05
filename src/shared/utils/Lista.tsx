@@ -10,7 +10,7 @@ interface IListaGenerica<T> {
 export default function Lista<T>({data, renderItem, keyExtractor}: IListaGenerica<T>) {
   if (!data?.length ) {
     return (
-      <Text className="text-fiap-gray text-center">Não há produtos</Text>
+      <Text className="text-fiap-gray text-center">Não há itens</Text>
     );
   }
   return (

@@ -12,6 +12,8 @@ import { ProdutosProvider } from "@/presentation/contexts/ProdutoContext";
 import Cadastro from "./Cadastro";
 import ProducaoStack from "./producao/ProducaoStack";
 import { ProducaoProvider } from "@/presentation/contexts/ProducaoContext";
+import { FazendaProvider } from "@/presentation/contexts/FazendaContext";
+import FazendaStack from "./fazenda/FazendaStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,11 +32,13 @@ export default function App() {
 
   return (
     <TransacaoProvider>
+      <FazendaProvider>
       <ProdutosProvider>
        <ProducaoProvider>
         <Drawer.Navigator screenOptions={customScreenOptions}>
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Transações" component={Transacoes} />
+          <Drawer.Screen name="Fazendas" component={FazendaStack} />
           <Drawer.Screen name="Produtos" component={ProdutosStack} />
           <Drawer.Screen name="Produção" component={ProducaoStack} />
           <Drawer.Screen name="Cadastro" component={Cadastro} />
@@ -42,6 +46,7 @@ export default function App() {
         </Drawer.Navigator>
         </ProducaoProvider>
       </ProdutosProvider>
+      </FazendaProvider>
     </TransacaoProvider>
   );
 }
