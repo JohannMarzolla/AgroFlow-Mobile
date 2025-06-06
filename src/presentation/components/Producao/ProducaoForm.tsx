@@ -20,7 +20,11 @@ const producaoSchema = z.object({
   produto: z.object({
     id: z.string(),
     nome: z.string(),
-    unidadeMedida: z.string(),
+    unidadeMedida: z.object({
+      id:z.string(),
+      nome:z.string(),
+      sigla:z.string(),
+    }),
   }),
   quantidade: z.coerce.number().positive("A quantidade é obrigatoria"),
   status: z.string().min(1, "Status é obrigatório"),
