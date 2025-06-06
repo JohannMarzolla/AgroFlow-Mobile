@@ -6,16 +6,25 @@ import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { ShowToast } from "../ui/Toast";
 import React, { useState } from "react";
 import { Loading } from "../ui/Loading";
+import { useMedida } from "@/presentation/contexts/MedidaContext";
+import { Picker } from "@react-native-picker/picker";
+
+
 
 const produtoSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
-  unidadeMedida: z.string().min(1, "Unidade de medida é obrigatória"),
+  unidadeMedida: z.object({
+    id: z.string(),
+    nome: z.string(),
+    sigla :z.string(),
+  })
 });
 
 type ProdutoFormData = z.infer<typeof produtoSchema>;
 
 export default function ProdutoForm() {
   const { adicionarProduto } = useProdutos();
+  const {medida} = useMedida();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -27,7 +36,7 @@ export default function ProdutoForm() {
     resolver: zodResolver(produtoSchema),
     defaultValues: {
       nome: "",
-      unidadeMedida: ""
+     
     }
   });
 
@@ -72,28 +81,31 @@ export default function ProdutoForm() {
           </View>
         )}
       
-      <View className="mb-6">
-        <Text className="text-xl font-semibold mb-2">Unidade de Medida</Text>
-        <Controller
+     <Controller
           control={control}
           name="unidadeMedida"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2 mb-1 "
-              placeholder="Ex: kg, un, pacote"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              editable={!loading}
-            />
+          render={({ field: { onChange, value } }) => (
+            <Picker
+              selectedValue={value}
+              onValueChange={(itemValue) => onChange(itemValue)}
+              enabled={!loading}
+              className="border border-gray-300 rounded"
+            >
+              <Picker.Item label="Selecione um produto" value={undefined} />
+              {medida.map((medida) => (
+                <Picker.Item
+                  key={medida.id}
+                  label={medida.nome}
+                  value={medida}
+                />
+              ))}
+            </Picker>
           )}
         />
         {errors.unidadeMedida && (
-          <View className="flex flex-row items-center mt-1">
-            <Text className="text-red-500 ml-1 text-x">{errors.unidadeMedida.message}</Text>
-          </View>
+          <Text className="text-red-500 mt-1">{errors.unidadeMedida.message}</Text>
         )}
-      </View>
+     
 
       <Pressable
         className={`p-4 rounded-lg flex-row justify-center items-center ${loading ? "bg-gray-400" : "bg-green-600"}`}

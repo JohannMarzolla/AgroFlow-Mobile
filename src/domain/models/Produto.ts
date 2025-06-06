@@ -1,7 +1,9 @@
+import { Medida } from "./Medida";
+
 export class Produto {
     id:string;
     nome:string;
-    unidadeMedida:string; 
+    unidadeMedida:Medida; 
 
     constructor(obj:Produto){
         this.id= obj.id
