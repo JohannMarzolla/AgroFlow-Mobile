@@ -2,6 +2,7 @@ import { addDoc, collection, getDocs, Timestamp} from "firebase/firestore";
 import { db } from "../services/FirebaseConfig";
 import { Producao } from "@/domain/models/Producao";
 import { IProducaoRepository } from "@/domain/repositories/IProducaoRepository";
+import Fazenda from "@/app/(protected)/fazenda/Fazenda";
 
 export class ProducaoRepository implements IProducaoRepository{
     async getAll(userId: string): Promise<Producao[]> {
@@ -18,7 +19,8 @@ export class ProducaoRepository implements IProducaoRepository{
           quantidade: data.quantidade,
           status: data.status,
           data: data.data.toDate(),
-          produto: data.produto 
+          produto: data.produto ,
+          fazenda : data.fazenda
         };
       });
 
@@ -36,7 +38,8 @@ export class ProducaoRepository implements IProducaoRepository{
         quantidade: producao.quantidade,
         status:producao.status,
         data: Timestamp.fromDate(new Date(producao.data)),
-        produto: producao.produto
+        produto: producao.produto,
+        fazenda: producao.fazenda,
       });
     } catch (error) {
       throw new Error("Erro ao adicionar produto re´pository: " + (error as Error).message);

@@ -14,9 +14,15 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
+import { useFazenda } from "@/presentation/contexts/FazendaContext";
 
 
 const producaoSchema = z.object({
+  fazenda:z.object({
+    id: z.string(),
+    nome: z.string(),
+
+  }),
   produto: z.object({
     id: z.string(),
     nome: z.string(),
@@ -36,6 +42,7 @@ export default function ProducaoForm() {
   const [loading, setLoading] = useState(false);
   const { adicionarProducao } = useProducao();
   const { produtos } = useProdutos();
+    const { fazenda } = useFazenda();
   const lista = ["Aguardando colheita","Aguardando Execução", "Colhido", "Executado"]
 
   const {
@@ -60,6 +67,7 @@ export default function ProducaoForm() {
         status: data.status,
         data: new Date(),
         produto: data.produto,
+        fazenda: data.fazenda
       });
       reset(); 
       ShowToast("success", "Produção adicionada com sucesso!");
@@ -75,6 +83,31 @@ export default function ProducaoForm() {
 
   return (
       <View >
+          <Text className="text-xl font-semibold mb-2">Nome da fazenda</Text>
+        <Controller
+          control={control}
+          name="fazenda"
+          render={({ field: { onChange, value } }) => (
+            <Picker
+              selectedValue={value}
+              onValueChange={(itemValue) => onChange(itemValue)}
+              enabled={!loading}
+              className="border border-gray-300 rounded"
+            >
+              <Picker.Item label="Selecione uma fazenda" value={undefined} />
+              {fazenda.map((fazenda) => (
+                <Picker.Item
+                  key={fazenda.id}
+                  label={fazenda.nome}
+                  value={fazenda}
+                />
+              ))}
+            </Picker>
+          )}
+        />
+        {errors.produto && (
+          <Text className="text-red-500 mt-1">{errors.produto.message}</Text>
+        )}
         <Text className="text-xl font-semibold mb-2">Nome do Produto</Text>
         <Controller
           control={control}

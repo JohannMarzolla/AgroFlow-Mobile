@@ -24,6 +24,9 @@ export default function ProducaoItem({ producao }: IProducaoItem) {
         <Text className="text-gray-800 font-semibold text-lg">
            {producao.quantidade}
         </Text>
+         <Text className="text-gray-800 font-semibold text-lg">
+           {producao.fazenda.nome}
+        </Text>
        
         <Text className="text-gray-800 font-semibold text-lg">
           {new Date(producao.data).toLocaleDateString('pt-BR')}
