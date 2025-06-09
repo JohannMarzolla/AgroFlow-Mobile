@@ -7,15 +7,13 @@ import Transacoes from "./Transacoes";
 import Home from "./Home";
 import Logout from "./Logout";
 import { TransacaoProvider } from "@/presentation/contexts/TransacaoContext";
-import ProdutosStack from "./produtos/ProdutosStack";
 import { ProdutosProvider } from "@/presentation/contexts/ProdutoContext";
-import Cadastro from "./Cadastro";
-import ProducaoStack from "./producao/ProducaoStack";
 import { ProducaoProvider } from "@/presentation/contexts/ProducaoContext";
 import { FazendaProvider } from "@/presentation/contexts/FazendaContext";
-import FazendaStack from "./fazenda/FazendaStack";
-import MedidaStack from "./medidas/MedidasStack";
 import { MedidaProvider } from "@/presentation/contexts/MedidaContext";
+import DrawerContentCustom from "./drawer/DrawerContentCustom";
+import AdministracaoStack from "./features/adiministracaoModulo/AdministracaoStack";
+import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,14 +36,11 @@ export default function App() {
       <FazendaProvider>
       <ProdutosProvider>
        <ProducaoProvider>
-        <Drawer.Navigator screenOptions={customScreenOptions}>
+        <Drawer.Navigator screenOptions={customScreenOptions}  drawerContent={(props) => <DrawerContentCustom {...props} />}>
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Transações" component={Transacoes} />
-          <Drawer.Screen name="Fazendas" component={FazendaStack} />
-          <Drawer.Screen name="Produtos" component={ProdutosStack} />
-          <Drawer.Screen name="Produção" component={ProducaoStack} />
-          <Drawer.Screen name="Medidas" component={MedidaStack} />
-          <Drawer.Screen name="Cadastro" component={Cadastro} />
+          <Drawer.Screen name="Producao" component={ProducaoModuloStack} />
+          <Drawer.Screen name="Administracao" component={AdministracaoStack} />
           <Drawer.Screen name="Sair" component={Logout} />
         </Drawer.Navigator>
         </ProducaoProvider>
