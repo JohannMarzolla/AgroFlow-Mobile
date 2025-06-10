@@ -49,7 +49,6 @@ export default function Cadastro() {
         "Conta cadastrada com sucesso.",
         "Efetue o login para acessar a conta."
       );
-      //   router.replace("/login");
     } catch (error) {
       if (error instanceof Error) {
         ShowToast("error", error.message || "Erro ao cadastrar a conta.");
