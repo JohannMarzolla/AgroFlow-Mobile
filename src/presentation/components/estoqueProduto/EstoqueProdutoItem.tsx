@@ -1,32 +1,30 @@
 import { Text, View } from "react-native";
-import { Producao } from "@/domain/models/Producao";
+import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 
 
-export interface IProducaoItem {
-  producao: Producao;
+export interface IEstoqueProdutoItem {
+  estoqueProduto: EstoqueProduto;
 }
 
-export default function ProducaoItem({ producao }: IProducaoItem) {
+export default function EstoqueProdutoItem({ estoqueProduto }: IEstoqueProdutoItem) {
  
   return (
     <View className="bg-white p-4 rounded shadow-md mb-4">
       
       <View className="flex-row justify-between mb-2">
         <Text className="text-gray-800 font-medium capitalize">
-          {producao.produto.nome}
+          {estoqueProduto.produto.nome}
         </Text>
-         <Text className="text-gray-800 font-medium capitalize">
-          {producao.status}
+        <Text className="text-gray-800 font-semibold text-lg">
+           {estoqueProduto.produto.unidadeMedida.sigla}
         </Text>
       </View>
 
       <View className="flex-row justify-between ">
         <Text className="text-gray-800 font-semibold text-lg">
-           {producao.quantidade}
+           {estoqueProduto.quantidade}
         </Text>
-         <Text className="text-gray-800 font-semibold text-lg">
-           {producao.fazenda.nome}
-        </Text>
+       
        
       </View>
     </View>

@@ -11,6 +11,7 @@ import { ProdutosProvider } from "@/presentation/contexts/ProdutoContext";
 import { ProducaoProvider } from "@/presentation/contexts/ProducaoContext";
 import { FazendaProvider } from "@/presentation/contexts/FazendaContext";
 import { MedidaProvider } from "@/presentation/contexts/MedidaContext";
+import { EstoqueProdutoProvider } from "@/presentation/contexts/EstoqueProdutoContext";
 import DrawerContentCustom from "./drawer/DrawerContentCustom";
 import AdministracaoStack from "./features/adiministracaoModulo/AdministracaoStack";
 import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
@@ -38,6 +39,7 @@ export default function App() {
       <FazendaProvider>
       <ProdutosProvider>
        <ProducaoProvider>
+        <EstoqueProdutoProvider>
         <Drawer.Navigator screenOptions={customScreenOptions}  drawerContent={(props) => <DrawerContentCustom {...props} />}>
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Transações" component={Transacoes} />
@@ -45,6 +47,7 @@ export default function App() {
           <Drawer.Screen name="Administracao" component={AdministracaoStack} />
           <Drawer.Screen name="Sair" component={Logout} />
         </Drawer.Navigator>
+        </EstoqueProdutoProvider>
         </ProducaoProvider>
       </ProdutosProvider>
       </FazendaProvider>

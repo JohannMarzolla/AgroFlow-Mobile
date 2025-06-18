@@ -63,6 +63,14 @@ const DrawerContentCustom = (props: DrawerContentComponentProps) => {
             }}
             labelStyle={styles.submenuText}
           />
+          <DrawerItem
+            label="Estoque de Produtos"
+            onPress={() => {
+              props.navigation.navigate('Producao', { screen: 'EstoqueProduto' });
+              setOpenSubmenu(null);
+            }}
+            labelStyle={styles.submenuText}
+          />
         </View>
       )}
 

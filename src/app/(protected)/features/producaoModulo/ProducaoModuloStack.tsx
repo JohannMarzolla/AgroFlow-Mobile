@@ -3,6 +3,7 @@ import ProducaoStack from "./producao/ProducaoStack";
 import ProdutosStack from "./produtos/ProdutosStack";
 import FazendaStack from "./fazenda/FazendaStack";
 import InsumoStack from "./Insumo/InsumoStack";
+import EstoqueProdutoStack from "./estoqueProduto/EstoqueProdutoStack";
 
 
 export type AdministracaoStackParamList = {
@@ -10,7 +11,7 @@ export type AdministracaoStackParamList = {
   Produtos: undefined;
   Producao: undefined;
   Insumo: undefined;
-
+  EstoqueProduto: undefined;
 };
 
 const Stack = createNativeStackNavigator<AdministracaoStackParamList>();
@@ -27,6 +28,7 @@ export default function ProducaoModuloStack() {
       <Stack.Screen name="Produtos" component={ProdutosStack} />
        <Stack.Screen name="Insumo" component={InsumoStack} />
       <Stack.Screen name="Producao" component={ProducaoStack} />
+      <Stack.Screen name="EstoqueProduto" component={EstoqueProdutoStack} />
     </Stack.Navigator>
   );
 }
