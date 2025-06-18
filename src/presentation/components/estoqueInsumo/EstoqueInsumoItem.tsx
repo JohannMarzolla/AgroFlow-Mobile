@@ -1,21 +1,29 @@
-// import { Text, View } from "react-native";
-// import { Fazenda } from "@/domain/models/Fazenda";
-// import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
+import { Text, View } from "react-native";
+import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
 
+export interface IEstoqueInsumoItem {
+  estoqueInsumo: EstoqueInsumo;
+}
 
-// export interface IFazendaItem {
-//   insumos: EstoqueInsumo;
-// }
-
-// export default function FazendaItem({ insumos }: IFazendaItem) {
- 
-//   return (
-//     <View className="bg-white p-4 rounded shadow-md mb-4">
-//       <View className="flex-row justify-between mb-2">
-//         <Text className="text-gray-800 font-medium capitalize">
-//           {fazenda.nome}
-//         </Text>
-//       </View>
-//     </View>
-//   );
-// }
+export default function EstoqueInsumoItem({ estoqueInsumo }: IEstoqueInsumoItem) {
+  return (
+    <View className="bg-white p-4 rounded shadow-md mb-4">
+      <View className="flex-row justify-between mb-2">
+        <Text className="text-gray-800 font-medium capitalize">
+          {estoqueInsumo.insumo.nome}
+        </Text>
+        <Text className="text-gray-800 font-semibold text-lg">
+          {estoqueInsumo.insumo.unidadeMedida.sigla}
+        </Text>
+      </View>
+      <View className="flex-row justify-between ">
+        <Text className="text-gray-800 font-semibold text-lg">
+          {estoqueInsumo.quantidade}
+        </Text>
+        <Text className="text-gray-800 font-semibold text-lg">
+          R$ {estoqueInsumo.preco.toFixed(2)}
+        </Text>
+      </View>
+    </View>
+  );
+}

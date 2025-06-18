@@ -11,7 +11,7 @@ export class EstoqueInsumo {
         this.id = obj.id,
         this.insumo = obj.insumo,
         this.quantidade = obj.quantidade,
-        this.preco = obj.preco,
+        this.preco = obj.preco
 
 
     }

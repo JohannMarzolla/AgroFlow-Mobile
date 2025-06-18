@@ -16,6 +16,7 @@ import DrawerContentCustom from "./drawer/DrawerContentCustom";
 import AdministracaoStack from "./features/adiministracaoModulo/AdministracaoStack";
 import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
 import { InsumoProvider } from "@/presentation/contexts/InsumoContext";
+import { EstoqueInsumoProvider } from "@/presentation/contexts/EstoqueInsumoContext";
 
 const Drawer = createDrawerNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
   return (
     <TransacaoProvider>
       <MedidaProvider>
+        <EstoqueInsumoProvider>
       <InsumoProvider> 
       <FazendaProvider>
       <ProdutosProvider>
@@ -52,6 +54,7 @@ export default function App() {
       </ProdutosProvider>
       </FazendaProvider>
       </InsumoProvider>
+      </EstoqueInsumoProvider>
       </MedidaProvider>
     </TransacaoProvider>
   );
