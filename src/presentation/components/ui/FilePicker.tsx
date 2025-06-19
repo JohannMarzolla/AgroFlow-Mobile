@@ -40,7 +40,7 @@ export default function FilePicker(options: FilePickerOptions) {
       <Text
         onPress={pickDocument}
         className={`w-full bg-white rounded-lg border-[1px] p-3 ${
-          style === "ligth" ? "border-fiap-light-blue" : "border-fiap-navy-blue"
+          style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green"
         }`}
       >
         {options.value ?? "Selecionar arquivo"}

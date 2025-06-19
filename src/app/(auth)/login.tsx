@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ImageBackground } from "react-native";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useAuth } from "@/presentation/contexts/AuthContext";
@@ -49,39 +49,39 @@ export default function Login() {
   };
 
   return (
-    <View className="flex-1 bg-fiap-white items-center py-12">
-      <Image
-        className="mb-8"
-        source={require("@/assets/images/ilustracao-login.png")}
-        style={{ height: 240 }}
-        resizeMode="contain"
-      />
+    <ImageBackground
+      source={require("@/assets/images/fundo-login.webp")}
+      resizeMode="cover"
+      className="flex-1 px-10"
+    >
+      <View className="bg-white/70 rounded-2xl p-6 top-36">
+        <Image
+          source={require("@/assets/images/splash-icon.png")}
+          className="w-72 h-16 self-center mb-6"
+          resizeMode="contain"
+        />
 
-      <Text className="font-bold text-xl pb-4">Login</Text>
+        <View className="gap-4">
+          <Input
+            type="email"
+            value={values.email}
+            placeholder="Email"
+            error={errors.email}
+            onValueChanged={(value) => handleOnChange("email", value)}
+          ></Input>
 
-      <View className="w-full px-12">
-        <Input
-          className="pb-5"
-          type="email"
-          label="Email"
-          value={values.email}
-          placeholder="Digite seu email"
-          error={errors.email}
-          onValueChanged={(value) => handleOnChange("email", value)}
-        ></Input>
+          <Input
+            className="pb-6"
+            type="password"
+            value={values.password}
+            placeholder="Senha"
+            error={errors.password}
+            onValueChanged={(value) => handleOnChange("password", value)}
+          ></Input>
+        </View>
 
-        <Input
-          className="pb-6"
-          type="password"
-          label="Senha"
-          value={values.password}
-          placeholder="Digite sua senha"
-          error={errors.password}
-          onValueChanged={(value) => handleOnChange("password", value)}
-        ></Input>
+        <Button text="Acessar" onPress={onConfirm} />
       </View>
-
-      <Button color="orange" text="Acessar" onPress={onConfirm} />
-    </View>
+    </ImageBackground>
   );
 }

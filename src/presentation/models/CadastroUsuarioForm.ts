@@ -1,6 +1,6 @@
 import validaEmail from "@/shared/utils/validaEmail";
 
-export type CadastroUsuarioFormFields = "email" | "password" | "termoAceito";
+export type CadastroUsuarioFormFields = "email" | "password";
 export type CadastroUsuarioFormErrors = Partial<
   Record<CadastroUsuarioFormFields, string>
 >;
@@ -8,12 +8,10 @@ export type CadastroUsuarioFormErrors = Partial<
 export class CadastroUsuarioForm {
   email: string;
   password: string;
-  termoAceito: boolean;
 
   constructor(obj?: CadastroUsuarioForm) {
     this.email = obj?.email ?? "";
     this.password = obj?.password ?? "";
-    this.termoAceito = obj?.termoAceito ?? false;
   }
 
   validate = () => {
@@ -29,10 +27,6 @@ export class CadastroUsuarioForm {
       errors.email = "Campo obrigatório";
     } else if (!validaEmail(this.email)) {
       errors.email = "Formato inválido";
-    }
-
-    if (!this.termoAceito) {
-      errors.termoAceito = "Necessário aceitar os termos";
     }
 
     return { isValid: Object.keys(errors).length === 0, errors };

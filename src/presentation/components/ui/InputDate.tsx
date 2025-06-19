@@ -40,14 +40,12 @@ export default function InputDate(options: InputDateOptions) {
   }
 
   function getBorderStyle() {
-    if (options.readOnly) return "border-fiap-gray";
-    return style === "ligth"
-      ? "border-fiap-light-blue"
-      : "border-fiap-navy-blue";
+    if (options.readOnly) return "border-agrof-gray";
+    return style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green";
   }
 
   function getTextStyle() {
-    if (options.readOnly) return "text-fiap-gray";
+    if (options.readOnly) return "text-agrof-gray";
     return options.value ? "text-black" : "text-gray-400";
   }
 
@@ -73,7 +71,7 @@ export default function InputDate(options: InputDateOptions) {
         {options.showClearButton && options.value && !options.readOnly && (
           <IconButton
             onPress={() => onChange(null, null)}
-            iconProps={{ name: "cancel", color: colors.fiap.gray, size: 22 }}
+            iconProps={{ name: "cancel", color: colors.agrof.gray, size: 22 }}
             style={{ padding: 0, marginVertical: -12 }}
           />
         )}

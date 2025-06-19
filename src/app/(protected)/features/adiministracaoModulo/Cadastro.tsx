@@ -44,76 +44,36 @@ export default function Cadastro() {
   const cadastrar = async (email: string, password: string) => {
     try {
       await UsuarioService.cadastrar(email, password);
-      ShowToast(
-        "success",
-        "Conta cadastrada com sucesso.",
-        "Efetue o login para acessar a conta."
-      );
+      ShowToast("success", "Usuário cadastrado com sucesso.");
     } catch (error) {
       if (error instanceof Error) {
-        ShowToast("error", error.message || "Erro ao cadastrar a conta.");
+        ShowToast("error", error.message || "Erro ao cadastrar usuario.");
       }
     }
   };
 
   return (
-    <ScrollView className="flex-1 bg-fiap-white">
-      <View className="items-center py-12">
-        <Image
-          className="mb-8"
-          source={require("@/assets/images/ilustracao-nova-conta.png")}
-          style={{ height: 210 }}
-          resizeMode="contain"
+    <ScrollView className="flex-1 bg-agrof-white">
+      <View className="w-full p-8">
+        <Input
+          className="pb-5"
+          type="email"
+          label="Email"
+          value={values.email}
+          error={errors.email}
+          onValueChanged={(value) => handleOnChange("email", value)}
         />
 
-        <Text className="font-bold text-xl pb-5 px-11">
-          Preencha os campos abaixo para criar sua conta corrente!
-        </Text>
+        <Input
+          className="pb-5"
+          type="password"
+          label="Senha"
+          value={values.password}
+          error={errors.password}
+          onValueChanged={(value) => handleOnChange("password", value)}
+        />
 
-        <View className="w-full px-12">
-          {/* <Input
-            className="pb-5"
-            type="string"
-            label="Nome"
-            placeholder="Digite seu nome completo"
-            value={values.nome}
-            error={errors.nome}
-            onValueChanged={(value) => handleOnChange("nome", value)}
-          /> */}
-
-          <Input
-            className="pb-5"
-            type="email"
-            label="Email"
-            placeholder="Digite seu email"
-            value={values.email}
-            error={errors.email}
-            onValueChanged={(value) => handleOnChange("email", value)}
-          />
-
-          <Input
-            className="pb-5"
-            type="password"
-            label="Senha"
-            placeholder="Digite sua senha"
-            value={values.password}
-            error={errors.password}
-            onValueChanged={(value) => handleOnChange("password", value)}
-          />
-
-          <InputCheckbox
-            className="pb-7"
-            label="Li e estou ciente quanto às condições de tratamento dos meus dados conforme descrito na Política de Privacidade do banco."
-            error={errors.termoAceito}
-            onValueChanged={(value) => handleOnChange("termoAceito", value)}
-          />
-        </View>
-
-        <Button color="orange" text="Criar conta" onPress={onConfirm} />
-
-        <Link href="/login" className="mt-4 text-fiap-gray">
-          Já possui uma conta? Acesse clicando aqui
-        </Link>
+        <Button text="Criar conta" onPress={onConfirm} />
       </View>
     </ScrollView>
   );

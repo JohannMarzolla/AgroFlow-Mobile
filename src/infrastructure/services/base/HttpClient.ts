@@ -6,7 +6,9 @@ export class HttpClient {
     body?: TRequest
   ): Promise<TResponse> {
     try {
-      const response = await api.post<TResponse>(method, body);
+      const response = await api.post<TResponse>(method, body, {
+        timeout: 5000,
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -15,7 +17,7 @@ export class HttpClient {
 
   static async get<TResponse = any>(method: string): Promise<TResponse> {
     try {
-      const response = await api.get<TResponse>(method);
+      const response = await api.get<TResponse>(method, { timeout: 5000 });
       return response.data;
     } catch (error) {
       throw error;

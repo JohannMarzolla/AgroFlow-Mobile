@@ -43,10 +43,10 @@ export default function TransacaoItem({ transacao }: TransacaoItemOptions) {
         <View className="flex-row space-x-4">
           <IconButton
             onPress={() => abrirModal("edit")}
-            iconProps={{ name: "edit", color: colors.fiap.green, size: 24 }}
+            iconProps={{ name: "edit", color: colors.agrof.green, size: 24 }}
           />
           <IconButton
-            iconProps={{ name: "delete", color: colors.fiap.red, size: 24 }}
+            iconProps={{ name: "delete", color: colors.agrof.red, size: 24 }}
             onPress={() => abrirModal("delete")}
           />
         </View>

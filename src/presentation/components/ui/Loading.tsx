@@ -21,7 +21,7 @@ const GlobalLoading = () => {
   return (
     <View style={styles.overlay}>
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={colors.fiap.green} />
+        <ActivityIndicator size="large" color={colors.agrof.green} />
         <Text style={styles.message}>{loading.message || "Carregando..."}</Text>
       </View>
     </View>

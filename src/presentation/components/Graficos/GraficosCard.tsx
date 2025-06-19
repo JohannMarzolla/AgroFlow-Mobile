@@ -9,7 +9,7 @@ export default function GraficosCard() {
   return (
     <SaldoProvider>
       <GraficosProvider>
-        <View className="w-full bg-fiap-navy-blue rounded-[8px] mb-8">
+        <View className="w-full bg-agrof-green rounded-[8px] mb-8">
           <Saldo />
           <GraficosCarousel />
         </View>

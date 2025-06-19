@@ -1,13 +1,7 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-export type ButtonColors =
-  | "orange"
-  | "red"
-  | "blue"
-  | "green"
-  | "black"
-  | "gray";
+export type ButtonColors = "orange" | "red" | "green" | "black" | "gray";
 
 export interface ButtonOptions {
   /** Texto do botão */
@@ -31,10 +25,8 @@ export default function Button(options: ButtonOptions) {
     if (options.outlined) {
       if (options.disabled) return "";
       switch (options.color) {
-        case "green":
-          return "text-green-600";
-        case "blue":
-          return "text-blue-600";
+        case "orange":
+          return "text-orange-500";
         case "red":
           return "text-red-600";
         case "black":
@@ -42,7 +34,7 @@ export default function Button(options: ButtonOptions) {
         case "gray":
           return "text-black";
         default:
-          return "text-orange-500";
+          return "text-green-600";
       }
     }
     return options.color === "gray" ? "text-black" : "text-white";
@@ -51,28 +43,24 @@ export default function Button(options: ButtonOptions) {
   function getColorClass() {
     if (options.disabled) return "";
     switch (options.color) {
-      case "green":
-        return "bg-fiap-green";
-      case "blue":
-        return "bg-fiap-navy-blue";
+      case "orange":
+        return "bg-agrof-orange";
       case "red":
-        return "bg-fiap-red";
+        return "bg-agrof-red";
       case "black":
         return "bg-black";
       case "gray":
         return "bg-gray-200";
       default:
-        return "bg-fiap-orange";
+        return "bg-agrof-green";
     }
   }
 
   function getOutlinedColorClass() {
     if (options.disabled) return "";
     switch (options.color) {
-      case "green":
-        return "border-2 border-green-600";
-      case "blue":
-        return "border-2 border-blue-600";
+      case "orange":
+        return "border-2 border-orange-500";
       case "red":
         return "border-2 border-red-600";
       case "black":
@@ -80,7 +68,7 @@ export default function Button(options: ButtonOptions) {
       case "gray":
         return "border-2 border-gray-200";
       default:
-        return "border-2 border-orange-500";
+        return "border-2 border-green-600";
     }
   }
 

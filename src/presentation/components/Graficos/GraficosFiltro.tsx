@@ -33,7 +33,7 @@ export default function GraficosFiltro() {
         onValueChanged={(value) => setAno(value)}
       />
 
-      <Button text="Buscar" onPress={onBuscar} />
+      <Button color="orange" text="Buscar" onPress={onBuscar} />
     </View>
   );
 }

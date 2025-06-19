@@ -29,7 +29,7 @@ export default function InputCheckbox(options: InputCheckboxOptions) {
       <View className="flex-row items-center gap-3">
         <Pressable
           className={`w-6 h-6 border-2 rounded items-center ${
-            checked ? "bg-fiap-green border-fiap-green" : "border-gray-400"
+            checked ? "bg-agrof-green border-agrof-green" : "border-gray-400"
           }`}
           onPress={() => onValueChanged()}
         >

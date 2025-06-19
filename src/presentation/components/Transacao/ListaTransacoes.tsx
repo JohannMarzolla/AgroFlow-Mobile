@@ -16,7 +16,7 @@ export default function ListaTransacoes({
 }: ListaTransacoesOptions) {
   if (!transacoes?.length && !loadingMore) {
     return (
-      <Text className="text-fiap-gray text-center">Não há transações</Text>
+      <Text className="text-agrof-gray text-center">Não há transações</Text>
     );
   }
 

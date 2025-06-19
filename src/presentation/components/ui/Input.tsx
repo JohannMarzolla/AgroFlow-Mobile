@@ -3,7 +3,7 @@ import { KeyboardType, TextInput, View, Text } from "react-native";
 
 export interface InputOptions {
   /** Texto do label */
-  label: string;
+  label?: string;
   /** Tipo de input */
   type?: "string" | "number" | "email" | "password";
   /** Valor do input */
@@ -50,7 +50,7 @@ export default function Input(options: InputOptions) {
   }
 
   function getReadonlyStyle() {
-    return options.readOnly ? "border-fiap-gray text-fiap-gray" : "";
+    return options.readOnly ? "border-agrof-gray text-agrof-gray" : "";
   }
 
   return (
@@ -58,7 +58,7 @@ export default function Input(options: InputOptions) {
       <InputLabel text={options.label} textBold={options.labelTextBold} />
       <TextInput
         className={`w-full bg-white rounded-lg border-[1px] p-3 ${
-          style === "ligth" ? "border-fiap-light-blue" : "border-fiap-navy-blue"
+          style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green"
         } ${getReadonlyStyle()}`}
         keyboardType={getKeyboardType()}
         secureTextEntry={options.type === "password"}

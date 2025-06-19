@@ -30,15 +30,15 @@ export default function GraficoEvolucaoSaldoPorMes() {
           yAxisSuffix=""
           yAxisInterval={1}
           chartConfig={{
-            backgroundGradientFrom: colors.fiap["light-green"],
-            backgroundGradientTo: colors.fiap["light-green"],
+            backgroundGradientFrom: colors.agrof["light-green"],
+            backgroundGradientTo: colors.agrof["light-green"],
             decimalPlaces: 2,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: { borderRadius: 10 },
             propsForDots: {
               r: "6",
-              fill: colors.fiap.green,
+              fill: colors.agrof.green,
             },
           }}
           bezier

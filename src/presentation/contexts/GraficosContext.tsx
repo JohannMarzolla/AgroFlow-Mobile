@@ -37,8 +37,8 @@ export const GraficosProvider = ({ children }: GraficosProviderProps) => {
   const [entradasSaidasData, setEntradasSaidasData] = useState<
     GraficoEntradaSaidaValor[]
   >([
-    { name: "Depósito", value: 0, color: colors.fiap.green },
-    { name: "Transferência", value: 0, color: colors.fiap.red },
+    { name: "Depósito", value: 0, color: colors.agrof.green },
+    { name: "Transferência", value: 0, color: colors.agrof.red },
   ]);
   const [evolucaoSaldoPorMes, setEvolucaoSaldoPorMes] =
     useState<GraficoEvolucaoSaldoData>(getEvolucaoSaldoVazio());
