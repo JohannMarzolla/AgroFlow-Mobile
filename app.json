@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/splash-icon.png",
         "backgroundColor": "#F8F8F8"
-      }
+      },
+      "package": "com.anonymous.agroflow"
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +38,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#F8F8F8"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

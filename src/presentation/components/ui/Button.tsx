@@ -44,15 +44,15 @@ export default function Button(options: ButtonOptions) {
     if (options.disabled) return "";
     switch (options.color) {
       case "orange":
-        return "bg-agrof-orange";
+        return "bg-agroflow-orange";
       case "red":
-        return "bg-agrof-red";
+        return "bg-agroflow-red";
       case "black":
         return "bg-black";
       case "gray":
         return "bg-gray-200";
       default:
-        return "bg-agrof-green";
+        return "bg-agroflow-green";
     }
   }
 

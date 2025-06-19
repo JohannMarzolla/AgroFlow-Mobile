@@ -1,7 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
+import * as SecureStore from "expo-secure-store";
 
 export class UserTokenService {
   private static instance: UserTokenService;
+  private readonly key = "user";
 
   static getInstance() {
     if (!UserTokenService.instance) {
@@ -10,15 +12,16 @@ export class UserTokenService {
     return UserTokenService.instance;
   }
 
-  async set(token: string) {
-    await AsyncStorage.setItem("userToken", token);
+  async set(userLogged: UsuarioLogado): Promise<void> {
+    await SecureStore.setItemAsync(this.key, JSON.stringify(userLogged));
   }
 
-  async get(): Promise<string | null> {
-    return await AsyncStorage.getItem("userToken");
+  async get(): Promise<UsuarioLogado | null> {
+    const jsonValue = await SecureStore.getItemAsync(this.key);
+    return jsonValue ? JSON.parse(jsonValue) : null;
   }
 
-  async clear() {
-    await AsyncStorage.removeItem("userToken");
+  async clear(): Promise<void> {
+    await SecureStore.deleteItemAsync(this.key);
   }
 }

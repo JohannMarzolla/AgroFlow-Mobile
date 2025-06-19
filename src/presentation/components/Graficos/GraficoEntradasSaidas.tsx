@@ -45,7 +45,7 @@ export default function GraficoEntradasSaidas() {
 
               <View className="">
                 <Text className="text-white text-lg">{item.name}</Text>
-                <Text className="pl-1 text-agrof-light-gray">
+                <Text className="pl-1 text-agroflow-light-gray">
                   {formatarMoeda(item.value)}
                 </Text>
               </View>

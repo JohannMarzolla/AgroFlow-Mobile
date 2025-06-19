@@ -11,7 +11,7 @@ export function ShowToast(
     text1: message,
     text1Style: { fontSize: 14 },
     text2: detail,
-    text2Style: { fontSize: 13, color: colors.agrof.gray },
+    text2Style: { fontSize: 13, color: colors.agroflow.gray },
     position: "bottom",
     visibilityTime: 3000,
   });

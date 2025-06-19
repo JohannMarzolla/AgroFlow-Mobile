@@ -13,7 +13,7 @@ export default function Lista<T>({
   keyExtractor,
 }: IListaGenerica<T>) {
   if (!data?.length) {
-    return <Text className="text-agrof-gray text-center">Não há itens</Text>;
+    return <Text className="text-agroflow-gray text-center">Não há itens</Text>;
   }
   return (
     <FlatList

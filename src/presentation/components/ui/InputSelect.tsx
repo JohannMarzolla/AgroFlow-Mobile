@@ -34,8 +34,10 @@ export default function InputSelect(options: InputSelectOptions) {
   }
 
   function getBorderStyle() {
-    if (options.readOnly) return "border-agrof-gray";
-    return style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green";
+    if (options.readOnly) return "border-agroflow-gray";
+    return style === "ligth"
+      ? "border-agroflow-light-blue"
+      : "border-agroflow-green";
   }
 
   return (
@@ -48,7 +50,7 @@ export default function InputSelect(options: InputSelectOptions) {
         className={`bg-white justify-center w-full h-12 overflow-hidden rounded-lg border-[1px] ${getBorderStyle()}`}
       >
         {options.readOnly ? (
-          <Text className="p-3 text-agrof-gray">
+          <Text className="p-3 text-agroflow-gray">
             {options.options?.find((o) => o.value === options.value)?.label ||
               ""}
           </Text>

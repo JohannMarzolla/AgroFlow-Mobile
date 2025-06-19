@@ -40,12 +40,14 @@ export default function InputDate(options: InputDateOptions) {
   }
 
   function getBorderStyle() {
-    if (options.readOnly) return "border-agrof-gray";
-    return style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green";
+    if (options.readOnly) return "border-agroflow-gray";
+    return style === "ligth"
+      ? "border-agroflow-light-blue"
+      : "border-agroflow-green";
   }
 
   function getTextStyle() {
-    if (options.readOnly) return "text-agrof-gray";
+    if (options.readOnly) return "text-agroflow-gray";
     return options.value ? "text-black" : "text-gray-400";
   }
 
@@ -71,7 +73,11 @@ export default function InputDate(options: InputDateOptions) {
         {options.showClearButton && options.value && !options.readOnly && (
           <IconButton
             onPress={() => onChange(null, null)}
-            iconProps={{ name: "cancel", color: colors.agrof.gray, size: 22 }}
+            iconProps={{
+              name: "cancel",
+              color: colors.agroflow.gray,
+              size: 22,
+            }}
             style={{ padding: 0, marginVertical: -12 }}
           />
         )}

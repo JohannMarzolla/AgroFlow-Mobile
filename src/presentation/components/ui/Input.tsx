@@ -50,7 +50,7 @@ export default function Input(options: InputOptions) {
   }
 
   function getReadonlyStyle() {
-    return options.readOnly ? "border-agrof-gray text-agrof-gray" : "";
+    return options.readOnly ? "border-agroflow-gray text-agroflow-gray" : "";
   }
 
   return (
@@ -58,7 +58,9 @@ export default function Input(options: InputOptions) {
       <InputLabel text={options.label} textBold={options.labelTextBold} />
       <TextInput
         className={`w-full bg-white rounded-lg border-[1px] p-3 ${
-          style === "ligth" ? "border-agrof-light-blue" : "border-agrof-green"
+          style === "ligth"
+            ? "border-agroflow-light-blue"
+            : "border-agroflow-green"
         } ${getReadonlyStyle()}`}
         keyboardType={getKeyboardType()}
         secureTextEntry={options.type === "password"}

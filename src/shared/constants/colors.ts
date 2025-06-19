@@ -1,5 +1,5 @@
 export const colors = {
-  agrof: {
+  agroflow: {
     white: "#F8F8F8",
     gray: "#767676",
     "light-gray": "#CBCBCB",

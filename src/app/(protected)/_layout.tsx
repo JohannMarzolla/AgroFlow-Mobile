@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   createDrawerNavigator,
   DrawerNavigationOptions,
@@ -18,18 +19,40 @@ import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
 import { InsumoProvider } from "@/presentation/contexts/InsumoContext";
 import { EstoqueInsumoProvider } from "@/presentation/contexts/EstoqueInsumoContext";
 import { colors } from "@/shared/constants/colors";
+import { ActivityIndicator, View } from "react-native";
+import { Redirect } from "expo-router";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
-  const { isAuthenticated } = useAuth();
+  const { validateLogged, isAuthenticated, user } = useAuth();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Chama validateLogged apenas uma vez
+  useEffect(() => {
+    const check = async () => {
+      await validateLogged(); // pode ler do SecureStore ou API
+      setCheckingAuth(false); // termina a verificação
+    };
+    check();
+  }, []);
+
+  // Mostra loading enquanto valida login
+  if (checkingAuth) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  // Protege layout: se não autenticado, não renderiza o app
   if (!isAuthenticated) {
-    return null;
+    return <Redirect href="/(auth)/login" />;
   }
 
   const customScreenOptions: DrawerNavigationOptions = {
-    headerStyle: { backgroundColor: colors.agrof.green },
+    headerStyle: { backgroundColor: colors.agroflow.green },
     headerTintColor: "white",
     headerTitleAlign: "center",
   };
