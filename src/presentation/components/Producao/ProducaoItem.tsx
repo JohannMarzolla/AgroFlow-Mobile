@@ -1,16 +1,23 @@
-import { Text, View } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { Producao } from "@/domain/models/Producao";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProducaoStackParamList } from "@/app/(protected)/features/producaoModulo/producao/ProducaoStack";
 
+type ProducaoNavigationProp = NativeStackNavigationProp<ProducaoStackParamList, "Producao">;
 
 export interface IProducaoItem {
   producao: Producao;
 }
 
 export default function ProducaoItem({ producao }: IProducaoItem) {
+  const navigation = useNavigation<ProducaoNavigationProp>();
  
   return (
-    <View className="bg-white p-4 rounded shadow-md mb-4">
-      
+    <Pressable 
+      className="bg-white p-4 rounded shadow-md mb-4"
+      onPress={() => navigation.navigate("ProducaoDetalhes", { producao })}
+    >
       <View className="flex-row justify-between mb-2">
         <Text className="text-gray-800 font-medium capitalize">
           {producao.produto.nome}
@@ -27,8 +34,7 @@ export default function ProducaoItem({ producao }: IProducaoItem) {
          <Text className="text-gray-800 font-semibold text-lg">
            {producao.fazenda.nome}
         </Text>
-       
       </View>
-    </View>
+    </Pressable>
   );
 }

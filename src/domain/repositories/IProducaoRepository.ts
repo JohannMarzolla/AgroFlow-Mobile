@@ -4,4 +4,5 @@ import { ProducaoAdicionarForm } from "../models/ProducaoAdicionarForm";
 export interface IProducaoRepository{
     getAll(userId: string ):Promise<Producao[]>;
     insert(userId: string , producao: ProducaoAdicionarForm):Promise<void>;
+    update(userId:string ,producao: Producao): Promise<void>;
 }

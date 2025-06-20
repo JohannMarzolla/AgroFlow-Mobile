@@ -42,7 +42,7 @@ export default function ProducaoForm() {
   const [loading, setLoading] = useState(false);
   const { adicionarProducao } = useProducao();
   const { produtos } = useProdutos();
-    const { fazenda } = useFazenda();
+  const { fazenda } = useFazenda();
   const lista = ["Aguardando colheita","Aguardando Execução", "Colhido", "Executado"]
 
   const {
@@ -186,6 +186,7 @@ export default function ProducaoForm() {
       </View>
 
       <Pressable
+     
         className="bg-green-600 p-3 rounded mt-2"
         onPress={handleSubmit(onSubmit)}
         disabled={loading}

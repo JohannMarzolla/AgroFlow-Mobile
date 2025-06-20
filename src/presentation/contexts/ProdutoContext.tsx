@@ -48,6 +48,7 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
 
  useEffect(() => {
     carregarProdutos();
+    console.log("chamando useeffect")
   }, [userId]);
 
   return (

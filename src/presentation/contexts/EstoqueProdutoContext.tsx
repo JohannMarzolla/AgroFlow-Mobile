@@ -11,6 +11,7 @@ import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 import { EstoqueProdutoAdicionarForm } from "@/domain/models/EstoqueProdutoAdicionarForm";
 import { EstoqueProdutoService } from "@/application/services/EstoqueProdutoService";
 import { EstoqueProdutoRepository } from "@/infrastructure/repositories/EstoqueProdutoRepository";
+import { eventBus } from "@/shared/utils/EventBus";
 
 
 interface EstoqueProdutoContextData {
@@ -46,11 +47,22 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
       ShowToast("error", "Erro ao adicionar estoque de produto.");
     }
   };
-
   useEffect(() => {
-    carregarEstoqueProduto();
+    console.log("chamando use effect estoque produto ")
+    carregarEstoqueProduto(); 
+  
+    const atualizarEstoque = async () => {
+      await carregarEstoqueProduto();
+    };
+  
+    eventBus.on("estoqueProduto:adicionado", atualizarEstoque);
+  
+   
+    return () => {
+      eventBus.off("estoqueProduto:adicionado", atualizarEstoque);
+    };
   }, [userId]);
-
+  
   return (
     <EstoqueProdutoContext.Provider value={{ produtos, adicionarEstoqueProduto }}>
       {children}
