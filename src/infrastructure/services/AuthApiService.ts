@@ -52,9 +52,7 @@ export class AuthApiService {
         ? this.refreshAccess(user.refreshToken)
         : user;
     } catch (error: any) {
-      throw error instanceof Error
-        ? error
-        : new Error("Acesso expirado. Necessário fazer login novamente.");
+      return null;
     }
   }
 
