@@ -21,7 +21,8 @@ interface MedidaContextData {
 const MedidaContext = createContext<MedidaContextData | undefined>(undefined);
 
 export const MedidaProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user } = useAuth(); 
+  const userId = user?.userId 
   const [medida, setMedida] = useState<Medida[]>([]);
   const medidaService = new MedidasService(new MedidaRepository());
 

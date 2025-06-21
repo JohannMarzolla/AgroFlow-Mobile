@@ -21,7 +21,8 @@ interface InsumoContextData {
 const InsumoContext = createContext<InsumoContextData | undefined>(undefined);
 
 export const InsumoProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user} = useAuth(); 
+  const userId = user?.userId 
   const [insumo, setInsumo] = useState<Insumo[]>([]);
   const insumoService = new InsumoService(new InsumoRepository());
 

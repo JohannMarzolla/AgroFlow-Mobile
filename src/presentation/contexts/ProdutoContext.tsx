@@ -21,7 +21,8 @@ interface ProdutosContextData {
 const ProdutosContext = createContext<ProdutosContextData | undefined>(undefined);
 
 export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user } = useAuth(); 
+  const userId = user?.userId 
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const produtoRepository = new ProdutoRepository();
   const produtoService = new ProdutoService(produtoRepository);

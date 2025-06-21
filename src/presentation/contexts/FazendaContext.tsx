@@ -26,7 +26,8 @@ interface FazendaContextData {
 const FazendaContext = createContext<FazendaContextData | undefined>(undefined);
 
 export const FazendaProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user } = useAuth();
+  const userId = user?.userId  
   const [fazenda, setFazenda] = useState<Fazenda[]>([]);
   const fazendaService = new FazendaService(new FazendaRepository());
 

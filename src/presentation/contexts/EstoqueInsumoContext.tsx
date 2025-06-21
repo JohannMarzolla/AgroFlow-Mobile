@@ -22,7 +22,8 @@ interface EstoqueInsumoContextData {
 const EstoqueInsumoContext = createContext<EstoqueInsumoContextData | undefined>(undefined);
 
 export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user } = useAuth();
+  const userId = user?.userId  
   const [insumos, setInsumos] = useState<EstoqueInsumo[]>([]);
   const estoqueInsumoService = new EstoqueInsumoService(new EstoqueInsumoRepository());
 

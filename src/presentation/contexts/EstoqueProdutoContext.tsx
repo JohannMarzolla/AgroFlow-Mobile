@@ -22,7 +22,8 @@ interface EstoqueProdutoContextData {
 const EstoqueProdutoContext = createContext<EstoqueProdutoContextData | undefined>(undefined);
 
 export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user} = useAuth();
+  const userId = user?.userId  
   const [produtos, setProdutos] = useState<EstoqueProduto[]>([]);
   const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoRepository());
   console.log(produtos)

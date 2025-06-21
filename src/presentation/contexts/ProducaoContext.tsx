@@ -17,19 +17,20 @@ import { EstoqueProdutoRepository } from "@/infrastructure/repositories/EstoqueP
 
 interface ProducaoContextData {
   producao: Producao[];
-  adicionarProducao(producao:ProducaoAdicionarForm): Promise<void>
-  updateProducao(producao:Producao): Promise<void>
+  adicionarProducao(producao:ProducaoAdicionarForm): Promise<void>;
+  updateProducao(producao: Producao): Promise<void> 
 }
 
 const ProducaoContext = createContext<ProducaoContextData | undefined>(undefined);
 
 export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth(); 
+  const { user } = useAuth();
+  const userId = user?.userId 
   const [producao, setProducao] = useState<Producao[]>([]);
   const producaoRepository = new ProducaoRepository();
   const produtoRepository = new ProdutoRepository();
-  const estoqueProduto =new EstoqueProdutoRepository() 
-  const producaoService = new ProducaoService(produtoRepository, producaoRepository, estoqueProduto);
+  const estoqueRepository = new EstoqueProdutoRepository
+  const producaoService = new ProducaoService(produtoRepository, producaoRepository,estoqueRepository );
 
   const carregarProducao = async () => {
     try {
@@ -50,16 +51,17 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
       ShowToast("error", "Erro ao adicionar produto.");
     }
   };
-  const updateProducao = async (item: Producao) => {
+  const updateProducao = async (producao: Producao) => {  // Mudança aqui: ProducaoAdicionarForm -> Producao
     try {
       if (!userId) return;
-      await producaoService.update(userId, item); // aqui é onde o EventBus é emitido
-      await carregarProducao(); // atualiza localmente
-      ShowToast("success", "Produção atualizada com sucesso.");
+      await producaoService.update(userId, producao);
+      await carregarProducao(); 
+      ShowToast("success", "Produção atualizada com sucesso.");  // Mensagem corrigida
     } catch (error) {
-      ShowToast("error", "Erro ao atualizar produção.");
+      ShowToast("error", "Erro ao atualizar produção.");  // Mensagem corrigida
     }
   };
+  
 
  useEffect(() => {
     carregarProducao();
