@@ -5,6 +5,7 @@ import { IEstoqueProdutoRepository } from "@/domain/repositories/IEstoqueProduto
 import { eventBus } from "@/shared/utils/EventBus";
 import { Producao } from "@/domain/models/Producao";
 import { EstoqueProdutoAdicionarForm } from "@/domain/models/EstoqueProdutoAdicionarForm";
+import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
 
 export class ProducaoService {
   constructor(
@@ -30,7 +31,7 @@ async update(userId: string, producao: Producao) {
 
  await this.producaoRepo.update(userId,producao);
  
-  if (producao.status === "Colhido" ) {
+  if (producao.status === ProducaoStatus.COLHIDA) {
     const itemEstoque: EstoqueProdutoAdicionarForm = {
       produto: producao.produto,
       quantidade: producao.quantidade,

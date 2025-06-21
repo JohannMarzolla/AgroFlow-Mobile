@@ -1,10 +1,11 @@
+import { ProducaoStatus } from "../enum/ProducaoStatus";
 import { Fazenda } from "./Fazenda";
 import { Produto } from "./Produto";
 
 export class Producao {
     id: string;
     quantidade: number;
-    status: string;
+    status: ProducaoStatus;
     data : Date;
     produto: Produto;
     fazenda: Fazenda ;

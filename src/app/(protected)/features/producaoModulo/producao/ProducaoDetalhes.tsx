@@ -7,7 +7,7 @@ import { ProducaoStackParamList } from "./ProducaoStack";
 import { Producao } from "@/domain/models/Producao";
 import { formatarData } from "@/shared/utils/formatarData";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
+import { object, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Picker } from "@react-native-picker/picker";
 import { useProducao } from "@/presentation/contexts/ProducaoContext";
@@ -16,6 +16,7 @@ import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { Loading } from "@/presentation/components/ui/Loading";
 import { Ionicons } from "@expo/vector-icons";
+import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
 
 type ProducaoDetalhesRouteProp = RouteProp<ProducaoStackParamList, "ProducaoDetalhes">;
 
@@ -48,8 +49,8 @@ export default function ProducaoDetalhes() {
   const { updateProducao } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
-  
-  const statusList = ["Aguardando colheita", "Aguardando Execução", "Colhido", "Executado"];
+
+  const statusList = Object.values(ProducaoStatus);
 
   const {
     control,
@@ -82,7 +83,7 @@ export default function ProducaoDetalhes() {
   return (
     <View className="flex-1 bg-gray-50">
       <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false}>
-       
+      
 
         {/* Card de Informações do Sistema */}
         <View className="bg-white p-5 rounded-2xl mb-6 border border-gray-100">
@@ -280,7 +281,7 @@ export default function ProducaoDetalhes() {
           
           {/* Botões Secundários em Linha */}
           <View className="flex-row justify-between space-x-3">
-            {/* Botão Excluir */}
+            {/* Botão Excluir
             <Pressable
               className={`
                 flex-1 flex-row justify-center items-center py-3 rounded-xl 
@@ -294,7 +295,7 @@ export default function ProducaoDetalhes() {
                 Excluir
               </Text>
             </Pressable>
-            
+             */}
             {/* Botão Voltar */}
             <Pressable
               className={`

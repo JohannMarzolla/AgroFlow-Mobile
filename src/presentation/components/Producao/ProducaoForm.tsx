@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
+import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
 
 
 const producaoSchema = z.object({
@@ -43,7 +44,7 @@ export default function ProducaoForm() {
   const { adicionarProducao } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
-  const lista = ["Aguardando colheita","Aguardando Execução", "Colhido", "Executado"]
+
 
   const {
     control,
@@ -54,7 +55,7 @@ export default function ProducaoForm() {
     resolver: zodResolver(producaoSchema),
     defaultValues: {
       quantidade: 0,
-      status: "",
+      status: ProducaoStatus.PLANEJADA,
     },
   });
 
@@ -159,30 +160,9 @@ export default function ProducaoForm() {
 
       <View className="mb-4">
         <Text className="text-xl font-semibold mb-2">Status de Produção</Text>
-        <Controller
-          control={control}
-          name="status"
-          render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={(itemValue) => onChange(itemValue)}
-              enabled={!loading}
-              className="border border-gray-300 rounded"
-            >
-              <Picker.Item label="Selecione um Status" value="" />
-              {lista.map((status) => (
-                <Picker.Item
-                  key={status}
-                  label={status}
-                  value={status}
-                />
-              ))}
-            </Picker>
-          )}
-        />
-        {errors.status && (
-          <Text className="text-red-500 mt-1">{errors.status.message}</Text>
-        )}
+        <View className="border border-gray-300 rounded px-3 py-2">
+          <Text >{ProducaoStatus.PLANEJADA}</Text>
+        </View>
       </View>
 
       <Pressable
