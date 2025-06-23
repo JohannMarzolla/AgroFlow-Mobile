@@ -53,7 +53,7 @@ export default function Cadastro() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-agrof-white">
+    <ScrollView className="flex-1 bg-agroflow-white">
       <View className="w-full p-8">
         <Input
           className="pb-5"

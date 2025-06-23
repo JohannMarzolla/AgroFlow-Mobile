@@ -1,10 +1,12 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"; 
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MedidaStack from "./medidas/MedidasStack";
 import Cadastro from "./Cadastro";
+import Notifications from "./Notifications";
 
 export type AdministracaoStackParamList = {
   Medidas: undefined;
   Cadastro: undefined;
+  Notifications: undefined;
 };
 
 const Stack = createNativeStackNavigator<AdministracaoStackParamList>();
@@ -12,13 +14,14 @@ const Stack = createNativeStackNavigator<AdministracaoStackParamList>();
 export default function AdministracaoStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ 
+      screenOptions={{
         headerShown: false,
-        animation: "none" 
+        animation: "none",
       }}
     >
       <Stack.Screen name="Medidas" component={MedidaStack} />
       <Stack.Screen name="Cadastro" component={Cadastro} />
+      <Stack.Screen name="Notifications" component={Notifications} />
     </Stack.Navigator>
   );
 }

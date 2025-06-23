@@ -19,6 +19,8 @@ import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
 import { InsumoProvider } from "@/presentation/contexts/InsumoContext";
 import { EstoqueInsumoProvider } from "@/presentation/contexts/EstoqueInsumoContext";
 import { colors } from "@/shared/constants/colors";
+import { NotificationProvider } from "@/presentation/contexts/NotificationContext";
+import { useNotificationWS } from "@/presentation/hooks/useNotificationsWS";
 import { Redirect, SplashScreen } from "expo-router";
 
 const Drawer = createDrawerNavigator();
@@ -26,6 +28,8 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const { validateLogged, isAuthenticated } = useAuth();
   const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useNotificationWS();
 
   useEffect(() => {
     const check = async () => {
@@ -48,39 +52,44 @@ export default function App() {
   };
 
   return (
-    <TransacaoProvider>
-      <MedidaProvider>
-        <EstoqueInsumoProvider>
-          <InsumoProvider>
-            <FazendaProvider>
-              <ProdutosProvider>
-                <ProducaoProvider>
-                  <EstoqueProdutoProvider>
-                    <Drawer.Navigator
-                      screenOptions={customScreenOptions}
-                      drawerContent={(props) => (
-                        <DrawerContentCustom {...props} />
-                      )}
-                    >
-                      <Drawer.Screen name="Home" component={Home} />
-                      <Drawer.Screen name="Transações" component={Transacoes} />
-                      <Drawer.Screen
-                        name="Producao"
-                        component={ProducaoModuloStack}
-                      />
-                      <Drawer.Screen
-                        name="Administracao"
-                        component={AdministracaoStack}
-                      />
-                      <Drawer.Screen name="Sair" component={Logout} />
-                    </Drawer.Navigator>
-                  </EstoqueProdutoProvider>
-                </ProducaoProvider>
-              </ProdutosProvider>
-            </FazendaProvider>
-          </InsumoProvider>
-        </EstoqueInsumoProvider>
-      </MedidaProvider>
-    </TransacaoProvider>
+    <NotificationProvider>
+      <TransacaoProvider>
+        <MedidaProvider>
+          <EstoqueInsumoProvider>
+            <InsumoProvider>
+              <FazendaProvider>
+                <ProdutosProvider>
+                  <ProducaoProvider>
+                    <EstoqueProdutoProvider>
+                      <Drawer.Navigator
+                        screenOptions={customScreenOptions}
+                        drawerContent={(props) => (
+                          <DrawerContentCustom {...props} />
+                        )}
+                      >
+                        <Drawer.Screen name="Home" component={Home} />
+                        <Drawer.Screen
+                          name="Transações"
+                          component={Transacoes}
+                        />
+                        <Drawer.Screen
+                          name="Producao"
+                          component={ProducaoModuloStack}
+                        />
+                        <Drawer.Screen
+                          name="Administracao"
+                          component={AdministracaoStack}
+                        />
+                        <Drawer.Screen name="Sair" component={Logout} />
+                      </Drawer.Navigator>
+                    </EstoqueProdutoProvider>
+                  </ProducaoProvider>
+                </ProdutosProvider>
+              </FazendaProvider>
+            </InsumoProvider>
+          </EstoqueInsumoProvider>
+        </MedidaProvider>
+      </TransacaoProvider>
+    </NotificationProvider>
   );
 }
