@@ -90,6 +90,24 @@ const DrawerContentCustom = (props: DrawerContentComponentProps) => {
       )}
 
       <DrawerItem
+        label="Comercial"
+        onPress={() => toggleSubmenu("comercial")}
+        labelStyle={styles.menuText}
+      />
+      {openSubmenu === "comercial" && (
+        <View style={styles.submenu}>
+          <DrawerItem
+            label="Meta"
+            onPress={() => {
+              props.navigation.navigate("Comercial", { screen: "Meta" });
+              setOpenSubmenu(null);
+            }}
+            labelStyle={styles.submenuText}
+          />
+        </View>
+      )}
+
+      <DrawerItem
         label="Administração"
         onPress={() => toggleSubmenu("administracao")}
         labelStyle={styles.menuText}

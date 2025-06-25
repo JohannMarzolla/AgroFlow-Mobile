@@ -6,7 +6,7 @@ import InsumoStack from "./Insumo/InsumoStack";
 import EstoqueProdutoStack from "./estoqueProduto/EstoqueProdutoStack";
 import EstoqueInsumoStack from "./estoqueInsumo/EstoqueInsumoStack";
 
-export type AdministracaoStackParamList = {
+export type ProducaoStackParamList = {
   Fazenda: undefined;
   Produtos: undefined;
   Producao: undefined;
@@ -15,7 +15,7 @@ export type AdministracaoStackParamList = {
   EstoqueInsumo: undefined;
 };
 
-const Stack = createNativeStackNavigator<AdministracaoStackParamList>();
+const Stack = createNativeStackNavigator<ProducaoStackParamList>();
 
 export default function ProducaoModuloStack() {
   return (

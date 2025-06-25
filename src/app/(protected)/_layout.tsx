@@ -22,6 +22,7 @@ import { colors } from "@/shared/constants/colors";
 import { NotificationProvider } from "@/presentation/contexts/NotificationContext";
 import { useNotificationWS } from "@/presentation/hooks/useNotificationsWS";
 import { Redirect, SplashScreen } from "expo-router";
+import ComercialStack from "./features/comercial/ComercialStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -75,6 +76,10 @@ export default function App() {
                         <Drawer.Screen
                           name="Producao"
                           component={ProducaoModuloStack}
+                        />
+                        <Drawer.Screen
+                          name="Comercial"
+                          component={ComercialStack}
                         />
                         <Drawer.Screen
                           name="Administracao"
