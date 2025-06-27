@@ -12,7 +12,7 @@ export default function InputLabel(options: InputLabelOptions) {
   return (
     <Text
       className={`flex-shrink text-black ${
-        options.textBold !== false ? "font-bold" : ""
+        options.textBold !== false ? "font-semibold" : ""
       }`}
     >
       {options.text}

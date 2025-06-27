@@ -1,13 +1,16 @@
 import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
+import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
 import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
 import { IMetaApiService } from "@/application/interfaces/comercial/IMetaApiService";
-import { Meta } from "@/domain/models/comercial/Meta";
 
 export class MetaService {
   constructor(public apiService: IMetaApiService) {}
 
-  async buscarTodos(): Promise<Meta[]> {
-    return this.apiService.buscarTodos();
+  async buscarTodos(
+    dto: MetaBuscarTodosDTO
+  ): Promise<MetaBuscarTodosResponseDTO> {
+    return this.apiService.buscarTodos(dto);
   }
 
   async inserir(dados: MetaInserirDTO): Promise<void> {

@@ -1,116 +1,188 @@
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm, Controller } from "react-hook-form";
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   Pressable,
-//   ActivityIndicator,
-// } from "react-native";
-// import { ShowToast } from "../ui/Toast";
-// import React, { useState } from "react";
-// import { Loading } from "../ui/Loading";
-// import { useFazenda } from "@/presentation/contexts/FazendaContext";
-// import {
-//   MetaInserirDTO,
-//   MetaInserirSchema,
-// } from "@/application/dtos/comercial/MetaInserirDTO";
-// import {
-//   MetaCalculoPorEnum,
-//   MetaTipoEnum,
-// } from "@/domain/enum/comercial/Meta.enum";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { View } from "react-native";
+import { ShowToast } from "@/presentation/components/ui/Toast";
+import React from "react";
+import { Loading } from "@/presentation/components/ui/Loading";
+import {
+  MetaInserirDTO,
+  MetaInserirSchema,
+} from "@/application/dtos/comercial/MetaInserirDTO";
+import {
+  MetaCalculoPorEnum,
+  MetaTipoEnum,
+} from "@/domain/enum/comercial/Meta.enum";
+import { useMeta } from "@/presentation/contexts/comercial/MetaContext";
+import InputSelect from "@/presentation/components/ui/InputSelect";
+import MetaSelectData from "@/shared/constants/meta-select-data";
+import Button from "@/presentation/components/ui/Button";
+import Input from "@/presentation/components/ui/Input";
+import InputDate from "@/presentation/components/ui/InputDate";
+import InputTextArea from "@/presentation/components/ui/InputTextArea";
+import FazendaSelect from "@/presentation/components/Fazenda/FazendaSelect";
 
-// export const useMetaForm = () => {
-//   return useForm<MetaInserirDTO>({
-//     resolver: zodResolver(MetaInserirSchema),
-//     defaultValues: {
-//       tipo: MetaTipoEnum.PRODUCAO,
-//       calculoPor: MetaCalculoPorEnum.QUANTIDADE,
-//       titulo: "",
-//       valorAlvo: 0,
-//       dataInicio: new Date(),
-//       dataFim: new Date(),
-//     },
-//   });
-// };
+interface MetaFormProps {
+  onCancel?: () => void;
+}
 
-// export default function MetaForm() {
-//   const { adicionarFazenda } = useFazenda();
-//   const [loading, setLoading] = useState(false);
+const useMetaForm = () => {
+  return useForm<MetaInserirDTO>({
+    resolver: zodResolver(MetaInserirSchema),
+    defaultValues: {
+      tipo: MetaTipoEnum.PRODUCAO,
+      calculoPor: MetaCalculoPorEnum.QUANTIDADE,
+      titulo: "",
+      valorAlvo: 0,
+      dataInicio: new Date(),
+      dataFim: new Date(),
+    },
+  });
+};
 
-//   const {
-//     control,
-//     handleSubmit,
-//     register,
-//     setValue,
-//     formState: { errors },
-//   } = useMetaForm();
+export default function MetaForm({ onCancel }: MetaFormProps) {
+  const { adicionar } = useMeta();
 
-//   const onSubmit = async (data: any) => {
-//     const api = new MetaAPIService();
-//     const service = new MetaService(api);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useMetaForm();
 
-//     try {
-//       await service.criar(data);
-//       alert("Meta criada com sucesso");
-//     } catch (err) {
-//       console.error(err);
-//       alert("Erro ao criar meta");
-//     }
-//   };
+  const onSubmit = async (data: MetaInserirDTO) => {
+    try {
+      Loading.show();
+      await adicionar(data);
+      ShowToast("success", "fazenda cadastrado com sucesso!");
+      reset();
+    } catch (error) {
+      console.error("Erro ao adicionar Meta", error);
+      ShowToast("error", "Erro ao salvar a Meta.");
+    } finally {
+      Loading.hide();
+    }
+  };
 
-//   const onSubmit = async (data: MetaInserirDTO) => {
-//     try {
-//       Loading.show();
-//       setLoading(true);
-//       await adicionarFazenda(data);
-//       ShowToast("success", "fazenda cadastrado com sucesso!");
-//       reset();
-//       Loading.hide();
-//     } catch (error) {
-//       console.error("Erro ao adicionar fazenda", error);
-//       ShowToast("error", "Erro ao salvar a fazenda.");
-//       Loading.hide();
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  return (
+    <View className="gap-4">
+      <Controller
+        control={control}
+        name="tipo"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Tipo"
+            options={MetaSelectData.Tipos}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.tipo?.message}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="titulo"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Título"
+            value={value}
+            onValueChanged={onChange}
+            error={errors.titulo?.message}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="descricao"
+        render={({ field: { onChange, value } }) => (
+          <InputTextArea
+            label="Descrição"
+            value={value}
+            onValueChanged={onChange}
+            error={errors.descricao?.message}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="calculoPor"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Calcular por"
+            options={MetaSelectData.CalculoPor}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.calculoPor?.message}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="valorAlvo"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Valor alvo"
+            type="number"
+            value={value}
+            onValueChanged={onChange}
+            error={errors.valorAlvo?.message}
+          />
+        )}
+      />
+      <View className="flex-row gap-3 min-w-0">
+        <Controller
+          control={control}
+          name="dataInicio"
+          render={({ field: { onChange, value } }) => (
+            <InputDate
+              className="flex-1"
+              label="Data início"
+              value={value}
+              onValueChanged={onChange}
+              error={errors.dataInicio?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="dataFim"
+          render={({ field: { onChange, value } }) => (
+            <InputDate
+              className="flex-1"
+              label="Data final"
+              value={value}
+              onValueChanged={onChange}
+              error={errors.dataFim?.message}
+            />
+          )}
+        />
+      </View>
 
-//   return (
-//     <View>
-//       <Text className="text-xl font-semibold mb-2 ">Nome da Fazenda</Text>
-//       <Controller
-//         control={control}
-//         name="nome"
-//         render={({ field: { onChange, onBlur, value } }) => (
-//           <TextInput
-//             className="border border-gray-300 rounded px-3 py-2 mb-1 "
-//             placeholder="Ex: Fazenda das laranjeiras"
-//             value={value}
-//             onChangeText={onChange}
-//             onBlur={onBlur}
-//             editable={!loading}
-//           />
-//         )}
-//       />
-//       {errors.nome && (
-//         <View className="flex flex-row items-center mt-1">
-//           <Text className="text-red-500 ml-1 text-x">
-//             {errors.nome.message}
-//           </Text>
-//         </View>
-//       )}
+      <Controller
+        control={control}
+        name="fazendaId"
+        render={({ field: { onChange, value } }) => (
+          <FazendaSelect
+            label="Fazenda"
+            value={value}
+            onValueChanged={onChange}
+            error={errors.fazendaId?.message}
+          />
+        )}
+      />
 
-//       <Pressable
-//         className={`p-4 rounded-lg flex-row justify-center items-center ${
-//           loading ? "bg-gray-400" : "bg-green-600"
-//         }`}
-//         onPress={handleSubmit(onSubmit)}
-//         disabled={loading}
-//       >
-//         <Text className="text-white font-medium">Salvar</Text>
-//       </Pressable>
-//     </View>
-//   );
-// }
+      <View className="flex-row gap-3 min-w-0">
+        <Button
+          className="flex-1 "
+          text="Cancelar"
+          color="red"
+          onPress={onCancel}
+        />
+        <Button
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+    </View>
+  );
+}

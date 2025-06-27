@@ -27,7 +27,7 @@ export interface InputSelectOptions {
 }
 
 export default function InputSelect(options: InputSelectOptions) {
-  const style = options.style ?? "ligth";
+  const style = options.style ?? "dark";
 
   function onValueChanged(value: any) {
     if (options.onValueChanged) options.onValueChanged(value);
@@ -57,18 +57,29 @@ export default function InputSelect(options: InputSelectOptions) {
         ) : (
           <Picker
             selectedValue={options.value}
-            placeholder={options.placeholder}
             enabled={true}
             onValueChange={onValueChanged}
           >
-            {options.options?.length &&
+            <Picker.Item
+              label={options.placeholder ?? "Selecione..."}
+              value={null}
+            />
+
+            {options.options && options.options.length > 0 ? (
               options.options.map((option) => (
                 <Picker.Item
                   key={option.value}
                   label={option.label}
                   value={option.value}
                 />
-              ))}
+              ))
+            ) : (
+              <Picker.Item
+                label="Nenhuma opção disponível"
+                value={null}
+                enabled={false}
+              />
+            )}
           </Picker>
         )}
       </View>

@@ -32,7 +32,7 @@ export interface InputDateOptions {
 
 export default function InputDate(options: InputDateOptions) {
   const [showPicker, setShowPicker] = useState(false);
-  const style = options.style ?? "ligth";
+  const style = options.style ?? "dark";
 
   function onChange(event: any, selectedDate: any) {
     if (options.onValueChanged) options.onValueChanged(selectedDate);

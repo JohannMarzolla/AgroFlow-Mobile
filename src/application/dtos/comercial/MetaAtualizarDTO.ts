@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { MetaValidation } from "@/application/validators/comercial/meta.validation";
-import { MetaInserirSchemaBase } from "./MetaInserirDTO";
+import { MetaInserirSchema } from "./MetaInserirDTO";
 
-export const MetaAtualizarSchema = MetaInserirSchemaBase.extend({
+export const MetaAtualizarSchema = MetaInserirSchema.extend({
   id: z.string().min(1, "ID é obrigatório"),
-}).superRefine(MetaValidation.validarTipoDependencias);
+});
 
 export type MetaAtualizarDTO = z.infer<typeof MetaAtualizarSchema>;

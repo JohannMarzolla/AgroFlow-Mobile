@@ -1,13 +1,11 @@
 import InputLabel from "./InputLabel";
-import { KeyboardType, TextInput, View, Text } from "react-native";
+import { TextInput, View, Text } from "react-native";
 
-export interface InputOptions {
+export interface InputTextAreaOptions {
   /** Texto do label */
   label?: string;
-  /** Tipo de input */
-  type?: "string" | "number" | "email" | "password";
   /** Valor do input */
-  value?: string | number;
+  value?: string;
   /** Placeholder */
   placeholder?: string;
   /** Estilo */
@@ -24,29 +22,11 @@ export interface InputOptions {
   onValueChanged?: (value: string | number) => void;
 }
 
-export default function Input(options: InputOptions) {
+export default function InputTextArea(options: InputTextAreaOptions) {
   const style = options.style ?? "dark";
 
   function handleValueChange(value: string) {
-    let formatedValue: string | number = value;
-
-    if (options.type === "number") {
-      const number = Number.parseInt(value);
-      formatedValue = isNaN(number) ? 0 : number;
-    }
-
-    if (options.onValueChanged) options.onValueChanged(formatedValue);
-  }
-
-  function getKeyboardType(): KeyboardType {
-    switch (options.type) {
-      case "email":
-        return "email-address";
-      case "number":
-        return "numeric";
-      default:
-        return "default";
-    }
+    if (options.onValueChanged) options.onValueChanged(value);
   }
 
   function getReadonlyStyle() {
@@ -56,14 +36,16 @@ export default function Input(options: InputOptions) {
   return (
     <View className={`gap-1 w-full ${options.className ?? ""}`}>
       <InputLabel text={options.label} textBold={options.labelTextBold} />
+
       <TextInput
-        className={`w-full bg-white rounded-lg border-[1px] p-3 ${
+        className={`w-full h-24 bg-white rounded-lg border-[1px] p-3 ${
           style === "ligth"
             ? "border-agroflow-light-blue"
             : "border-agroflow-green"
         } ${getReadonlyStyle()}`}
-        keyboardType={getKeyboardType()}
-        secureTextEntry={options.type === "password"}
+        keyboardType="default"
+        multiline={true}
+        textAlignVertical="top"
         value={String(options.value ?? "")}
         placeholder={options.placeholder}
         readOnly={options.readOnly}

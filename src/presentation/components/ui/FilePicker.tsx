@@ -21,7 +21,7 @@ export interface FilePickerOptions {
 }
 
 export default function FilePicker(options: FilePickerOptions) {
-  const style = options.style ?? "ligth";
+  const style = options.style ?? "dark";
 
   const pickDocument = async () => {
     try {

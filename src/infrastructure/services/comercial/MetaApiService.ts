@@ -3,11 +3,18 @@ import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
 import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
 import { IMetaApiService } from "@/application/interfaces/comercial/IMetaApiService";
 import { Meta } from "@/domain/models/comercial/Meta";
+import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
 
 export class MetaApiService implements IMetaApiService {
-  async buscarTodos(): Promise<Meta[]> {
+  async buscarTodos(
+    dto: MetaBuscarTodosDTO
+  ): Promise<MetaBuscarTodosResponseDTO> {
     try {
-      return HttpClient.get<Meta[]>("meta/");
+      return HttpClient.post<MetaBuscarTodosDTO, MetaBuscarTodosResponseDTO>(
+        "meta/",
+        dto
+      );
     } catch (error: any) {
       console.error("Erro ao buscar todas as metas", error);
       throw error instanceof Error

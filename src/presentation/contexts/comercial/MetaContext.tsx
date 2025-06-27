@@ -10,31 +10,51 @@ import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaService } from "@/application/services/comercial/MetaService";
 import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
 
 interface MetaContextData {
   metas: Meta[];
-  adicionarMeta(meta: MetaInserirDTO): Promise<void>;
+  loading: boolean;
+  carregar(): Promise<void>;
+  adicionar(meta: MetaInserirDTO): Promise<void>;
 }
 
 const MetaContext = createContext<MetaContextData | undefined>(undefined);
 
 export const MetaProvider = ({ children }: { children: ReactNode }) => {
   const [metas, setMetas] = useState<Meta[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [lastId, setLastId] = useState<string | undefined>(undefined);
+  const [lastCriadaEm, setLastCriadaEm] = useState<Date | undefined>(undefined);
   const metaService = new MetaService(new MetaApiService());
 
-  const carregarMetas = async () => {
+  const carregar = async (reset = false) => {
+    if (loading || (!reset && !hasMore)) return;
+
     try {
-      const metaCarregadas = await metaService.buscarTodos();
-      setMetas(metaCarregadas);
+      setLoading(true);
+
+      const result = await metaService.buscarTodos({
+        limite: 5,
+        ultimoCriadaEm: lastCriadaEm,
+        ultimoId: lastId,
+      });
+      setMetas(result.dados);
+      setHasMore(result.temMais);
+      setLastId(result.ultimoId);
+      setLastCriadaEm(result.ultimoCriadaEm);
     } catch (error) {
       ShowToast("error", "Erro ao carregar produtos.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const adicionarMeta = async (meta: MetaInserirDTO) => {
+  const adicionar = async (meta: MetaInserirDTO) => {
     try {
       await metaService.inserir(meta);
-      await carregarMetas();
+      await carregar();
       ShowToast("success", "Produto adicionado com sucesso.");
     } catch (error) {
       ShowToast("error", "Erro ao adicionar produto.");
@@ -42,11 +62,11 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregarMetas();
+    carregar();
   }, []);
 
   return (
-    <MetaContext.Provider value={{ metas, adicionarMeta }}>
+    <MetaContext.Provider value={{ metas, loading, carregar, adicionar }}>
       {children}
     </MetaContext.Provider>
   );

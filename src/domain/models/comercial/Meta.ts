@@ -18,8 +18,5 @@ export interface Meta {
   usuarioId: string;
   criadaEm: Date;
   atualizadaEm: Date;
-  // campos opcionais
   fazendaId: string | null;
-  vendaId: string | null;
-  producaoId: string | null;
 }

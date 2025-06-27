@@ -1,11 +1,16 @@
 import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Text, TouchableOpacity } from "react-native";
+import { colors } from "@/shared/constants/colors";
+import Icon from "./Icon";
 
 export type ButtonColors = "orange" | "red" | "green" | "black" | "gray";
 
 export interface ButtonOptions {
+  /** Ícone */
+  icon?: keyof typeof MaterialIcons.glyphMap;
   /** Texto do botão */
-  text: string;
+  text?: string;
   /** Especifica se o botão deve ter o estilo "outlined", ou seja, que apresente cor apenas nas bordas e no texto. */
   outlined?: boolean;
   /** Cor do botão */
@@ -78,19 +83,24 @@ export default function Button(options: ButtonOptions) {
     }
   }
 
+  function btnStyle() {
+    if (options.icon) return "p-2 rounded-full";
+    return "px-7 py-3 rounded-lg";
+  }
+
   return (
     <TouchableOpacity
-      className={`px-7 py-3 rounded-lg items-center ${
+      className={`items-center ${btnStyle()} ${
         options.outlined ? getOutlinedColorClass() : getColorClass()
       } ${options.className || ""}`}
       onPress={handlePress}
       disabled={options.disabled}
     >
-      <Text
-        className={`font-bold ${getTextClass()} ${options.className || ""}`}
-      >
-        {options.text}
-      </Text>
+      {options.icon ? (
+        <Icon color={colors.agroflow.white} name={options.icon} size={24} />
+      ) : (
+        <Text className={`font-bold ${getTextClass()}`}>{options.text}</Text>
+      )}
     </TouchableOpacity>
   );
 }
