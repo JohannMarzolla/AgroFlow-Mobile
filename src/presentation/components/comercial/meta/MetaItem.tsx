@@ -8,6 +8,7 @@ import {
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";
+import { colors } from "@/shared/constants/colors";
 
 interface Props {
   meta: Meta;
@@ -35,9 +36,9 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
   return (
     <View className="bg-white p-4 mb-4 rounded-2xl shadow-md">
       <View className="flex-row justify-between items-center mb-2">
-        <View className="flex-row items-center space-x-2">
+        <View className="flex-row items-center">
           {tipoIcon}
-          <Text className="text-lg font-semibold text-gray-800">
+          <Text className="pl-2 text-lg font-semibold text-gray-800">
             {meta.titulo}
           </Text>
         </View>
@@ -69,7 +70,7 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
       {/* Botão de detalhes */}
       <Pressable
         onPress={onPress}
-        className="mt-4 self-end bg-green-600 px-4 py-1.5 rounded-full"
+        className={`mt-4 self-end ${colors.agroflow.green} px-4 py-1.5 rounded-full`}
       >
         <Text className="text-white text-sm font-medium">Ver Detalhes</Text>
       </Pressable>

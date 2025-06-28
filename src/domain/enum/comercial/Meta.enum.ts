@@ -15,7 +15,7 @@ export enum MetaStatusEnum {
 
 export enum MetaCalculoPorEnum {
   VALOR = "VALOR",
-  QUANTIDADE = "INICIALIZADA",
+  QUANTIDADE = "QUANTIDADE",
 }
 
 const MetaTipoEnumValues = [MetaTipoEnum.VENDA, MetaTipoEnum.PRODUCAO] as const;

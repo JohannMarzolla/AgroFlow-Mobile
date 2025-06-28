@@ -52,12 +52,8 @@ export default function MetaForm({ onCancel }: MetaFormProps) {
   const onSubmit = async (data: MetaInserirDTO) => {
     try {
       Loading.show();
-      await adicionar(data);
-      ShowToast("success", "fazenda cadastrado com sucesso!");
-      reset();
-    } catch (error) {
-      console.error("Erro ao adicionar Meta", error);
-      ShowToast("error", "Erro ao salvar a Meta.");
+      const success = await adicionar(data);
+      if (success) reset();
     } finally {
       Loading.hide();
     }

@@ -1,5 +1,4 @@
 export interface MetaBuscarTodosDTO {
-  limite?: number;
-  ultimoId?: string;
-  ultimoCriadaEm?: Date;
+  limite: number | null;
+  ultimoId: string | null;
 }

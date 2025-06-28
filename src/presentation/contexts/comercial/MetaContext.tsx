@@ -10,13 +10,12 @@ import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaService } from "@/application/services/comercial/MetaService";
 import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
-import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
 
 interface MetaContextData {
   metas: Meta[];
   loading: boolean;
   carregar(): Promise<void>;
-  adicionar(meta: MetaInserirDTO): Promise<void>;
+  adicionar(meta: MetaInserirDTO): Promise<boolean>;
 }
 
 const MetaContext = createContext<MetaContextData | undefined>(undefined);
@@ -25,8 +24,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   const [metas, setMetas] = useState<Meta[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [lastId, setLastId] = useState<string | undefined>(undefined);
-  const [lastCriadaEm, setLastCriadaEm] = useState<Date | undefined>(undefined);
+  const [lastId, setLastId] = useState<string | null>(null);
   const metaService = new MetaService(new MetaApiService());
 
   const carregar = async (reset = false) => {
@@ -37,14 +35,13 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
 
       const result = await metaService.buscarTodos({
         limite: 5,
-        ultimoCriadaEm: lastCriadaEm,
-        ultimoId: lastId,
+        ultimoId: !reset ? lastId : null,
       });
-      setMetas(result.dados);
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setLastCriadaEm(result.ultimoCriadaEm);
+      setMetas((prev) => (reset ? result.dados : [...prev, ...result.dados]));
     } catch (error) {
+      setHasMore(false);
       ShowToast("error", "Erro ao carregar produtos.");
     } finally {
       setLoading(false);
@@ -54,10 +51,12 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   const adicionar = async (meta: MetaInserirDTO) => {
     try {
       await metaService.inserir(meta);
-      await carregar();
-      ShowToast("success", "Produto adicionado com sucesso.");
+      await carregar(true);
+      ShowToast("success", "Meta adicionada com sucesso.");
+      return true;
     } catch (error) {
-      ShowToast("error", "Erro ao adicionar produto.");
+      ShowToast("error", "Erro ao adicionar meta.");
+      return false;
     }
   };
 

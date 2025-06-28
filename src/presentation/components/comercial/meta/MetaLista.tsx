@@ -28,7 +28,7 @@ export default function MetaLista({
         // onPress={() => router.push(`/metas/${item.id}`)}
       )}
       onEndReached={onEndReached}
-      onEndReachedThreshold={0.1}
+      onEndReachedThreshold={0.5}
       ListFooterComponent={
         loadingMore ? <ActivityIndicator size="large" /> : null
       }
