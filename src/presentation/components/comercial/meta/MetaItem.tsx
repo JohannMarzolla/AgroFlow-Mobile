@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { formatarData } from "@/shared/utils/formatarData";
 import { Meta } from "@/domain/models/comercial/Meta";
 import {
@@ -8,7 +7,7 @@ import {
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";
-import { colors } from "@/shared/constants/colors";
+import Icon, { IconTypes } from "../../ui/Icon";
 
 interface Props {
   meta: Meta;
@@ -19,33 +18,28 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
   const progresso = Math.min((meta.valorAtual / meta.valorAlvo) * 100, 100);
 
   const statusColor = {
-    [MetaStatusEnum.ATIVA]: "",
-    [MetaStatusEnum.CANCELADA]: "",
-    [MetaStatusEnum.INICIALIZADA]: "bg-yellow-400",
-    [MetaStatusEnum.CONCLUIDA]: "bg-green-500",
-    [MetaStatusEnum.EXPIRADA]: "bg-red-500",
+    [MetaStatusEnum.ATIVA]: "color-agroflow-gray",
+    [MetaStatusEnum.CANCELADA]: "color-agroflow-red",
+    [MetaStatusEnum.INICIALIZADA]: "color-agroflow-gray",
+    [MetaStatusEnum.CONCLUIDA]: "color-agroflow-green",
+    [MetaStatusEnum.EXPIRADA]: "color-agroflow-red",
   }[meta.status];
 
-  const tipoIcon =
-    meta.tipo === MetaTipoEnum.VENDA ? (
-      <Feather name="dollar-sign" size={20} color="#4B5563" />
-    ) : (
-      <MaterialCommunityIcons name="tractor" size={20} color="#4B5563" />
-    );
+  const iconName: IconTypes =
+    meta.tipo === MetaTipoEnum.VENDA ? "attach-money" : "agriculture";
 
   return (
     <View className="bg-white p-4 mb-4 rounded-2xl shadow-md">
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center">
-          {tipoIcon}
+          <Icon name={iconName} size={20} color="#4B5563"></Icon>
+
           <Text className="pl-2 text-lg font-semibold text-gray-800">
             {meta.titulo}
           </Text>
         </View>
 
-        <Text
-          className={cn("text-white text-xs px-2 py-1 rounded-md", statusColor)}
-        >
+        <Text className={cn("text-sm font-bold", statusColor)}>
           {meta.status}
         </Text>
       </View>
@@ -57,20 +51,19 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
       {/* Barra de progresso */}
       <View className="w-full h-2 bg-gray-200 rounded-full mt-1">
         <View
-          className="h-2 rounded-full bg-green-500"
+          className="h-2 rounded-full bg-agroflow-orange"
           style={{ width: `${progresso}%` }}
         />
       </View>
 
-      <Text className="text-xs text-gray-500 mt-2">
-        {formatarData(new Date(meta.dataInicio))} →{" "}
-        {formatarData(new Date(meta.dataFim))}
+      <Text className="flex justify-center align-middle text-sm text-agroflow-gray mt-2">
+        {formatarData(new Date(meta.dataInicio))}
+        {"  "}à {formatarData(new Date(meta.dataFim))}
       </Text>
 
-      {/* Botão de detalhes */}
       <Pressable
         onPress={onPress}
-        className={`mt-4 self-end ${colors.agroflow.green} px-4 py-1.5 rounded-full`}
+        className="mt-4 self-end px-4 py-1.5 rounded-full bg-agroflow-green"
       >
         <Text className="text-white text-sm font-medium">Ver Detalhes</Text>
       </Pressable>

@@ -1,4 +1,3 @@
-// src/app/(protected)/features/producaoModulo/producao/ProducaoDetalhes.tsx
 import React, { useState } from "react";
 import { View, Text, Pressable, ScrollView, TextInput } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
@@ -15,10 +14,13 @@ import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { Loading } from "@/presentation/components/ui/Loading";
-import { Ionicons } from "@expo/vector-icons";
 import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
+import Icon from "@/presentation/components/ui/Icon";
 
-type ProducaoDetalhesRouteProp = RouteProp<ProducaoStackParamList, "ProducaoDetalhes">;
+type ProducaoDetalhesRouteProp = RouteProp<
+  ProducaoStackParamList,
+  "ProducaoDetalhes"
+>;
 
 const producaoEditarSchema = z.object({
   fazenda: z.object({
@@ -44,7 +46,7 @@ export default function ProducaoDetalhes() {
   const route = useRoute<ProducaoDetalhesRouteProp>();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  
+
   const { producao } = route.params;
   const { updateProducao } = useProducao();
   const { produtos } = useProdutos();
@@ -83,56 +85,66 @@ export default function ProducaoDetalhes() {
   return (
     <View className="flex-1 bg-gray-50">
       <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false}>
-      
-
         {/* Card de Informações do Sistema */}
         <View className="bg-white p-5 rounded-2xl mb-6 border border-gray-100">
           <View className="flex-row items-center mb-4">
-            <Ionicons name="information-circle" size={24} color="#3B82F6" />
-            <Text className="text-xl font-semibold text-gray-800 ml-2">Informações do Sistema</Text>
+            <Icon name="info" size={24} color="#3B82F6" />
+            <Text className="text-xl font-semibold text-gray-800 ml-2">
+              Informações do Sistema
+            </Text>
           </View>
-          
+
           <View className="space-y-3">
             <View className="flex-row justify-between pb-2 border-b border-gray-100">
               <View className="flex-row items-center">
-                <Ionicons name="calendar" size={18} color="#6B7280" />
+                <Icon name="calendar-today" size={18} color="#6B7280" />
                 <Text className="text-gray-600 ml-2">Criado em:</Text>
               </View>
-              <Text className="font-medium text-gray-800">{formatarData(producao.data)}</Text>
+              <Text className="font-medium text-gray-800">
+                {formatarData(producao.data)}
+              </Text>
             </View>
-            
+
             <View className="flex-row justify-between pb-2 border-b border-gray-100">
               <View className="flex-row items-center">
-                <Ionicons name="refresh" size={18} color="#6B7280" />
+                <Icon name="refresh" size={18} color="#6B7280" />
                 <Text className="text-gray-600 ml-2">Última atualização:</Text>
               </View>
-              <Text className="font-medium text-gray-800">{formatarData(producao.data)}</Text>
+              <Text className="font-medium text-gray-800">
+                {formatarData(producao.data)}
+              </Text>
             </View>
-            
+
             <View className="flex-row justify-between">
               <View className="flex-row items-center">
-                <Ionicons name="person" size={18} color="#6B7280" />
+                <Icon name="person" size={18} color="#6B7280" />
                 <Text className="text-gray-600 ml-2">Criado por:</Text>
               </View>
               <Text className="font-medium text-gray-800">Johann Marzolla</Text>
             </View>
           </View>
         </View>
-       
+
         {/* Card de Edição */}
         <View className="bg-white p-5 rounded-2xl mb-6 border border-gray-100">
           <View className="flex-row items-center mb-4">
-            <Ionicons name="create" size={24} color="#10B981" />
-            <Text className="text-xl font-semibold text-gray-800 ml-2">Editar Produção</Text>
+            <Icon name="edit" size={24} color="#10B981" />
+            <Text className="text-xl font-semibold text-gray-800 ml-2">
+              Editar Produção
+            </Text>
           </View>
-          
+
           <View className="space-y-5">
             {/* Campo Fazenda */}
             <View>
               <Text className="text-base font-medium text-gray-700 mb-2 flex-row items-center">
                 <Text className="ml-1">Fazenda</Text>
               </Text>
-              <View className={`border ${errors.fazenda ? "border-red-400" : "border-gray-300"} rounded-lg overflow-hidden`}>
+              <View
+                className={`border ${
+                  errors.fazenda ? "border-red-400" : "border-gray-300"
+                } rounded-lg overflow-hidden`}
+              >
                 <Controller
                   control={control}
                   name="fazenda"
@@ -140,13 +152,19 @@ export default function ProducaoDetalhes() {
                     <Picker
                       selectedValue={value?.id}
                       onValueChange={(itemValue) => {
-                        const selected = fazenda.find((f) => f.id === itemValue);
+                        const selected = fazenda.find(
+                          (f) => f.id === itemValue
+                        );
                         if (selected) onChange(selected);
                       }}
                       style={{ color: "#374151" }}
                       dropdownIconColor="#6B7280"
                     >
-                      <Picker.Item label="Selecione uma fazenda" value="" enabled={false} />
+                      <Picker.Item
+                        label="Selecione uma fazenda"
+                        value=""
+                        enabled={false}
+                      />
                       {fazenda.map((f) => (
                         <Picker.Item key={f.id} label={f.nome} value={f.id} />
                       ))}
@@ -164,10 +182,13 @@ export default function ProducaoDetalhes() {
             {/* Campo Produto */}
             <View>
               <Text className="text-base font-medium text-gray-700 mb-2 flex-row items-center">
-            
                 <Text className="ml-1">Produto</Text>
               </Text>
-              <View className={`border ${errors.produto ? "border-red-400" : "border-gray-300"} rounded-lg overflow-hidden`}>
+              <View
+                className={`border ${
+                  errors.produto ? "border-red-400" : "border-gray-300"
+                } rounded-lg overflow-hidden`}
+              >
                 <Controller
                   control={control}
                   name="produto"
@@ -175,13 +196,19 @@ export default function ProducaoDetalhes() {
                     <Picker
                       selectedValue={value?.id}
                       onValueChange={(itemValue) => {
-                        const selected = produtos.find((p) => p.id === itemValue);
+                        const selected = produtos.find(
+                          (p) => p.id === itemValue
+                        );
                         if (selected) onChange(selected);
                       }}
                       style={{ color: "#374151" }}
                       dropdownIconColor="#6B7280"
                     >
-                      <Picker.Item label="Selecione um produto" value="" enabled={false} />
+                      <Picker.Item
+                        label="Selecione um produto"
+                        value=""
+                        enabled={false}
+                      />
                       {produtos.map((p) => (
                         <Picker.Item key={p.id} label={p.nome} value={p.id} />
                       ))}
@@ -191,7 +218,6 @@ export default function ProducaoDetalhes() {
               </View>
               {errors.produto && (
                 <Text className="text-red-500 mt-1 flex-row items-center">
-                 
                   <Text className="ml-1">Selecione um produto</Text>
                 </Text>
               )}
@@ -220,7 +246,6 @@ export default function ProducaoDetalhes() {
               />
               {errors.quantidade && (
                 <Text className="text-red-500 mt-1 flex-row items-center">
-                
                   <Text className="ml-1">{errors.quantidade.message}</Text>
                 </Text>
               )}
@@ -229,10 +254,13 @@ export default function ProducaoDetalhes() {
             {/* Campo Status */}
             <View>
               <Text className="text-base font-medium text-gray-700 mb-2 flex-row items-center">
-              
                 <Text className="ml-1">Status</Text>
               </Text>
-              <View className={`border ${errors.status ? "border-red-400" : "border-gray-300"} rounded-lg overflow-hidden`}>
+              <View
+                className={`border ${
+                  errors.status ? "border-red-400" : "border-gray-300"
+                } rounded-lg overflow-hidden`}
+              >
                 <Controller
                   control={control}
                   name="status"
@@ -243,9 +271,17 @@ export default function ProducaoDetalhes() {
                       style={{ color: "#374151" }}
                       dropdownIconColor="#6B7280"
                     >
-                      <Picker.Item label="Selecione um status" value="" enabled={false} />
+                      <Picker.Item
+                        label="Selecione um status"
+                        value=""
+                        enabled={false}
+                      />
                       {statusList.map((status) => (
-                        <Picker.Item key={status} label={status} value={status} />
+                        <Picker.Item
+                          key={status}
+                          label={status}
+                          value={status}
+                        />
                       ))}
                     </Picker>
                   )}
@@ -253,7 +289,6 @@ export default function ProducaoDetalhes() {
               </View>
               {errors.status && (
                 <Text className="text-red-500 mt-1 flex-row items-center">
-               
                   <Text className="ml-1">{errors.status.message}</Text>
                 </Text>
               )}
@@ -267,18 +302,18 @@ export default function ProducaoDetalhes() {
           <Pressable
             className={`
               flex-row justify-center items-center py-4 rounded-xl mb-3
-              ${loading ? 'bg-green-700' : 'bg-green-600'} 
+              ${loading ? "bg-green-700" : "bg-green-600"} 
               active:opacity-80
             `}
             onPress={handleSubmit(onSave)}
             disabled={loading}
           >
-            <Ionicons name="save" size={22} color="white" />
+            <Icon name="save" size={22} color="white" />
             <Text className="text-white text-center font-bold text-lg ml-2">
               {loading ? "Salvando..." : "Salvar Alterações"}
             </Text>
           </Pressable>
-          
+
           {/* Botões Secundários em Linha */}
           <View className="flex-row justify-between space-x-3">
             {/* Botão Excluir
@@ -305,7 +340,7 @@ export default function ProducaoDetalhes() {
               `}
               onPress={() => navigation.goBack()}
             >
-              <Ionicons name="return-up-back" size={20} color="#4B5563" />
+              <Icon name="arrow-back" size={20} color="#4B5563" />
               <Text className="text-gray-600 font-medium text-base ml-2">
                 Voltar
               </Text>
