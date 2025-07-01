@@ -10,12 +10,14 @@ import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaService } from "@/application/services/comercial/MetaService";
 import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
+import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
 
 interface MetaContextData {
   metas: Meta[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(meta: MetaInserirDTO): Promise<boolean>;
+  atualizar(meta: MetaAtualizarDTO): Promise<boolean>;
 }
 
 const MetaContext = createContext<MetaContextData | undefined>(undefined);
@@ -60,12 +62,26 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const atualizar = async (meta: MetaAtualizarDTO) => {
+    try {
+      await metaService.atualizar(meta);
+      await carregar(true);
+      ShowToast("success", "Meta atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar meta.");
+      return false;
+    }
+  };
+
   useEffect(() => {
     carregar();
   }, []);
 
   return (
-    <MetaContext.Provider value={{ metas, loading, carregar, adicionar }}>
+    <MetaContext.Provider
+      value={{ metas, loading, carregar, adicionar, atualizar }}
+    >
       {children}
     </MetaContext.Provider>
   );

@@ -8,6 +8,7 @@ import {
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";
 import Icon, { IconTypes } from "../../ui/Icon";
+import MetaConsts from "@/shared/constants/meta.consts";
 
 interface Props {
   meta: Meta;
@@ -16,15 +17,7 @@ interface Props {
 
 export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
   const progresso = Math.min((meta.valorAtual / meta.valorAlvo) * 100, 100);
-
-  const statusColor = {
-    [MetaStatusEnum.ATIVA]: "color-agroflow-gray",
-    [MetaStatusEnum.CANCELADA]: "color-agroflow-red",
-    [MetaStatusEnum.INICIALIZADA]: "color-agroflow-gray",
-    [MetaStatusEnum.CONCLUIDA]: "color-agroflow-green",
-    [MetaStatusEnum.EXPIRADA]: "color-agroflow-red",
-  }[meta.status];
-
+  const statusColor = MetaConsts.statusTextColors[meta.status];
   const iconName: IconTypes =
     meta.tipo === MetaTipoEnum.VENDA ? "attach-money" : "agriculture";
 

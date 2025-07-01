@@ -5,7 +5,7 @@ import {
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 
-export default class MetaSelectData {
+export default class MetaConsts {
   static readonly Tipos: SelectOption[] = [
     { value: MetaTipoEnum.VENDA, label: "Venda" },
     { value: MetaTipoEnum.PRODUCAO, label: "Producao" },
@@ -23,9 +23,17 @@ export default class MetaSelectData {
     { value: MetaStatusEnum.EXPIRADA, label: "Expirado" },
     { value: MetaStatusEnum.INICIALIZADA, label: "Inicializado" },
   ];
+
+  static readonly statusTextColors: { [key in MetaStatusEnum]: string } = {
+    [MetaStatusEnum.ATIVA]: "color-agroflow-orange",
+    [MetaStatusEnum.CANCELADA]: "color-agroflow-red",
+    [MetaStatusEnum.INICIALIZADA]: "color-agroflow-orange",
+    [MetaStatusEnum.CONCLUIDA]: "color-agroflow-green",
+    [MetaStatusEnum.EXPIRADA]: "color-agroflow-red",
+  };
 }
 
-// export const MetaSelectData.TiposFiltro: SelectOption[] = [
+// export const MetaConsts.TiposFiltro: SelectOption[] = [
 //   { value: TransacaoFiltroTipoEnum.TODOS, label: "Todos" },
 //   { value: TransacaoFiltroTipoEnum.TRANSFERENCIA, label: "Transferência" },
 //   { value: TransacaoFiltroTipoEnum.DEPOSITO, label: "Depósito" },

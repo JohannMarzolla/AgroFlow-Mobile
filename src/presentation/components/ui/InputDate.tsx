@@ -22,6 +22,8 @@ export interface InputDateOptions {
   showClearButton?: boolean;
   /** Classes css */
   className?: string;
+  /** Data Miníma */
+  minimumDate?: Date;
   /** Data Máxima */
   maximumDate?: Date;
   /** Especifica se o texto do label deve ficar em negrito(bold). */
@@ -88,6 +90,7 @@ export default function InputDate(options: InputDateOptions) {
           value={options.value ?? new Date()}
           mode="date"
           display={Platform.OS === "ios" ? "spinner" : "default"}
+          minimumDate={options.minimumDate}
           maximumDate={options.maximumDate}
           onChange={onChange}
         />

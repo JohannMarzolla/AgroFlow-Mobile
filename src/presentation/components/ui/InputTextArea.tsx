@@ -5,7 +5,7 @@ export interface InputTextAreaOptions {
   /** Texto do label */
   label?: string;
   /** Valor do input */
-  value?: string;
+  value?: string | null;
   /** Placeholder */
   placeholder?: string;
   /** Estilo */

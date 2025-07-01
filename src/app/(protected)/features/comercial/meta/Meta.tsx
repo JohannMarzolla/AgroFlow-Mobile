@@ -5,9 +5,10 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MetaStackParamList } from "./MetaStack";
 import { useMeta } from "@/presentation/contexts/comercial/MetaContext";
 import InputSelect from "@/presentation/components/ui/InputSelect";
-import MetaSelectData from "@/shared/constants/meta-select-data";
+import MetaConsts from "@/shared/constants/meta.consts";
 import MetaLista from "@/presentation/components/comercial/meta/MetaLista";
 import PageHeader from "@/presentation/components/ui/PageHeader";
+import { Meta } from "@/domain/models/comercial/Meta";
 
 type MetaNavigationProp = NativeStackNavigationProp<
   MetaStackParamList,
@@ -29,7 +30,7 @@ export function Tela() {
         <InputSelect
           label="Tipo"
           labelTextBold={false}
-          options={MetaSelectData.Tipos}
+          options={MetaConsts.Tipos}
         />
         {/* onValueChanged={setTipoFiltro} */}
         {/* value={tipoFiltro} */}
@@ -53,15 +54,16 @@ export function Tela() {
 
       <MetaLista
         metas={metas}
-        onEndReached={() => {
-          carregar();
-        }}
+        onEndReached={() => carregar()}
+        onEdit={(item: Meta) =>
+          navigation.navigate("EditarMeta", { meta: item })
+        }
         loadingMore={loading}
       />
     </View>
   );
 }
 
-export default function Meta() {
+export default function Metas() {
   return <Tela />;
 }
