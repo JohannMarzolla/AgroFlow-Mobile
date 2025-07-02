@@ -1,0 +1,47 @@
+// import { FazendaBuscarTodosDTO } from "@/application/dtos/producao/fazenda/FazendaBuscarTodosDTO";
+// import { HttpClient } from "../base/HttpClient";
+// import { FazendaBuscarTodosResponseDTO } from "@/application/dtos/producao/fazenda/FazendaBuscarTodosResponseDTO";
+// import { FazendaInserirDTO } from "@/application/dtos/producao/fazenda/FazendaInserirDTO";
+// import { IFazendaApiService } from "@/application/interfaces/producao/IFazendaApiService";
+
+
+// export class InsumoApiService implements IInsumoApiService {
+
+//   async buscarTodos(
+//     dto: InsumoBuscarTodosDTO
+//   ): Promise<InsumoBuscarTodosResponseDTO> {
+//     try {
+//       return HttpClient.post<InsumoBuscarTodosDTO, InsumoBuscarTodosResponseDTO>(
+//         "insumo/",
+//         dto
+//       );
+//     } catch (error: any) {
+//       console.error("Erro ao buscar todas as insumos", error);
+//       throw error instanceof Error
+//         ? error
+//         : new Error("Erro desconhecido ao buscar todas os insumos");
+//     }
+//   }
+
+//   async inserir(dto: InsumoInserirDTO): Promise<void> {
+//     try {
+//       await HttpClient.post<insumoInserirDTO, void>("insumo/inserir", dto);
+//     } catch (error: any) {
+//       console.error("Erro ao inserir insumo", error);
+//       throw error instanceof Error
+//         ? error
+//         : new Error("Erro desconhecido ao tentar cadastrar insumo");
+//     }
+//   }
+
+//   // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
+//   //   try {
+//   //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
+//   //   } catch (error: any) {
+//   //     console.error("Erro ao atualizar fazenda", error);
+//   //     throw error instanceof Error
+//   //       ? error
+//   //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
+//   //   }
+//   // }
+// }
