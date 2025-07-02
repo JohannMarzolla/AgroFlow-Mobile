@@ -2,7 +2,6 @@ import { HttpClient } from "../base/HttpClient";
 import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
 import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
 import { IMetaApiService } from "@/application/interfaces/comercial/IMetaApiService";
-import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
 import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
 
@@ -22,7 +21,6 @@ export class MetaApiService implements IMetaApiService {
         : new Error("Erro desconhecido ao buscar todas as metas");
     }
   }
-
   async inserir(dto: MetaInserirDTO): Promise<void> {
     try {
       await HttpClient.post<MetaInserirDTO, void>("meta/inserir", dto);
@@ -33,7 +31,6 @@ export class MetaApiService implements IMetaApiService {
         : new Error("Erro desconhecido ao tentar cadastrar usuario");
     }
   }
-
   async atualizar(dto: MetaAtualizarDTO): Promise<void> {
     try {
       await HttpClient.post<MetaAtualizarDTO, void>("meta/atualizar", dto);

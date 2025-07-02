@@ -15,12 +15,17 @@ export class HttpClient {
     }
   }
 
-  static async get<TResponse = any>(method: string): Promise<TResponse> {
+  static async get<TResponse = any>(
+    endpoint: string
+  ): Promise<TResponse> {
     try {
-      const response = await api.get<TResponse>(method, { timeout: 5000 });
+      console.log(`GET: ${endpoint}`);
+      const response = await api.get<TResponse>(endpoint, { timeout: 5000 });
       return response.data;
     } catch (error) {
+      console.error(`GET Error (${endpoint}):`, error);
       throw error;
     }
   }
 }
+

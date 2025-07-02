@@ -1,16 +1,19 @@
-import { FazendaAdicionarForm } from "@/domain/models/FazendaAdicionarForm";
-import { IFazendaRepository } from "@/domain/repositories/IFazendaRepository";
+import { IFazendaApiService } from "../interfaces/producao/IFazendaApiService";
+import { FazendaInserirDTO } from "../dtos/producao/fazenda/FazendaInserirDTO";
+import { FazendaBuscarTodosDTO } from "../dtos/producao/fazenda/FazendaBuscarTodosDTO";
+import { FazendaBuscarTodosResponseDTO } from "../dtos/producao/fazenda/FazendaBuscarTodosResponseDTO";
 
 export class FazendaService {
      constructor(
-        private fazendaRepo: IFazendaRepository,
+        private apiService: IFazendaApiService,
       ) {}
-    async get(userId: string){
-        return await this.fazendaRepo.getAll(userId)
+    async buscarTodos(dto:FazendaBuscarTodosDTO): Promise<FazendaBuscarTodosResponseDTO>{
+        return await this.apiService.buscarTodos(dto)
 
     }
-    async insert(userId: string, fazenda: FazendaAdicionarForm){
-        return await this.fazendaRepo.insert(userId, fazenda)
+    async inserir(dados:FazendaInserirDTO): Promise<void>{
+        return await this.apiService.inserir(dados)
 
     }
-}
+  }
+  

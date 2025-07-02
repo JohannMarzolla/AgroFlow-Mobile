@@ -14,7 +14,7 @@ const fazendaSchema = z.object({
 type FazendaFormData = z.infer<typeof fazendaSchema>;
 
 export default function FazendaForm() {
-  const { adicionarFazenda } = useFazenda();
+  const { adicionar } = useFazenda();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -34,7 +34,7 @@ export default function FazendaForm() {
     try {
       Loading.show()
       setLoading(true);
-      await adicionarFazenda(data);
+      await adicionar(data);
       ShowToast("success", "fazenda cadastrado com sucesso!");
       reset();
       Loading.hide()
@@ -62,6 +62,7 @@ export default function FazendaForm() {
               onChangeText={onChange}
               onBlur={onBlur}
               editable={!loading}
+              
             />
           )}
         />

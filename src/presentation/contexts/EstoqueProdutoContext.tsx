@@ -26,7 +26,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   const userId = user?.userId  
   const [produtos, setProdutos] = useState<EstoqueProduto[]>([]);
   const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoRepository());
-  console.log(produtos)
+ 
 
   const carregarEstoqueProduto = async () => {
     try {
@@ -49,7 +49,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
     }
   };
   useEffect(() => {
-    console.log("chamando use effect estoque produto ")
+
     carregarEstoqueProduto(); 
   
     const atualizarEstoque = async () => {
