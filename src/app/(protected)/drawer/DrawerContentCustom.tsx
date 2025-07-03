@@ -6,6 +6,47 @@ import {
   DrawerContentComponentProps,
 } from "@react-navigation/drawer";
 
+const menuItems = [
+  {
+    label: "Home",
+    screen: "Home",
+  },
+  {
+    label: "Produção",
+    submenuKey: "producao",
+    submenu: [
+      { label: "Fazenda", screen: "Fazenda" },
+      { label: "Produtos", screen: "Produtos" },
+      { label: "Insumo", screen: "Insumo" },
+      { label: "Produção", screen: "Producao" },
+      { label: "Estoque de Produtos", screen: "EstoqueProduto" },
+      { label: "Estoque de Insumos", screen: "EstoqueInsumo" },
+    ],
+    parentScreen: "Producao",
+  },
+  {
+    label: "Comercial",
+    submenuKey: "comercial",
+    submenu: [{ label: "Meta", screen: "Meta" }],
+    parentScreen: "Comercial",
+  },
+  {
+    label: "Administração",
+    submenuKey: "administracao",
+    submenu: [
+      { label: "Medidas", screen: "Medidas" },
+      { label: "Cadastro", screen: "Cadastro" },
+      { label: "Notificações", screen: "Notificacao" },
+    ],
+    parentScreen: "Administracao",
+  },
+  {
+    label: "Sair",
+    screen: "Sair",
+    style: { color: "red" },
+  },
+];
+
 const DrawerContentCustom = (props: DrawerContentComponentProps) => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
@@ -18,150 +59,48 @@ const DrawerContentCustom = (props: DrawerContentComponentProps) => {
       {...props}
       contentContainerStyle={styles.container}
     >
-      <DrawerItem
-        label="Home"
-        onPress={() => {
-          setOpenSubmenu(null);
-          props.navigation.navigate("Home");
-        }}
-        labelStyle={styles.menuText}
-      />
+      {menuItems.map((item) => {
+        if (item.submenu) {
+          return (
+            <View key={item.label}>
+              <DrawerItem
+                label={item.label}
+                onPress={() => toggleSubmenu(item.submenuKey!)}
+                labelStyle={styles.menuText}
+              />
+              {openSubmenu === item.submenuKey && (
+                <View style={styles.submenu}>
+                  {item.submenu.map((sub) => (
+                    <DrawerItem
+                      key={sub.label}
+                      label={sub.label}
+                      onPress={() => {
+                        props.navigation.navigate(item.parentScreen!, {
+                          screen: sub.screen,
+                        });
+                        setOpenSubmenu(null);
+                      }}
+                      labelStyle={styles.submenuText}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          );
+        }
 
-      <DrawerItem
-        label="Produção"
-        onPress={() => toggleSubmenu("producao")}
-        labelStyle={styles.menuText}
-      />
-      {openSubmenu === "producao" && (
-        <View style={styles.submenu}>
+        return (
           <DrawerItem
-            label="Fazenda"
+            key={item.label}
+            label={item.label}
             onPress={() => {
-              props.navigation.navigate("Producao", { screen: "Fazenda" });
               setOpenSubmenu(null);
+              props.navigation.navigate(item.screen);
             }}
-            labelStyle={styles.submenuText}
+            labelStyle={[styles.menuText, item.style || null]}
           />
-          <DrawerItem
-            label="Produtos"
-            onPress={() => {
-              props.navigation.navigate("Producao", { screen: "Produtos" });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Insumo"
-            onPress={() => {
-              props.navigation.navigate("Producao", { screen: "Insumo" });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Produção"
-            onPress={() => {
-              props.navigation.navigate("Producao", { screen: "Producao" });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Estoque de Produtos"
-            onPress={() => {
-              props.navigation.navigate("Producao", {
-                screen: "EstoqueProduto",
-              });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Estoque de Insumos"
-            onPress={() => {
-              props.navigation.navigate("Producao", {
-                screen: "EstoqueInsumo",
-              });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-        </View>
-      )}
-
-      <DrawerItem
-        label="Comercial"
-        onPress={() => toggleSubmenu("comercial")}
-        labelStyle={styles.menuText}
-      />
-      {openSubmenu === "comercial" && (
-        <View style={styles.submenu}>
-          <DrawerItem
-            label="Meta"
-            onPress={() => {
-              props.navigation.navigate("Comercial", { screen: "Meta" });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-        </View>
-      )}
-
-      <DrawerItem
-        label="Administração"
-        onPress={() => toggleSubmenu("administracao")}
-        labelStyle={styles.menuText}
-      />
-      {openSubmenu === "administracao" && (
-        <View style={styles.submenu}>
-          <DrawerItem
-            label="Medidas"
-            onPress={() => {
-              props.navigation.navigate("Administracao", { screen: "Medidas" });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Cadastro"
-            onPress={() => {
-              props.navigation.navigate("Administracao", {
-                screen: "Cadastro",
-              });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-          <DrawerItem
-            label="Notificações"
-            onPress={() => {
-              props.navigation.navigate("Administracao", {
-                screen: "Notifications",
-              });
-              setOpenSubmenu(null);
-            }}
-            labelStyle={styles.submenuText}
-          />
-        </View>
-      )}
-
-      {/* <DrawerItem
-        label="Transações"
-        onPress={() => {
-          setOpenSubmenu(null);
-          props.navigation.navigate("Transações");
-        }}
-        labelStyle={styles.menuText}
-      /> */}
-
-      <DrawerItem
-        label="Sair"
-        onPress={() => {
-          setOpenSubmenu(null);
-          props.navigation.navigate("Sair");
-        }}
-        labelStyle={[styles.menuText, { color: "red" }]}
-      />
+        );
+      })}
     </DrawerContentScrollView>
   );
 };
