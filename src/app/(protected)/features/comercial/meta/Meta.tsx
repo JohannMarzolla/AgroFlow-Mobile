@@ -23,6 +23,7 @@ export function Tela() {
     <View className="flex-1 bg-white">
       <PageHeader
         pageName="Metas"
+        showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarMeta")}
       ></PageHeader>
 
