@@ -5,4 +5,4 @@ export const MedidaSchema = z.object({
   sigla: z.string().min(1, "Sigla é obrigatória")
 });
 
-export type MedidaDTO = z.infer<typeof MedidaSchema>;
+export type UnidadeMedidaInserirDTO = z.infer<typeof MedidaSchema>;

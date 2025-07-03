@@ -8,4 +8,4 @@ export const ProducaoSchema = z.object({
     fazendaId: z.string().min(1, "ID da fazenda é obrigatório")
   });
   
-  export type ProducaoDTO = z.infer<typeof ProducaoSchema>;
+  export type ProducaoInserirDTO = z.infer<typeof ProducaoSchema>;
