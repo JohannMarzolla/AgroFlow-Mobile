@@ -1,15 +1,22 @@
 import React from "react";
-import { View, FlatList } from "react-native";
-import { useNotificacaoContext } from "@/presentation/contexts/outros/NotificacaoContext";
+import { View, FlatList, Text } from "react-native";
+import {
+  NotificacaoProvider,
+  useNotificacaoContext,
+} from "@/presentation/contexts/outros/NotificacaoContext";
 import { NotificacaoItem } from "@/presentation/components/outros/notificacao/NotificacaoItem";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 
-export default function Notificacao() {
-  const { notificacoes } = useNotificacaoContext();
+function Tela() {
+  const { notificacoes, loading } = useNotificacaoContext();
 
   return (
     <View className="flex-1 bg-white">
       <PageHeader pageName="Notificações"></PageHeader>
+
+      {!notificacoes?.length && !loading && (
+        <Text className="text-agroflow-gray text-center">Não há dados</Text>
+      )}
 
       <FlatList
         data={notificacoes}
@@ -18,5 +25,13 @@ export default function Notificacao() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
       />
     </View>
+  );
+}
+
+export default function Notificacao() {
+  return (
+    <NotificacaoProvider>
+      <Tela />
+    </NotificacaoProvider>
   );
 }

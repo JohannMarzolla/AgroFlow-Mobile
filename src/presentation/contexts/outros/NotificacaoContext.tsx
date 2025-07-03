@@ -2,6 +2,7 @@ import { NotificacaoService } from "@/application/services/outros/NotificacaoSer
 import { Notificacao } from "@/domain/models/outros/Notificacao";
 import { NotificacaoApiService } from "@/infrastructure/services/outros/NotificacaoApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
+import { eventBus } from "@/shared/utils/EventBus";
 import React, {
   createContext,
   ReactNode,
@@ -37,6 +38,7 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
         limite: 5,
         ultimoId: !reset ? lastId : null,
       });
+      console.log(result);
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
       setNotificacoes((prev) =>
@@ -52,6 +54,16 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     carregar();
+
+    const atualizarDados = async () => {
+      console.log("recebeu mensagem e vai atualizar context");
+      carregar(true);
+    };
+    eventBus.on("notificacao:receive", atualizarDados);
+
+    return () => {
+      eventBus.off("notificacao:receive", atualizarDados);
+    };
   }, []);
 
   return (

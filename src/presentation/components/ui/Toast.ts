@@ -2,7 +2,7 @@ import { colors } from "@/shared/constants/colors";
 import Toast from "react-native-toast-message";
 
 export function ShowToast(
-  type: "success" | "error",
+  type: "success" | "info" | "error",
   message: string,
   detail?: string
 ) {
@@ -13,6 +13,6 @@ export function ShowToast(
     text2: detail,
     text2Style: { fontSize: 13, color: colors.agroflow.gray },
     position: "bottom",
-    visibilityTime: 3000,
+    visibilityTime: 5000,
   });
 }

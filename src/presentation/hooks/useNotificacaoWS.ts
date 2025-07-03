@@ -1,19 +1,30 @@
 import { useEffect } from "react";
 import { NotificacaoSocketService } from "@/infrastructure/services/outros/NotificacaoSocketService";
-import { useNotificacaoContext } from "@/presentation/contexts/outros/NotificacaoContext";
 import { useAuth } from "../contexts/AuthContext";
+import { NotificacaoService } from "@/application/services/outros/NotificacaoService";
+import { NotificacaoApiService } from "@/infrastructure/services/outros/NotificacaoApiService";
+import { NotificacaoToast } from "../components/outros/notificacao/NotificacaoToast";
 
 export function useNotificacaoWS() {
-  const { carregar } = useNotificacaoContext();
   const { user } = useAuth();
+  const metaService = new NotificacaoService(new NotificacaoApiService());
+
+  async function mostrarQtdNaoLida() {
+    const qtdNaoLida = await metaService.buscarQtdNaoLidas();
+    console.log("mostrarQtdNaoLida", qtdNaoLida);
+
+    if (qtdNaoLida > 0) {
+      NotificacaoToast.QtdNaoLida(qtdNaoLida);
+    }
+  }
 
   useEffect(() => {
     if (!user) return;
 
     const service = NotificacaoSocketService.getInstance();
-    service.connect(user.token, () => {
-      carregar();
-    });
+    service.connect(user.token);
+
+    mostrarQtdNaoLida();
 
     return () => {
       service.disconnect();

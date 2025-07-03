@@ -1,6 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import * as Notifications from "expo-notifications";
 import { NotificacaoEnviarDTO } from "@/application/dtos/outros/NotificacaoEnviarDTO";
+import { eventBus } from "@/shared/utils/EventBus";
+import { NotificacaoToast } from "@/presentation/components/outros/notificacao/NotificacaoToast";
 
 export class NotificacaoSocketService {
   private static _instance: NotificacaoSocketService;
@@ -15,7 +17,7 @@ export class NotificacaoSocketService {
     return this._instance;
   }
 
-  connect(token: string, onReceive: (n: NotificacaoEnviarDTO) => void) {
+  connect(token: string) {
     const wsURL = process.env.EXPO_PUBLIC_NOTIF_WS_URL;
     if (wsURL) {
       this.socket = io(process.env.EXPO_PUBLIC_NOTIF_WS_URL, {
@@ -25,6 +27,8 @@ export class NotificacaoSocketService {
       });
 
       this.socket.on("notification", async (data: NotificacaoEnviarDTO) => {
+        console.log(data);
+
         await Notifications.scheduleNotificationAsync({
           content: {
             title: data.titulo,
@@ -33,7 +37,8 @@ export class NotificacaoSocketService {
           trigger: null,
         });
 
-        onReceive(data);
+        NotificacaoToast.Recebida(data.tipo, data.titulo, data.descricao);
+        eventBus.emit("notificacao:receive", data);
       });
     }
   }

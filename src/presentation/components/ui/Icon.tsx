@@ -7,7 +7,7 @@ export interface IconProps {
   name: IconTypes;
   size?: number;
   color?: string;
-  style?: StyleProp<TextStyle>;
+  className?: string;
   onPress?: () => void;
 }
 
@@ -15,7 +15,14 @@ export default function Icon({
   name,
   size = 24,
   color = "#000",
-  style,
+  className,
 }: IconProps) {
-  return <MaterialIcons name={name} size={size} color={color} style={style} />;
+  return (
+    <MaterialIcons
+      className={className}
+      name={name}
+      size={size}
+      color={color}
+    />
+  );
 }

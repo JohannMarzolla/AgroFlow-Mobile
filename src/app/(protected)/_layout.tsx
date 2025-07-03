@@ -20,7 +20,6 @@ import { colors } from "@/shared/constants/colors";
 import { useNotificacaoWS } from "@/presentation/hooks/useNotificacaoWS";
 import { Redirect, SplashScreen } from "expo-router";
 import ComercialStack from "./features/comercial/ComercialStack";
-import { NotificacaoProvider } from "@/presentation/contexts/outros/NotificacaoContext";
 
 const Drawer = createDrawerNavigator();
 
@@ -51,42 +50,40 @@ export default function App() {
   };
 
   return (
-    <NotificacaoProvider>
-      <MedidaProvider>
-        <EstoqueInsumoProvider>
-          <InsumoProvider>
-            <FazendaProvider>
-              <ProdutosProvider>
-                <ProducaoProvider>
-                  <EstoqueProdutoProvider>
-                    <Drawer.Navigator
-                      screenOptions={customScreenOptions}
-                      drawerContent={(props) => (
-                        <DrawerContentCustom {...props} />
-                      )}
-                    >
-                      <Drawer.Screen name="Home" component={Home} />
-                      <Drawer.Screen
-                        name="Producao"
-                        component={ProducaoModuloStack}
-                      />
-                      <Drawer.Screen
-                        name="Comercial"
-                        component={ComercialStack}
-                      />
-                      <Drawer.Screen
-                        name="Administracao"
-                        component={AdministracaoStack}
-                      />
-                      <Drawer.Screen name="Sair" component={Logout} />
-                    </Drawer.Navigator>
-                  </EstoqueProdutoProvider>
-                </ProducaoProvider>
-              </ProdutosProvider>
-            </FazendaProvider>
-          </InsumoProvider>
-        </EstoqueInsumoProvider>
-      </MedidaProvider>
-    </NotificacaoProvider>
+    <MedidaProvider>
+      <EstoqueInsumoProvider>
+        <InsumoProvider>
+          <FazendaProvider>
+            <ProdutosProvider>
+              <ProducaoProvider>
+                <EstoqueProdutoProvider>
+                  <Drawer.Navigator
+                    screenOptions={customScreenOptions}
+                    drawerContent={(props) => (
+                      <DrawerContentCustom {...props} />
+                    )}
+                  >
+                    <Drawer.Screen name="Home" component={Home} />
+                    <Drawer.Screen
+                      name="Producao"
+                      component={ProducaoModuloStack}
+                    />
+                    <Drawer.Screen
+                      name="Comercial"
+                      component={ComercialStack}
+                    />
+                    <Drawer.Screen
+                      name="Administracao"
+                      component={AdministracaoStack}
+                    />
+                    <Drawer.Screen name="Sair" component={Logout} />
+                  </Drawer.Navigator>
+                </EstoqueProdutoProvider>
+              </ProducaoProvider>
+            </ProdutosProvider>
+          </FazendaProvider>
+        </InsumoProvider>
+      </EstoqueInsumoProvider>
+    </MedidaProvider>
   );
 }

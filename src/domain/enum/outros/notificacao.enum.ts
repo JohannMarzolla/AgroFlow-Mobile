@@ -1,3 +1,4 @@
 export enum NotificacaoTipoEnum {
   META_CONCLUIDA = "META_CONCLUIDA",
+  PRODUCAO_CONCLUIDA = "PRODUCAO_CONCLUIDA",
 }
