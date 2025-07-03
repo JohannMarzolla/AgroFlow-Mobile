@@ -1,16 +1,20 @@
 import { EstoqueInsumoAdicionarForm } from "@/domain/models/EstoqueInsumoAdicionarForm";
 import { IEstoqueInsumoRepository } from "@/domain/repositories/IEstoqueInsumoRepository";
+import { IEstoqueInsumoApiService } from "../interfaces/producao/IEstoqueInsumoApiService";
+import { EstoqueInsumoInserirDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
+import { EstoqueInsumoBuscarTodosResponseDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosResponseDTO";
+import { EstoqueInsumoBuscarTodosDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosDTO";
 
 export class EstoqueInsumoService{
    constructor(
-    private estoqueInsumoRepo: IEstoqueInsumoRepository,
+    private apiService: IEstoqueInsumoApiService
 ) {}
-  async get(userId: string){
-         return await this.estoqueInsumoRepo.getAll(userId)
+  async buscarTodos(dto:EstoqueInsumoBuscarTodosDTO): Promise<EstoqueInsumoBuscarTodosResponseDTO>{
+         return await this.apiService.buscarTodos(dto)
  
      }
-     async insert(userId: string, estoqueInsumo: EstoqueInsumoAdicionarForm){
-         return await this.estoqueInsumoRepo.insert(userId, estoqueInsumo)
+     async inserir(dados:EstoqueInsumoInserirDTO){
+         return await this.apiService.inserir(dados)
  
      }
 }

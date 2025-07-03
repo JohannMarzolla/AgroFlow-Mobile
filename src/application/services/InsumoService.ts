@@ -1,18 +1,22 @@
 import { IINsumoRepository } from "@/domain/repositories/IInsumoRepository";
 import { InsumoAdicionarForm } from "@/domain/models/InsumoAdicionarForm";
 import { Insumo } from "@/domain/models/Insumo";
+import { IInsumoApiService } from "../interfaces/producao/IInsumoApiService";
+import { InsumoInserirDTO } from "../dtos/producao/Insumos/InsumoInserirDTO";
+import { InsumoBuscarTodosResponseDTO } from "../dtos/producao/Insumos/InsumoBuscarTodosResponseDTO";
+import { InsumoBuscarTodosDTO } from "../dtos/producao/Insumos/InsumoBuscarTodosDTO";
 
 export class InsumoService {
   constructor(
-    private insumoRepo: IINsumoRepository,
+    private apiService: IInsumoApiService,
 
   ) {}
-  async get(userId: string): Promise<Insumo[]> {
-        return await this.insumoRepo.getAll(userId)
+  async buscarTodos(dto : InsumoBuscarTodosDTO): Promise<InsumoBuscarTodosResponseDTO> {
+        return await this.apiService.buscarTodos(dto)
     }
 
-  async insert(userId: string, insumo: InsumoAdicionarForm): Promise<void> {
-    await this.insumoRepo.insert(userId, insumo);
+  async inserir(dados : InsumoInserirDTO): Promise<void> {
+    await this.apiService.inserir(dados);
   }
 
 }

@@ -1,5 +1,3 @@
-import { MedidaAdicionarForm } from "@/domain/models/MedidaAdiconarForm";
-import { IMedidaRepository } from "@/domain/repositories/IMedidaRepository";
 import { UnidadeMedidaBuscarTodosDTO } from "../dtos/producao/UnidadeMedida/UnidadeMedidaBuscarTodosDTO";
 import { IUnidadeMEdidaApiService } from "../interfaces/producao/IUnidadeMedidaApiService";
 import { UnidadeMedidaBuscarTodosResponseDTO } from "../dtos/producao/UnidadeMedida/UnidadeMedidaBuscarResponseDTO";

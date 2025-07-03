@@ -1,18 +1,19 @@
-import { IProdutoRepository } from "@/domain/repositories/IProdutoRepository";
-import { Produto } from "@/domain/models/Produto";
-import { ProdutoAdiconarForm } from "@/domain/models/ProdutoAdicionarForm";
+import { ProdutoBuscarTodosResponseDTO } from "../dtos/producao/Produtos/ProdutoBuscarTodosResponseDTO";
+import { IProdutoApiService } from "../interfaces/producao/IProdutoApiService";
+import { ProdutoInserirDTO } from "../dtos/producao/Produtos/ProdutoInserirDTO";
+import { ProdutoBuscarTodosDTO } from "../dtos/producao/Produtos/ProdutoBuscarTodosDTO";
 
 export class ProdutoService {
   constructor(
-    private produtoRepo: IProdutoRepository,
+    private apiService: IProdutoApiService,
 
   ) {}
-  async get(userId: string): Promise<Produto[]> {
-        return await this.produtoRepo.getAll(userId)
+  async buscarTodos(dto:ProdutoBuscarTodosDTO): Promise<ProdutoBuscarTodosResponseDTO> {
+        return await this.apiService.buscarTodos(dto)
     }
 
-  async insert(userId: string, produto: ProdutoAdiconarForm): Promise<void> {
-    await this.produtoRepo.insert(userId, produto);
+  async insert(dados: ProdutoInserirDTO): Promise<void> {
+    await this.apiService.inserir(dados);
   }
 
 }
