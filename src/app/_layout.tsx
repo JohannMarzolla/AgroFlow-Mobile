@@ -8,8 +8,13 @@ import "react-native-reanimated";
 // Import your global CSS file
 import "./global.css";
 import GlobalLoading from "@/presentation/components/ui/Loading";
+import { NotificacaoToastCustom } from "@/presentation/components/outros/notificacao/NotificacaoToastCustom";
 
 SplashScreen.preventAutoHideAsync();
+
+const toastConfig = {
+  notificacao: (props: any) => <NotificacaoToastCustom {...props} />,
+};
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -17,7 +22,7 @@ export default function RootLayout() {
   });
 
   if (!loaded) return null;
- 
+
   return (
     <>
       <AuthProvider>
@@ -28,7 +33,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
       </AuthProvider>
-      <Toast />
+      <Toast config={toastConfig} />
       <GlobalLoading />
     </>
   );

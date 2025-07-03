@@ -8,10 +8,10 @@ import {
 import InputCheckbox from "@/presentation/components/ui/InputCheckbox";
 import Input from "@/presentation/components/ui/Input";
 import Button from "@/presentation/components/ui/Button";
-import { AuthService } from "@/application/services/AuthService";
+import { AuthService } from "@/application/services/outros/AuthService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { Loading } from "@/presentation/components/ui/Loading";
-import { UsuarioService } from "@/application/services/UsuarioService";
+import { UsuarioService } from "@/application/services/outros/UsuarioService";
 
 export default function Cadastro() {
   const [values, setValues] = useState<CadastroUsuarioForm>(

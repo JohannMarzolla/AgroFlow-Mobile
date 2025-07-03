@@ -1,6 +1,6 @@
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { AuthService } from "@/application/services/AuthService";
+import { AuthService } from "@/application/services/outros/AuthService";
 import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
 
 interface IAuthContext {
