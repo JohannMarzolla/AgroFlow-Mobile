@@ -1,4 +1,4 @@
-import { UsuarioApiService } from "@/infrastructure/services/UsuarioApiService";
+import { UsuarioApiService } from "@/infrastructure/services/outros/UsuarioApiService";
 
 export class UsuarioService {
   static async cadastrar(email: string, password: string) {

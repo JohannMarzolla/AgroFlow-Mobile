@@ -1,8 +1,8 @@
 import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
-import { LoginDTO } from "../dtos/LoginDTO";
-import { LoginResponseDTO } from "../dtos/LoginResponseDTO";
-import { HttpClient } from "./base/HttpClient";
-import { UserTokenService } from "./base/UserTokenService";
+import { LoginDTO } from "../../dtos/LoginDTO";
+import { LoginResponseDTO } from "../../dtos/LoginResponseDTO";
+import { HttpClient } from "../base/HttpClient";
+import { UserTokenService } from "../base/UserTokenService";
 
 export class AuthApiService {
   static async signIn(email: string, password: string): Promise<UsuarioLogado> {

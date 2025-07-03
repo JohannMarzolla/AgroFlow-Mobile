@@ -1,6 +1,6 @@
 import { ISaldoRepository } from "@/domain/repositories/ISaldoRepository";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/infrastructure/services/FirebaseConfig";
+import { db } from "@/infrastructure/services/outros/FirebaseConfig";
 
 export class SaldoRepository implements ISaldoRepository {
   async get(userId: string): Promise<number | null> {

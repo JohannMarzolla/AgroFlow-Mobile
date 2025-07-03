@@ -19,8 +19,8 @@ import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
 import { InsumoProvider } from "@/presentation/contexts/InsumoContext";
 import { EstoqueInsumoProvider } from "@/presentation/contexts/EstoqueInsumoContext";
 import { colors } from "@/shared/constants/colors";
-import { NotificationProvider } from "@/presentation/contexts/NotificationContext";
-import { useNotificationWS } from "@/presentation/hooks/useNotificationsWS";
+import { NotificationProvider } from "@/presentation/contexts/outros/NotificacaoContext";
+import { useNotificacaoWS } from "@/presentation/hooks/useNotificacaoWS";
 import { Redirect, SplashScreen } from "expo-router";
 import ComercialStack from "./features/comercial/ComercialStack";
 
@@ -30,7 +30,7 @@ export default function App() {
   const { validateLogged, isAuthenticated } = useAuth();
   const [checkingAuth, setCheckingAuth] = useState(true);
 
-  useNotificationWS();
+  useNotificacaoWS();
 
   useEffect(() => {
     const check = async () => {

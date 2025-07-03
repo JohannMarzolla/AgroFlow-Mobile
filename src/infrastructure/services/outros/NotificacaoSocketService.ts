@@ -1,22 +1,21 @@
 import { io, Socket } from "socket.io-client";
 import * as Notifications from "expo-notifications";
-import { UserTokenService } from "./base/UserTokenService";
-import { NotificationDTO } from "../dtos/NotificationDTO";
+import { NotificacaoEnviarDTO } from "@/application/dtos/outros/NotificacaoEnviarDTO";
 
-export class NotificationService {
-  private static _instance: NotificationService;
+export class NotificacaoSocketService {
+  private static _instance: NotificacaoSocketService;
   private socket?: Socket;
 
   private constructor() {}
 
-  public static getInstance(): NotificationService {
+  public static getInstance(): NotificacaoSocketService {
     if (!this._instance) {
-      this._instance = new NotificationService();
+      this._instance = new NotificacaoSocketService();
     }
     return this._instance;
   }
 
-  connect(token: string, onReceive: (n: NotificationDTO) => void) {
+  connect(token: string, onReceive: (n: NotificacaoEnviarDTO) => void) {
     const wsURL = process.env.EXPO_PUBLIC_NOTIF_WS_URL;
     if (wsURL) {
       this.socket = io(process.env.EXPO_PUBLIC_NOTIF_WS_URL, {
@@ -25,17 +24,15 @@ export class NotificationService {
         transports: ["websocket"],
       });
 
-      this.socket.on("notification", async (data: NotificationDTO) => {
-        // 1. dispara local push
+      this.socket.on("notification", async (data: NotificacaoEnviarDTO) => {
         await Notifications.scheduleNotificationAsync({
           content: {
-            title: data.title,
-            body: data.description,
+            title: data.titulo,
+            body: data.descricao,
           },
           trigger: null,
         });
 
-        // 2. envia para quem quiser tratar (ex: tela)
         onReceive(data);
       });
     }

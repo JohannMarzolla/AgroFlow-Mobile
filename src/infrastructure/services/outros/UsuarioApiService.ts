@@ -1,5 +1,5 @@
-import { CriarUsuarioDTO } from "../dtos/CriarUsuarioDTO";
-import { HttpClient } from "./base/HttpClient";
+import { CriarUsuarioDTO } from "../../dtos/CriarUsuarioDTO";
+import { HttpClient } from "../base/HttpClient";
 
 export class UsuarioApiService {
   static async cadastrar(email: string, password: string): Promise<boolean> {

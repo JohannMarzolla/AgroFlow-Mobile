@@ -1,5 +1,5 @@
 import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
-import { AuthApiService } from "@/infrastructure/services/AuthApiService";
+import { AuthApiService } from "@/infrastructure/services/outros/AuthApiService";
 
 export class AuthService {
   static async login(email: string, password: string) {

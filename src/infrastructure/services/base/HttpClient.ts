@@ -1,7 +1,7 @@
 import { api } from "./APIConfig";
 
 export class HttpClient {
-  static async post<TRequest extends object, TResponse = any>(
+  static async post<TRequest extends any, TResponse = any>(
     method: string,
     body?: TRequest
   ): Promise<TResponse> {
@@ -15,9 +15,7 @@ export class HttpClient {
     }
   }
 
-  static async get<TResponse = any>(
-    endpoint: string
-  ): Promise<TResponse> {
+  static async get<TResponse = any>(endpoint: string): Promise<TResponse> {
     try {
       console.log(`GET: ${endpoint}`);
       const response = await api.get<TResponse>(endpoint, { timeout: 5000 });
@@ -28,4 +26,3 @@ export class HttpClient {
     }
   }
 }
-

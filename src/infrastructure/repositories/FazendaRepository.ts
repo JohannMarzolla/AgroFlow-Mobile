@@ -1,14 +1,14 @@
 import { Fazenda } from "@/domain/models/Fazenda";
 import { IFazendaRepository } from "@/domain/repositories/IFazendaRepository";
-import { addDoc, collection, doc, getDoc, getDocs,  } from "firebase/firestore";
-import { db } from "../services/FirebaseConfig";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../services/outros/FirebaseConfig";
 
 export class FazendaRepository implements IFazendaRepository {
   async getAll(userId: string): Promise<Fazenda[]> {
     try {
       const fazendaRef = collection(db, "users", userId, "fazenda");
       const snapshot = await getDocs(fazendaRef);
-      
+
       const fazendas: Fazenda[] = snapshot.docs.map((doc) => {
         const data = doc.data();
         return new Fazenda({
@@ -38,12 +38,14 @@ export class FazendaRepository implements IFazendaRepository {
         nome: data.nome,
       });
     } catch (error) {
-      throw new Error("Erro ao buscar fazenda por ID: " + (error as Error).message);
+      throw new Error(
+        "Erro ao buscar fazenda por ID: " + (error as Error).message
+      );
     }
   }
 
   async insert(userId: string, fazenda: Fazenda): Promise<void> {
-     if (!userId) throw new Error("Usuário não especificado");
+    if (!userId) throw new Error("Usuário não especificado");
     try {
       const FazendaRef = collection(db, "users", userId, "fazenda");
       await addDoc(FazendaRef, {

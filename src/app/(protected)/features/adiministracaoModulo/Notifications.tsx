@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
-import { useNotificationContext } from "@/presentation/contexts/NotificationContext";
+import { useNotificationContext } from "@/presentation/contexts/outros/NotificacaoContext";
 
 export default function Notifications() {
   const { notifications } = useNotificationContext();

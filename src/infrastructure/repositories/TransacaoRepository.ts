@@ -15,7 +15,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db, storage } from "@/infrastructure/services/FirebaseConfig";
+import { db, storage } from "@/infrastructure/services/outros/FirebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ITransacaoRepository } from "@/domain/repositories/ITransacaoRepository";
 import { TipoTransacao } from "@/shared/types/TipoTransacaoEnum";
