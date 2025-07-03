@@ -1,5 +1,4 @@
 import { Text, View } from "react-native";
-import { Fazenda } from "@/domain/models/Fazenda";
 import { Medida } from "@/domain/models/Medida";
 
 

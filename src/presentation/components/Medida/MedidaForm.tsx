@@ -16,7 +16,7 @@ const medidaSchema = z.object({
 type MedidaFormData = z.infer<typeof medidaSchema>;
 
 export default function MedidaForm() {
-  const { adicionarMedida } = useMedida();
+  const { adicionar } = useMedida();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -37,8 +37,8 @@ export default function MedidaForm() {
     try {
       Loading.show()
       setLoading(true);
-      await adicionarMedida(data);
-      ShowToast("success", "fazenda cadastrado com sucesso!");
+      await adicionar(data);
+      ShowToast("success", "Medida cadastrado com sucesso!");
       reset();
       Loading.hide()
     } catch (error) {
