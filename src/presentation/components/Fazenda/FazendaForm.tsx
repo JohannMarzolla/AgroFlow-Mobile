@@ -50,7 +50,7 @@ export default function FazendaForm() {
   return (
     
       <View >
-        <Text className="text-xl font-semibold mb-2 ">Nome da Fazenda</Text>
+        <Text className="text-xl font-semibold mb-2 ">Fazenda</Text>
         <Controller
           control={control}
           name="nome"

@@ -1,13 +1,8 @@
-import { FazendaBuscarTodosDTO } from "@/application/dtos/producao/fazenda/FazendaBuscarTodosDTO";
 import { HttpClient } from "../base/HttpClient";
-import { FazendaBuscarTodosResponseDTO } from "@/application/dtos/producao/fazenda/FazendaBuscarTodosResponseDTO";
-import { FazendaInserirDTO } from "@/application/dtos/producao/fazenda/FazendaInserirDTO";
-import { IFazendaApiService } from "@/application/interfaces/producao/IFazendaApiService";
 import { IInsumoApiService } from "@/application/interfaces/producao/IInsumoApiService";
 import { InsumoBuscarTodosDTO } from "@/application/dtos/producao/Insumos/InsumoBuscarTodosDTO";
 import { InsumoBuscarTodosResponseDTO } from "@/application/dtos/producao/Insumos/InsumoBuscarTodosResponseDTO";
 import { InsumoInserirDTO } from "@/application/dtos/producao/Insumos/InsumoInserirDTO";
-
 
 export class InsumoApiService implements IInsumoApiService {
 

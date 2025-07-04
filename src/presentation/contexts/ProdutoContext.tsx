@@ -32,9 +32,6 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
 
   const produtoService = new ProdutoService(new ProdutoApiService());
 
-
-  console.log("produto contexto ", produtos)
-
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
 

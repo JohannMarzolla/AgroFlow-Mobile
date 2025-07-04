@@ -57,7 +57,7 @@ export default function ProdutoForm() {
   return (
     
       <View >
-        <Text className="text-xl font-semibold mb-2 ">Nome do Produto</Text>
+        <Text className="text-xl font-semibold mb-2 ">Produto</Text>
         <Controller
           control={control}
           name="nome"

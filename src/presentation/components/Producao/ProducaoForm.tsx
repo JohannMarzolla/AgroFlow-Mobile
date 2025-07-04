@@ -84,7 +84,7 @@ export default function ProducaoForm() {
 
   return (
       <View >
-          <Text className="text-xl font-semibold mb-2">Nome da fazenda</Text>
+          <Text className="text-xl font-semibold mb-2">Fazenda</Text>
         <Controller
           control={control}
           name="fazenda"
@@ -100,7 +100,7 @@ export default function ProducaoForm() {
                 <Picker.Item
                   key={fazenda.id}
                   label={fazenda.nome}
-                  value={fazenda}
+                  value={fazenda.id}
                 />
               ))}
             </Picker>
@@ -109,7 +109,7 @@ export default function ProducaoForm() {
         {errors.produto && (
           <Text className="text-red-500 mt-1">{errors.produto.message}</Text>
         )}
-        <Text className="text-xl font-semibold mb-2">Nome do Produto</Text>
+        <Text className="text-xl font-semibold mb-2">Produto</Text>
         <Controller
           control={control}
           name="produto"
@@ -125,7 +125,7 @@ export default function ProducaoForm() {
                 <Picker.Item
                   key={produto.id}
                   label={produto.nome}
-                  value={produto}
+                  value={produto.id}
                 />
               ))}
             </Picker>
@@ -159,7 +159,7 @@ export default function ProducaoForm() {
       </View>
 
       <View className="mb-4">
-        <Text className="text-xl font-semibold mb-2">Status de Produção</Text>
+        <Text className="text-xl font-semibold mb-2">Status</Text>
         <View className="border border-gray-300 rounded px-3 py-2">
           <Text >{ProducaoStatus.PLANEJADA}</Text>
         </View>

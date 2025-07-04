@@ -11,17 +11,13 @@ import { useMedida } from "@/presentation/contexts/MedidaContext";
 
 const insumoSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
-  unidadeMedida:z.object({
-    id:z.string(),
-    nome:z.string(),
-    sigla:z.string(),
-  })
+  unidadeMedidaId: z.string().min(1, "Nome é obrigatório"),
 });
 
 type InsumoFormData = z.infer<typeof insumoSchema>;
 
 export default function InsumoForm() {
-  const { adicionarInsumo } = useInsumo();
+  const { adicionar } = useInsumo();
   const {medida} = useMedida()
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +38,7 @@ export default function InsumoForm() {
     try {
       Loading.show()
       setLoading(true);
-      await adicionarInsumo(data);
+      await adicionar(data);
       ShowToast("success", "insumo cadastrado com sucesso!");
       reset();
       Loading.hide()
@@ -58,7 +54,7 @@ export default function InsumoForm() {
   return (
     
       <View >
-        <Text className="text-xl font-semibold mb-2 ">Nome da nsumo</Text>
+        <Text className="text-xl font-semibold mb-2 ">Insumo</Text>
         <Controller
           control={control}
           name="nome"
@@ -80,7 +76,7 @@ export default function InsumoForm() {
         )}
         <Controller
           control={control}
-          name="unidadeMedida"
+          name="unidadeMedidaId"
           render={({ field: { onChange, value } }) => (
             <Picker
               selectedValue={value}
@@ -88,19 +84,19 @@ export default function InsumoForm() {
               enabled={!loading}
               className="border border-gray-300 rounded"
             >
-              <Picker.Item label="Selecione uma fazenda" value={undefined} />
+              <Picker.Item label="Selecione uma medida" value={undefined} />
               {medida.map((medida) => (
                 <Picker.Item
                   key={medida.id}
                   label={medida.nome}
-                  value={medida}
+                  value={medida.id}
                 />
               ))}
             </Picker>
           )}
         />
-        {errors.unidadeMedida && (
-          <Text className="text-red-500 mt-1">{errors.unidadeMedida.message}</Text>
+        {errors.unidadeMedidaId && (
+          <Text className="text-red-500 mt-1">{errors.unidadeMedidaId.message}</Text>
         )}
       
       <Pressable

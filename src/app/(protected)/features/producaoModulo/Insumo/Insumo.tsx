@@ -11,7 +11,7 @@ type InsumoNavigationProp = NativeStackNavigationProp<InsumoStackParamList, "Ins
 
 export  function TelaDeProducao() {
   const navigation = useNavigation<InsumoNavigationProp>();
-  const { insumo } = useInsumo();
+  const { insumos } = useInsumo();
 
   
   return (
@@ -24,7 +24,7 @@ export  function TelaDeProducao() {
         <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
       </TouchableHighlight>
 
-      <Lista data={insumo} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <InsumoItem insumo={item} /> } />
+      <Lista data={insumos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <InsumoItem insumo={item} /> } />
     </View>
   );
 }

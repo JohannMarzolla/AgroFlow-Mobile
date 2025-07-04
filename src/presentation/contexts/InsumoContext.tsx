@@ -8,14 +8,16 @@ import {
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { ShowToast } from "../components/ui/Toast";
 import { Insumo } from "@/domain/models/Insumo";
-import { InsumoAdicionarForm } from "@/domain/models/InsumoAdicionarForm";
 import { InsumoService } from "@/application/services/InsumoService";
-import { InsumoRepository } from "@/infrastructure/repositories/InsumoRepository";
+import { InsumoInserirDTO } from "@/application/dtos/producao/Insumos/InsumoInserirDTO";
+import { InsumoApiService } from "@/infrastructure/services/producao/InsumoApiService";
 
 
 interface InsumoContextData {
-  insumo: Insumo[];
-  adicionarInsumo(insumo:InsumoAdicionarForm): Promise<void>
+  insumos: Insumo[];
+  loading: boolean;
+  carregar(): Promise<void>;
+  adicionar(insumo: InsumoInserirDTO): Promise<boolean>;
 }
 
 const InsumoContext = createContext<InsumoContextData | undefined>(undefined);
@@ -23,35 +25,57 @@ const InsumoContext = createContext<InsumoContextData | undefined>(undefined);
 export const InsumoProvider = ({ children }: { children: ReactNode }) => {
   const { user} = useAuth(); 
   const userId = user?.userId 
-  const [insumo, setInsumo] = useState<Insumo[]>([]);
-  const insumoService = new InsumoService(new InsumoRepository());
+  const [insumos, setInsumos] = useState<Insumo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [lastId, setLastId] = useState<string | null>(null);
 
-  const carregarInsumos = async () => {
+  const insumoService = new InsumoService(new InsumoApiService());
+
+  const carregar = async (reset = false) => {
+    if (loading || (!reset && !hasMore)) return;
+
     try {
-      if (!userId) return;
-      const insumoCarregados = await insumoService.get(userId);
-      setInsumo(insumoCarregados);
+      setLoading(true);
+
+      const result = await insumoService.buscarTodos({
+        limite: 5,
+        ultimoId: !reset ? lastId : null,
+      });
+      setHasMore(result.temMais);
+      setLastId(result.ultimoId);
+      setInsumos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
     } catch (error) {
+      setHasMore(false);
       ShowToast("error", "Erro ao carregar insumos.");
+    } finally {
+      setLoading(false);
     }
   };
-  const adicionarInsumo = async (insumo: InsumoAdicionarForm) => {
+
+  const adicionar = async (dados: InsumoInserirDTO) => {
     try {
-      if (!userId) return;
-      await insumoService.insert(userId, insumo);
-      await carregarInsumos(); 
-      ShowToast("success", "insumo adicionado com sucesso.");
+      await insumoService.inserir(dados);
+      await carregar(true);
+      ShowToast("success", "Insumo adicionado com sucesso.");
+      return true;
     } catch (error) {
-      ShowToast("error", "Erro ao adicionar produto.");
+      ShowToast("error", "Erro ao adicionar insumo.");
+      return false;
     }
   };
+
 
  useEffect(() => {
-    carregarInsumos();
+    carregar();
   }, [userId]);
 
   return (
-    <InsumoContext.Provider value={{ insumo, adicionarInsumo }}>
+    <InsumoContext.Provider value={{  
+      insumos,
+      loading,
+      carregar,
+      adicionar, }}>
       {children}
     </InsumoContext.Provider>
   );

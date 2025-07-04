@@ -53,7 +53,7 @@ export default function MedidaForm() {
   return (
     
       <View >
-        <Text className="text-xl font-semibold mb-2 ">Nome da Medida</Text>
+        <Text className="text-xl font-semibold mb-2 ">Medida</Text>
         <Controller
           control={control}
           name="nome"
@@ -73,7 +73,7 @@ export default function MedidaForm() {
             <Text className="text-red-500 ml-1 text-x">{errors.nome.message}</Text>
           </View>
         )}
-           <Text className="text-xl font-semibold mb-2 ">Nome da Sigla</Text>
+           <Text className="text-xl font-semibold mb-2 ">Sigla</Text>
         <Controller
           control={control}
           name="sigla"

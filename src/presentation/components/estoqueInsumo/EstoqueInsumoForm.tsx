@@ -27,7 +27,7 @@ type EstoqueInsumoFormData = z.infer<typeof estoqueInsumoSchema>;
 
 export default function EstoqueInsumoForm() {
   const { adicionarEstoqueInsumo } = useProducao();
-  const { insumo } = useInsumo();
+  const { insumos } = useInsumo();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -75,11 +75,11 @@ export default function EstoqueInsumoForm() {
               className="border border-gray-300 rounded"
             >
               <Picker.Item label="Selecione um insumo" value={undefined} />
-              {insumo.map((insumo) => (
+              {insumos.map((insumo) => (
                 <Picker.Item
                   key={insumo.id}
                   label={insumo.nome}
-                  value={insumo}
+                  value={insumo.id}
                 />
               ))}
             </Picker>
