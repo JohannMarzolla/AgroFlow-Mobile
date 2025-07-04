@@ -9,51 +9,76 @@ import { useAuth } from "@/presentation/contexts/AuthContext";
 import { Produto } from "@/domain/models/Produto";
 import { ShowToast } from "../components/ui/Toast";
 import { ProdutoService } from "@/application/services/ProdutoService";
-import { ProdutoRepository } from "@/infrastructure/repositories/ProdutoRepository";
-import { ProdutoAdiconarForm } from "@/domain/models/ProdutoAdicionarForm";
-import { connectStorageEmulator } from "firebase/storage";
+import { ProdutoApiService } from "@/infrastructure/services/producao/ProdutoApiService";
+import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
 
-interface ProdutosContextData {
+
+interface ProdutoContextData {
   produtos: Produto[];
-  adicionarProduto(produto:ProdutoAdiconarForm): Promise<void>
+  loading: boolean;
+  carregar(): Promise<void>;
+  adicionar(produto: ProdutoInserirDTO): Promise<boolean>;
 }
 
-const ProdutosContext = createContext<ProdutosContextData | undefined>(undefined);
+const ProdutosContext = createContext<ProdutoContextData | undefined>(undefined);
 
 export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth(); 
   const userId = user?.userId 
   const [produtos, setProdutos] = useState<Produto[]>([]);
-  const produtoRepository = new ProdutoRepository();
-  const produtoService = new ProdutoService(produtoRepository);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [lastId, setLastId] = useState<string | null>(null);
 
-  const carregarProdutos = async () => {
+  const produtoService = new ProdutoService(new ProdutoApiService());
+
+
+  console.log("produto contexto ", produtos)
+
+  const carregar = async (reset = false) => {
+    if (loading || (!reset && !hasMore)) return;
+
     try {
-      if (!userId) return;
-      const produtosCarregados = await produtoService.get(userId);
-      setProdutos(produtosCarregados);
+      setLoading(true);
+
+      const result = await produtoService.buscarTodos({
+        limite: 5,
+        ultimoId: !reset ? lastId : null,
+      });
+      setHasMore(result.temMais);
+      setLastId(result.ultimoId);
+      setProdutos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
     } catch (error) {
+      setHasMore(false);
       ShowToast("error", "Erro ao carregar produtos.");
+    } finally {
+      setLoading(false);
     }
   };
-  const adicionarProduto = async (produto: ProdutoAdiconarForm) => {
+
+  const adicionar = async (dados: ProdutoInserirDTO) => {
     try {
-      if (!userId) return;
-      await produtoService.insert(userId, produto);
-      await carregarProdutos(); 
+      await produtoService.inserir(dados);
+      await carregar(true);
       ShowToast("success", "Produto adicionado com sucesso.");
+      return true;
     } catch (error) {
       ShowToast("error", "Erro ao adicionar produto.");
+      return false;
     }
   };
 
+
  useEffect(() => {
-    carregarProdutos();
+    carregar();
    
   }, [userId]);
 
   return (
-    <ProdutosContext.Provider value={{ produtos, adicionarProduto }}>
+    <ProdutosContext.Provider value={{ produtos,
+      loading,
+      carregar,
+      adicionar,}}>
       {children}
     </ProdutosContext.Provider>
   );

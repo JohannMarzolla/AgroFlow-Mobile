@@ -18,7 +18,7 @@ export default function ProdutoItem({ produto }: IProdutoItem) {
 
       <View className="flex-row justify-between items-center">
         <Text className="text-gray-800 font-semibold text-lg">
-           {produto.unidadeMedida.sigla}
+           {produto.unidadeMedidaSigla}
         </Text>
         <View className="flex-row space-x-4">
         </View>

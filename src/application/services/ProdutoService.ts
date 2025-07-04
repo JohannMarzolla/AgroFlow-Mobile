@@ -12,7 +12,7 @@ export class ProdutoService {
         return await this.apiService.buscarTodos(dto)
     }
 
-  async insert(dados: ProdutoInserirDTO): Promise<void> {
+  async inserir(dados: ProdutoInserirDTO): Promise<void> {
     await this.apiService.inserir(dados);
   }
 

@@ -30,6 +30,7 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
           <Text className="pl-2 text-lg font-semibold text-gray-800">
             {meta.titulo}
           </Text>
+          
         </View>
 
         <Text className={cn("text-sm font-bold", statusColor)}>

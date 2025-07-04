@@ -12,7 +12,7 @@ export class ProdutoApiService implements IProdutoApiService {
   ): Promise<ProdutoBuscarTodosResponseDTO> {
     try {
       return HttpClient.post<ProdutoBuscarTodosDTO, ProdutoBuscarTodosResponseDTO>(
-        "fazenda/",
+        "produto/",
         dto
       );
     } catch (error: any) {

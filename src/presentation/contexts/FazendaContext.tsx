@@ -30,8 +30,7 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
   const fazendaService = new FazendaService(new FazendaApiService());
-  console.log("fazendas context", fazenda)
-
+ 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
 

@@ -8,22 +8,19 @@ import React, { useState } from "react";
 import { Loading } from "../ui/Loading";
 import { useMedida } from "@/presentation/contexts/MedidaContext";
 import { Picker } from "@react-native-picker/picker";
+import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
 
 
 
 const produtoSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
-  unidadeMedida: z.object({
-    id: z.string(),
-    nome: z.string(),
-    sigla :z.string(),
-  })
+  unidadeMedidaId:  z.string().min(1, "Nome é obrigatório"),
 });
 
 type ProdutoFormData = z.infer<typeof produtoSchema>;
 
 export default function ProdutoForm() {
-  const { adicionarProduto } = useProdutos();
+  const { adicionar } = useProdutos();
   const {medida} = useMedida();
   const [loading, setLoading] = useState(false);
 
@@ -40,11 +37,11 @@ export default function ProdutoForm() {
     }
   });
 
-  const onSubmit = async (data: ProdutoFormData) => {
+  const onSubmit = async (data: ProdutoInserirDTO) => {
     try {
       Loading.show()
       setLoading(true);
-      await adicionarProduto(data);
+      await adicionar(data);
       ShowToast("success", "Produto cadastrado com sucesso!");
       reset();
       Loading.hide()
@@ -83,7 +80,7 @@ export default function ProdutoForm() {
       
      <Controller
           control={control}
-          name="unidadeMedida"
+          name="unidadeMedidaId"
           render={({ field: { onChange, value } }) => (
             <Picker
               selectedValue={value}
@@ -96,14 +93,14 @@ export default function ProdutoForm() {
                 <Picker.Item
                   key={medida.id}
                   label={medida.nome}
-                  value={medida}
+                  value={medida.id}
                 />
               ))}
             </Picker>
           )}
         />
-        {errors.unidadeMedida && (
-          <Text className="text-red-500 mt-1">{errors.unidadeMedida.message}</Text>
+        {errors.unidadeMedidaId && (
+          <Text className="text-red-500 mt-1">{errors.unidadeMedidaId.message}</Text>
         )}
      
 

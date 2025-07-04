@@ -14,7 +14,6 @@ type ProdutosNavigationProp = NativeStackNavigationProp<ProdutosStackParamList, 
 export  function TelaDeProdutos() {
   const navigation = useNavigation<ProdutosNavigationProp>();
   const { produtos } = useProdutos();
-    console.log("produtos em tela de  produtos", produtos)
 
 
   return (
