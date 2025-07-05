@@ -8,17 +8,10 @@ import { useInsumo } from "@/presentation/contexts/InsumoContext";
 import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
 import { Picker } from "@react-native-picker/picker";
+import { EstoqueInsumoInserirDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
 
 const estoqueInsumoSchema = z.object({
-  insumo: z.object({
-    id: z.string(),
-    nome: z.string(),
-    unidadeMedida: z.object({
-      id: z.string(),
-      nome: z.string(),
-      sigla: z.string(),
-    }),
-  }),
+  insumoId: z.string(),
   quantidade: z.coerce.number().min(1, "Quantidade obrigatória"),
   preco: z.coerce.number().min(0, "Preço obrigatório"),
 });
@@ -26,7 +19,7 @@ const estoqueInsumoSchema = z.object({
 type EstoqueInsumoFormData = z.infer<typeof estoqueInsumoSchema>;
 
 export default function EstoqueInsumoForm() {
-  const { adicionarEstoqueInsumo } = useProducao();
+  const { adicionar } = useProducao();
   const { insumos } = useInsumo();
   const [loading, setLoading] = useState(false);
 
@@ -45,11 +38,11 @@ export default function EstoqueInsumoForm() {
     },
   });
 
-  const onSubmit = async (data: EstoqueInsumoFormData) => {
+  const onSubmit = async (data: EstoqueInsumoInserirDTO) => {
     try {
       Loading.show();
       setLoading(true);
-      await adicionarEstoqueInsumo(data);
+      await adicionar(data);
       ShowToast("success", "Estoque de insumo cadastrado com sucesso!");
       reset();
       Loading.hide();
@@ -66,7 +59,7 @@ export default function EstoqueInsumoForm() {
       <Text className="text-xl font-semibold mb-2">Insumo</Text>
       <Controller
           control={control}
-          name="insumo"
+          name="insumoId"
           render={({ field: { onChange, value } }) => (
             <Picker
               selectedValue={value}
@@ -85,8 +78,8 @@ export default function EstoqueInsumoForm() {
             </Picker>
           )}
         />
-        {errors.insumo && (
-          <Text className="text-red-500 mt-1">{errors.insumo.message}</Text>
+        {errors.insumoId && (
+          <Text className="text-red-500 mt-1">{errors.insumoId.message}</Text>
         )}
       <Text className="text-xl font-semibold mb-2">Quantidade</Text>
       <Controller
