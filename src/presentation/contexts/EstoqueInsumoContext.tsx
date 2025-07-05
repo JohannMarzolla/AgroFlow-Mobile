@@ -11,48 +11,72 @@ import { EstoqueInsumoAdicionarForm } from "@/domain/models/EstoqueInsumoAdicion
 import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
 import { EstoqueInsumoService } from "@/application/services/EstoqueInsumoService";
 import { EstoqueInsumoRepository } from "@/infrastructure/repositories/EstoqueInsumoRepository";
+import { EstoqueInsumoInserirDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
+import { EstoqueInsumoApiService } from "@/infrastructure/services/producao/EstoqueInsumoApiService";
 
 
 
 interface EstoqueInsumoContextData {
-  insumos: EstoqueInsumo[];
-  adicionarEstoqueInsumo(estoqueINsumo:EstoqueInsumoAdicionarForm): Promise<void>
+  estoqueInsumos: EstoqueInsumo[];
+  loading: boolean;
+  carregar(): Promise<void>;
+  adicionar(estoqueInsumo: EstoqueInsumoInserirDTO): Promise<boolean>;
 }
-
 const EstoqueInsumoContext = createContext<EstoqueInsumoContextData | undefined>(undefined);
 
 export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const userId = user?.userId  
-  const [insumos, setInsumos] = useState<EstoqueInsumo[]>([]);
-  const estoqueInsumoService = new EstoqueInsumoService(new EstoqueInsumoRepository());
+  const [estoqueInsumos, setEstoqueInsumos] = useState<EstoqueInsumo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [lastId, setLastId] = useState<string | null>(null);
 
-  const carregarEstoqueInsumo = async () => {
+  const estoqueInsumoService = new EstoqueInsumoService(new EstoqueInsumoApiService());
+
+
+  const carregar = async (reset = false) => {
+    if (loading || (!reset && !hasMore)) return;
+
     try {
-      if (!userId) return;
-      const insumosCarregados = await estoqueInsumoService.get(userId);
-      setInsumos(insumosCarregados);
+      setLoading(true);
+
+      const result = await estoqueInsumoService.buscarTodos({
+        limite: 5,
+        ultimoId: !reset ? lastId : null,
+      });
+      setHasMore(result.temMais);
+      setLastId(result.ultimoId);
+      setEstoqueInsumos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
     } catch (error) {
-      ShowToast("error", "Erro ao carregar insumos.");
+      setHasMore(false);
+      ShowToast("error", "Erro ao carregar estoque de insumos.");
+    } finally {
+      setLoading(false);
     }
   };
-  const   adicionarEstoqueInsumo = async (estoqueInsumos: EstoqueInsumoAdicionarForm) => {
+
+  const adicionar = async (dados: EstoqueInsumoInserirDTO) => {
     try {
-      if (!userId) return;
-      await estoqueInsumoService.insert(userId, estoqueInsumos);
-      await carregarEstoqueInsumo(); 
-      ShowToast("success", "estoque adicionado com sucesso.");
+      await estoqueInsumoService.inserir(dados);
+      await carregar(true);
+      ShowToast("success", "Estoque de insumo adicionado com sucesso.");
+      return true;
     } catch (error) {
-      ShowToast("error", "Erro ao adicionar produto.");
+      ShowToast("error", "Erro ao adicionar estoque de insumo.");
+      return false;
     }
   };
 
  useEffect(() => {
-     carregarEstoqueInsumo();
+     carregar();
   }, [userId]);
 
   return (
-    <EstoqueInsumoContext.Provider value={{ insumos, adicionarEstoqueInsumo }}>
+    <EstoqueInsumoContext.Provider value={{ estoqueInsumos,
+      loading,
+      carregar,
+      adicionar, }}>
       {children}
     </EstoqueInsumoContext.Provider>
   );

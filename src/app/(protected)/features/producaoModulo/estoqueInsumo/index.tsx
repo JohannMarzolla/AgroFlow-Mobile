@@ -7,12 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { EstoqueInsumoStackParamList } from "./EstoqueInsumoStack";
 
-// Tipagem correta:
 type EstoqueInsumoNavigationProp = NativeStackNavigationProp<EstoqueInsumoStackParamList, "EstoqueInsumo">;
 
 export default function EstoqueInsumo() {
-  const { insumos } = useProducao();
+  const { estoqueInsumos } = useProducao();
   const navigation = useNavigation<EstoqueInsumoNavigationProp>();
+  console.log("estoque insumo item", estoqueInsumos )
 
   return (
     <View className="flex-1 pt-6 px-6">
@@ -24,7 +24,7 @@ export default function EstoqueInsumo() {
         <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
       </TouchableHighlight>
       <Lista
-        data={insumos}
+        data={estoqueInsumos}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <EstoqueInsumoItem estoqueInsumo={item} />}
         

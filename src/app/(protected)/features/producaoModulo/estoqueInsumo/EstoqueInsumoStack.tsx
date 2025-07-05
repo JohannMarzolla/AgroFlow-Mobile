@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EstoqueInsumo from ".";
-import Adicionar from "./Adicionar";
 import AdicionarEstoqueInsumo from "./Adicionar";
 
 export type EstoqueInsumoStackParamList = {

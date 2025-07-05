@@ -10,10 +10,10 @@ export default function EstoqueInsumoItem({ estoqueInsumo }: IEstoqueInsumoItem)
     <View className="bg-white p-4 rounded shadow-md mb-4">
       <View className="flex-row justify-between mb-2">
         <Text className="text-gray-800 font-medium capitalize">
-          {estoqueInsumo.insumo.nome}
+          {estoqueInsumo.insumoNome}
         </Text>
         <Text className="text-gray-800 font-semibold text-lg">
-          {estoqueInsumo.insumo.unidadeMedida.sigla}
+          {estoqueInsumo.unidadeMedidaSigla}
         </Text>
       </View>
       <View className="flex-row justify-between ">
