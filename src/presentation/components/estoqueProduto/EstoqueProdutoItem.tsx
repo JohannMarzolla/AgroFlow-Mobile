@@ -13,10 +13,10 @@ export default function EstoqueProdutoItem({ estoqueProduto }: IEstoqueProdutoIt
       
       <View className="flex-row justify-between mb-2">
         <Text className="text-gray-800 font-medium capitalize">
-          {estoqueProduto.produto.nome}
+          {estoqueProduto.produtoNome}
         </Text>
         <Text className="text-gray-800 font-semibold text-lg">
-           {estoqueProduto.produto.unidadeMedida.sigla}
+           {estoqueProduto.unidadeMedidaSigla}
         </Text>
       </View>
 

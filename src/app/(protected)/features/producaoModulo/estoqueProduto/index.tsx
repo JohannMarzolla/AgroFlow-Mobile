@@ -7,13 +7,13 @@ import Lista from "@/shared/utils/Lista";
 
 
 function TelaDeEstoqueProduto() {
-  const { produtos } = useEstoqueProduto();
+  const { estoqueProdutos } = useEstoqueProduto();
 
 
   return (
     <View className="flex-1 pt-6 px-6">
         <Lista
-          data={produtos}
+          data={estoqueProdutos}
           renderItem={({ item }) => <EstoqueProdutoItem estoqueProduto={item} />}
           keyExtractor={(item) => item.id}
         />

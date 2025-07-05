@@ -8,68 +8,79 @@ import {
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { ShowToast } from "../components/ui/Toast";
 import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
-import { EstoqueProdutoAdicionarForm } from "@/domain/models/EstoqueProdutoAdicionarForm";
 import { EstoqueProdutoService } from "@/application/services/EstoqueProdutoService";
-import { EstoqueProdutoRepository } from "@/infrastructure/repositories/EstoqueProdutoRepository";
-import { eventBus } from "@/shared/utils/EventBus";
-
+import { EstoqueProdutoInserirDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoInserirDTO";
+import { EstoqueProdutoApiService } from "@/infrastructure/services/producao/EstoqueProdutoApiService";
 
 interface EstoqueProdutoContextData {
-  produtos: EstoqueProduto[];
-  adicionarEstoqueProduto(estoqueProduto: EstoqueProdutoAdicionarForm ): Promise<void>;
+  estoqueProdutos: EstoqueProduto[];
+  loading: boolean;
+  carregar(): Promise<void>;
+  adicionar(estoqueProduto: EstoqueProdutoInserirDTO): Promise<boolean>;
 }
 
 const EstoqueProdutoContext = createContext<EstoqueProdutoContextData | undefined>(undefined);
 
 export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) => {
-  const { user} = useAuth();
+  const { user } = useAuth();
   const userId = user?.userId  
-  const [produtos, setProdutos] = useState<EstoqueProduto[]>([]);
-  const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoRepository());
- 
+  const [estoqueProdutos, setEstoqueProdutos] = useState<EstoqueProduto[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [lastId, setLastId] = useState<string | null>(null);
 
-  const carregarEstoqueProduto = async () => {
+  console.log("contexto estoque produtos", estoqueProdutos)
+  const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoApiService());
+
+  const carregar = async (reset = false) => {
+    if (loading || (!reset && !hasMore)) return;
+
     try {
-      if (!userId) return;
-      const produtosCarregados = await estoqueProdutoService.get(userId);
-      setProdutos(produtosCarregados);
+      setLoading(true);
+
+      const result = await estoqueProdutoService.buscarTodos({
+        limite: 5,
+        ultimoId: !reset ? lastId : null,
+      });
+      setHasMore(result.temMais);
+      setLastId(result.ultimoId);
+      setEstoqueProdutos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
     } catch (error) {
+      setHasMore(false);
       ShowToast("error", "Erro ao carregar estoque de produtos.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const adicionarEstoqueProduto = async (estoqueProduto: EstoqueProdutoAdicionarForm) => {
+  const adicionar = async (dados: EstoqueProdutoInserirDTO) => {
     try {
-      if (!userId) return;
-      await estoqueProdutoService.insert(userId, estoqueProduto);
-      await carregarEstoqueProduto(); 
+      await estoqueProdutoService.inserir(dados);
+      await carregar(true);
       ShowToast("success", "Estoque de produto adicionado com sucesso.");
+      return true;
     } catch (error) {
       ShowToast("error", "Erro ao adicionar estoque de produto.");
+      return false;
     }
   };
-  useEffect(() => {
 
-    carregarEstoqueProduto(); 
-  
-    const atualizarEstoque = async () => {
-      await carregarEstoqueProduto();
-    };
-  
-    eventBus.on("estoqueProduto:adicionado", atualizarEstoque);
-  
-   
-    return () => {
-      eventBus.off("estoqueProduto:adicionado", atualizarEstoque);
-    };
+  useEffect(() => {
+    carregar();
   }, [userId]);
-  
+
   return (
-    <EstoqueProdutoContext.Provider value={{ produtos, adicionarEstoqueProduto }}>
+    <EstoqueProdutoContext.Provider value={{ 
+      estoqueProdutos,
+      loading,
+      carregar,
+      adicionar, 
+    }}>
       {children}
     </EstoqueProdutoContext.Provider>
   );
 };
+
 
 export const useEstoqueProduto = () => {
   const context = useContext(EstoqueProdutoContext);
