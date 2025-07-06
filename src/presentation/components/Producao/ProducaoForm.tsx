@@ -16,23 +16,12 @@ import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
+import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
 
 
 const producaoSchema = z.object({
-  fazenda:z.object({
-    id: z.string(),
-    nome: z.string(),
-
-  }),
-  produto: z.object({
-    id: z.string(),
-    nome: z.string(),
-    unidadeMedida: z.object({
-      id:z.string(),
-      nome:z.string(),
-      sigla:z.string(),
-    }),
-  }),
+  fazendaId: z.string(),
+  produtoId: z.string(),
   quantidade: z.coerce.number().positive("A quantidade é obrigatoria"),
   status: z.string().min(1, "Status é obrigatório"),
 });
@@ -41,7 +30,7 @@ type ProducaoFormData = z.infer<typeof producaoSchema>;
 
 export default function ProducaoForm() {
   const [loading, setLoading] = useState(false);
-  const { adicionarProducao } = useProducao();
+  const { adicionar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
 
@@ -59,16 +48,16 @@ export default function ProducaoForm() {
     },
   });
 
-  const onSubmit = async (data: ProducaoFormData) => {
+  const onSubmit = async (data: ProducaoInserirDTO) => {
     try {
       Loading.show()
       setLoading(true);
-      await adicionarProducao({
+      await adicionar({
         quantidade: data.quantidade,
         status: data.status,
         data: new Date(),
-        produto: data.produto,
-        fazenda: data.fazenda
+        produtoId: data.produtoId,
+        fazendaId: data.fazendaId
       });
       reset(); 
       ShowToast("success", "Produção adicionada com sucesso!");
@@ -87,7 +76,7 @@ export default function ProducaoForm() {
           <Text className="text-xl font-semibold mb-2">Fazenda</Text>
         <Controller
           control={control}
-          name="fazenda"
+          name="fazendaId"
           render={({ field: { onChange, value } }) => (
             <Picker
               selectedValue={value}
@@ -106,13 +95,13 @@ export default function ProducaoForm() {
             </Picker>
           )}
         />
-        {errors.produto && (
-          <Text className="text-red-500 mt-1">{errors.produto.message}</Text>
+        {errors.produtoId && (
+          <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
         )}
         <Text className="text-xl font-semibold mb-2">Produto</Text>
         <Controller
           control={control}
-          name="produto"
+          name="produtoId"
           render={({ field: { onChange, value } }) => (
             <Picker
               selectedValue={value}
@@ -131,8 +120,8 @@ export default function ProducaoForm() {
             </Picker>
           )}
         />
-        {errors.produto && (
-          <Text className="text-red-500 mt-1">{errors.produto.message}</Text>
+        {errors.produtoId && (
+          <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
         )}
      
 

@@ -29,7 +29,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
-  console.log("contexto estoque produtos", estoqueProdutos)
+
   const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoApiService());
 
   const carregar = async (reset = false) => {

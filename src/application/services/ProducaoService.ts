@@ -6,42 +6,25 @@ import { eventBus } from "@/shared/utils/EventBus";
 import { Producao } from "@/domain/models/Producao";
 import { EstoqueProdutoAdicionarForm } from "@/domain/models/EstoqueProdutoAdicionarForm";
 import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
+import { IProducaoApiService } from "../interfaces/producao/IProducaoApiService";
+import { ProducaoBuscarTodosDTO } from "../dtos/producao/Producao/ProducaoBuscarTodosDTO";
+import { ProducaoInserirDTO } from "../dtos/producao/Producao/ProducaoInserirDTO";
+import { ProducaoBuscarTodosResponseDTO } from "../dtos/producao/Producao/ProducaoBuscarTodosResponseDTO";
 
 export class ProducaoService {
   constructor(
-    private produtoRepo: IProdutoRepository,
-    private producaoRepo: IProducaoRepository,
-    private estoqueProdutoRepo: IEstoqueProdutoRepository
+    private apiService: IProducaoApiService,
   ) {}
-   async get(userId:string){
-    return await this.producaoRepo.getAll(userId);
-};
-  async insert(userId: string, producao: ProducaoAdicionarForm) {
-  const produtoExiste = await this.produtoRepo.exists(userId, producao.produto.id);
-  if (!produtoExiste) {
-    throw new Error("Produto não encontrado. Não é possível registrar a produção.");
+  
+  async buscarTodos(dto: ProducaoBuscarTodosDTO): Promise<ProducaoBuscarTodosResponseDTO> {
+    return await this.apiService.buscarTodos(dto);
   }
-  return await this.producaoRepo.insert(userId, producao);
+  
+  async inserir(dados: ProducaoInserirDTO): Promise<void> {
+    return await this.apiService.inserir(dados);
+  }
+
+  // async atualizar(producao: Producao): Promise<void> {
+  //   return await this.apiService.atualizar(producao);
+  // }
 }
-async update(userId: string, producao: Producao) {
-  const produtoExiste = await this.produtoRepo.exists(userId, producao.produto.id);
-  if (!produtoExiste) {
-    throw new Error("Produto não encontrado.");
-  }
-
- await this.producaoRepo.update(userId,producao);
- 
-  if (producao.status === ProducaoStatus.COLHIDA) {
-    const itemEstoque: EstoqueProdutoAdicionarForm = {
-      produto: producao.produto,
-      quantidade: producao.quantidade,
-      preco: 50
-    };
-
-    await this.estoqueProdutoRepo.insert(userId, itemEstoque);
-
-    // Emitir evento
-    eventBus.emit("estoqueProduto:adicionado", itemEstoque);
-  }
-}
-  }

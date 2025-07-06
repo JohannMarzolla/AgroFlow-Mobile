@@ -20,7 +20,7 @@ export default function ProducaoItem({ producao }: IProducaoItem) {
     >
       <View className="flex-row justify-between mb-2">
         <Text className="text-gray-800 font-medium capitalize">
-          {producao.produto.nome}
+          {producao.produtoNome}
         </Text>
          <Text className="text-gray-800 font-medium capitalize">
           {producao.status}
@@ -32,7 +32,7 @@ export default function ProducaoItem({ producao }: IProducaoItem) {
            {producao.quantidade}
         </Text>
          <Text className="text-gray-800 font-semibold text-lg">
-           {producao.fazenda.nome}
+           {producao.fazendaNome}
         </Text>
       </View>
     </Pressable>

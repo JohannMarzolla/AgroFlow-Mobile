@@ -1,22 +1,24 @@
 import { ProducaoStatus } from "../enum/ProducaoStatus";
-import { Fazenda } from "./Fazenda";
-import { Produto } from "./Produto";
 
 export class Producao {
     id: string;
     quantidade: number;
     status: ProducaoStatus;
     data : Date;
-    produto: Produto;
-    fazenda: Fazenda ;
+    produtoId: string;
+    fazendaId: string ;
+    produtoNome: string ;
+    fazendaNome: string 
 
     constructor(obj:Producao){
         this.id = obj.id;
         this.quantidade = obj.quantidade;
         this.status = obj.status;
         this.data = obj.data;
-        this.produto = obj.produto;
-        this.fazenda= obj.fazenda
+        this.produtoId = obj.produtoId;
+        this.fazendaId = obj.fazendaId;
+        this.produtoNome = obj.produtoNome
+        this.fazendaNome = obj.fazendaNome
 
         
     }
