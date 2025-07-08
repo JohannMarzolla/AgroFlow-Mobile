@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { Loading } from "@/presentation/components/ui/Loading";
 import {
@@ -84,7 +84,7 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
   };
 
   return (
-    <View className="p-6 pt-2 gap-4">
+    <View className="gap-4">
       {!!meta && <Input label="Status" readOnly={true} value={meta.status} />}
 
       <Controller

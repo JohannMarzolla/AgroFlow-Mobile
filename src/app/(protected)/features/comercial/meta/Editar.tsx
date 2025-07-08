@@ -1,9 +1,8 @@
-import { View } from "react-native";
 import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MetaForm from "@/presentation/components/comercial/meta/MetaForm";
 import { Meta } from "@/domain/models/comercial/Meta";
-import PageHeader from "@/presentation/components/ui/PageHeader";
+import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
 
 export default function EditarMeta() {
   const route = useRoute();
@@ -11,9 +10,8 @@ export default function EditarMeta() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 bg-white">
-      <PageHeader pageName="Editar meta"></PageHeader>
+    <PageAdicionarLayout pageName="Editar meta">
       <MetaForm meta={meta} onCancel={() => navigation.goBack()} />
-    </View>
+    </PageAdicionarLayout>
   );
 }
