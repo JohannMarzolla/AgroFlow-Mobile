@@ -14,13 +14,12 @@ export default function ProdutoItem({ produto }: IProdutoItem) {
         <Text className="text-gray-800 font-medium capitalize">
           {produto.nome}
         </Text>
-      </View>
-
+      
       <View className="flex-row justify-between items-center">
         <Text className="text-gray-800 font-semibold text-lg">
            {produto.unidadeMedidaSigla}
         </Text>
-        <View className="flex-row space-x-4">
+      
         </View>
       </View>
     </View>

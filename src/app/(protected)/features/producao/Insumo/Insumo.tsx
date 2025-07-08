@@ -6,6 +6,8 @@ import Lista from "@/shared/utils/Lista";
 import { useInsumo } from "@/presentation/contexts/InsumoContext";
 import InsumoItem from "@/presentation/components/Insumo/InsumoItem";
 import { InsumoStackParamList } from "./InsumoStack";
+import PageHeader from "@/presentation/components/ui/PageHeader";
+import InputSelect from "@/presentation/components/ui/InputSelect";
 
 type InsumoNavigationProp = NativeStackNavigationProp<InsumoStackParamList, "Insumo">;
 
@@ -15,14 +17,20 @@ export  function TelaDeProducao() {
 
   
   return (
-    <View className="flex-1 pt-6 px-6">
-      <TouchableHighlight
-        className="bg-green-600 px-6 py-3 rounded-lg mb-6"
-        underlayColor="#38a169"
-        onPress={() => navigation.navigate("AdicionarInsumo")} 
-      >
-        <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
-      </TouchableHighlight>
+    <View className="flex-1 bg-white">
+    <PageHeader
+    pageName="Insumo"
+    showAdd={true}
+    onAdicionar={() => navigation.navigate("AdicionarInsumo")}
+  ></PageHeader>
+    <View className="px-6 pb-4">
+    <InputSelect
+      label="Tipo"
+      labelTextBold={false}
+      // options={MetaConsts.Tipos}
+    />
+   
+  </View>
 
       <Lista data={insumos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <InsumoItem insumo={item} /> } />
     </View>

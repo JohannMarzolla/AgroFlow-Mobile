@@ -7,6 +7,8 @@ import Lista from "@/shared/utils/Lista";
 import { useMedida } from "@/presentation/contexts/MedidaContext";
 import MedidaItem from "@/presentation/components/Medida/MedidaItem";
 import { MedidaStackParamList } from "./MedidasStack";
+import PageHeader from "@/presentation/components/ui/PageHeader";
+import InputSelect from "@/presentation/components/ui/InputSelect";
 
 type MedidaNavigationProp = NativeStackNavigationProp<MedidaStackParamList, "Medida">;
 
@@ -16,15 +18,20 @@ export  function TelaDeProducao() {
   
   
   return (
-    <View className="flex-1 pt-6 px-6">
-      <TouchableHighlight
-        className="bg-green-600 px-6 py-3 rounded-lg mb-6"
-        underlayColor="#38a169"
-        onPress={() => navigation.navigate("AdicionarMedida")} 
-      >
-        <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
-      </TouchableHighlight>
-
+    <View className="flex-1 bg-white">
+    <PageHeader
+    pageName="Medida"
+    showAdd={true}
+    onAdicionar={() => navigation.navigate("AdicionarMedida")}
+  ></PageHeader>
+    <View className="px-6 pb-4">
+    <InputSelect
+      label="Tipo"
+      labelTextBold={false}
+      // options={MetaConsts.Tipos}
+    />
+   
+  </View>
       <Lista data={medida} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <MedidaItem medida={item} /> } />
     </View>
   );

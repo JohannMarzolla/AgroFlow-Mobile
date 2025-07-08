@@ -7,6 +7,8 @@ import { ProdutosStackParamList } from "./ProdutosStack";
 import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import ProdutoItem from "@/presentation/components/Produto/ProdutoItem";
 import Lista from "@/shared/utils/Lista";
+import PageHeader from "@/presentation/components/ui/PageHeader";
+import InputSelect from "@/presentation/components/ui/InputSelect";
 
 
 type ProdutosNavigationProp = NativeStackNavigationProp<ProdutosStackParamList, "Produtos">;
@@ -17,14 +19,23 @@ export  function TelaDeProdutos() {
 
 
   return (
-    <View className="flex-1 pt-6 px-6">
-      <TouchableHighlight
-        className="bg-green-600 px-6 py-3 rounded-lg mb-6"
-        underlayColor="#38a169"
-        onPress={() => navigation.navigate("AdicionarProduto")} 
-      >
-        <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
-      </TouchableHighlight>
+    <View className="flex-1 bg-white">
+    <PageHeader
+    pageName="Produto"
+    showAdd={true}
+    onAdicionar={() => navigation.navigate("AdicionarProduto")}
+  >
+    
+  </PageHeader>
+
+    <View className="px-6 pb-4">
+    <InputSelect
+      label="Tipo"
+      labelTextBold={false}
+      // options={MetaConsts.Tipos}
+    />
+   
+  </View>
 
       <Lista data={produtos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <ProdutoItem produto={item} /> }/>
     </View>

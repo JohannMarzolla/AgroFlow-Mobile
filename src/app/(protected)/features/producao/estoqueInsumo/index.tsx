@@ -6,6 +6,8 @@ import Lista from "@/shared/utils/Lista";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { EstoqueInsumoStackParamList } from "./EstoqueInsumoStack";
+import PageHeader from "@/presentation/components/ui/PageHeader";
+import InputSelect from "@/presentation/components/ui/InputSelect";
 
 type EstoqueInsumoNavigationProp = NativeStackNavigationProp<EstoqueInsumoStackParamList, "EstoqueInsumo">;
 
@@ -15,14 +17,20 @@ export default function EstoqueInsumo() {
   console.log("estoque insumo item", estoqueInsumos )
 
   return (
-    <View className="flex-1 pt-6 px-6">
-      <TouchableHighlight
-        className="bg-green-600 px-6 py-3 rounded-lg mb-6"
-        underlayColor="#38a169"
-        onPress={() => navigation.navigate("AdicionarEstoqueInsumo")}
-      >
-        <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
-      </TouchableHighlight>
+    <View className="flex-1 bg-white">
+        <PageHeader
+        pageName="Estoque Insumo"
+        showAdd={true}
+        onAdicionar={() => navigation.navigate("AdicionarEstoqueInsumo")}
+      ></PageHeader>
+        <View className="px-6 pb-4">
+        <InputSelect
+          label="Tipo"
+          labelTextBold={false}
+          // options={MetaConsts.Tipos}
+        />
+       
+      </View>
       <Lista
         data={estoqueInsumos}
         keyExtractor={(item) => item.id}
