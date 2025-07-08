@@ -23,19 +23,8 @@ type ProducaoDetalhesRouteProp = RouteProp<
 >;
 
 const producaoEditarSchema = z.object({
-  fazenda: z.object({
-    id: z.string(),
-    nome: z.string(),
-  }),
-  produto: z.object({
-    id: z.string(),
-    nome: z.string(),
-    unidadeMedida: z.object({
-      id: z.string(),
-      nome: z.string(),
-      sigla: z.string(),
-    }),
-  }),
+  fazendaId:z.string(),
+  produtoId: z.string(),
   quantidade: z.coerce.number().positive("A quantidade é obrigatória"),
   status: z.string().min(1, "Status é obrigatório"),
 });
@@ -61,8 +50,8 @@ export default function ProducaoDetalhes() {
   } = useForm<ProducaoEditarFormData>({
     resolver: zodResolver(producaoEditarSchema),
     defaultValues: {
-      fazenda: producao.fazenda,
-      produto: producao.produto,
+      fazendaId: producao.fazendaId,
+      produtoId: producao.produtoId,
       quantidade: producao.quantidade,
       status: producao.status,
     },
@@ -142,21 +131,16 @@ export default function ProducaoDetalhes() {
               </Text>
               <View
                 className={`border ${
-                  errors.fazenda ? "border-red-400" : "border-gray-300"
+                  errors.fazendaId ? "border-red-400" : "border-gray-300"
                 } rounded-lg overflow-hidden`}
               >
                 <Controller
                   control={control}
-                  name="fazenda"
+                  name="fazendaId"
                   render={({ field: { onChange, value } }) => (
                     <Picker
-                      selectedValue={value?.id}
-                      onValueChange={(itemValue) => {
-                        const selected = fazenda.find(
-                          (f) => f.id === itemValue
-                        );
-                        if (selected) onChange(selected);
-                      }}
+                      selectedValue={value}
+                      onValueChange={(itemValue) => onChange(itemValue)}
                       style={{ color: "#374151" }}
                       dropdownIconColor="#6B7280"
                     >
@@ -172,7 +156,7 @@ export default function ProducaoDetalhes() {
                   )}
                 />
               </View>
-              {errors.fazenda && (
+              {errors.fazendaId && (
                 <Text className="text-red-500 mt-1 flex-row items-center">
                   <Text className="ml-1">Selecione uma fazenda</Text>
                 </Text>
@@ -186,21 +170,16 @@ export default function ProducaoDetalhes() {
               </Text>
               <View
                 className={`border ${
-                  errors.produto ? "border-red-400" : "border-gray-300"
+                  errors.produtoId ? "border-red-400" : "border-gray-300"
                 } rounded-lg overflow-hidden`}
               >
                 <Controller
                   control={control}
-                  name="produto"
+                  name="produtoId"
                   render={({ field: { onChange, value } }) => (
                     <Picker
-                      selectedValue={value?.id}
-                      onValueChange={(itemValue) => {
-                        const selected = produtos.find(
-                          (p) => p.id === itemValue
-                        );
-                        if (selected) onChange(selected);
-                      }}
+                      selectedValue={value}
+                      onValueChange={(itemValue) => onChange(itemValue)}
                       style={{ color: "#374151" }}
                       dropdownIconColor="#6B7280"
                     >
@@ -216,7 +195,7 @@ export default function ProducaoDetalhes() {
                   )}
                 />
               </View>
-              {errors.produto && (
+              {errors.produtoId && (
                 <Text className="text-red-500 mt-1 flex-row items-center">
                   <Text className="ml-1">Selecione um produto</Text>
                 </Text>

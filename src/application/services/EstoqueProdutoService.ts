@@ -15,4 +15,6 @@ export class EstoqueProdutoService {
   async inserir(dados : EstoqueProdutoInserirDTO) {
     return await this.apiService.inserir(dados);
   }
+ 
+  
 } 

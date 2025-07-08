@@ -18,6 +18,7 @@ export default function Lista<T>({
   return (
     <FlatList
       style={{ flex: 1 }}
+      contentContainerStyle={{ padding: 16 }}
       keyExtractor={keyExtractor}
       data={data}
       renderItem={renderItem}

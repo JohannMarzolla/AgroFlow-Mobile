@@ -28,4 +28,5 @@ export class ProducaoService {
   async atualizar(producao: Producao): Promise<void> {
     return await this.apiService.atualizar(producao);
   }
+  
 }

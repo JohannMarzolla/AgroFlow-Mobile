@@ -11,40 +11,42 @@ import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 import { EstoqueProdutoService } from "@/application/services/EstoqueProdutoService";
 import { EstoqueProdutoInserirDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoInserirDTO";
 import { EstoqueProdutoApiService } from "@/infrastructure/services/producao/EstoqueProdutoApiService";
+import { db } from "@/infrastructure/services/outros/FirebaseConfig";
 
 interface EstoqueProdutoContextData {
   estoqueProdutos: EstoqueProduto[];
   loading: boolean;
-  carregar(): Promise<void>;
-  adicionar(estoqueProduto: EstoqueProdutoInserirDTO): Promise<boolean>;
+  carregar: (reset?: boolean) => Promise<void>;
+  adicionar: (estoqueProduto: EstoqueProdutoInserirDTO) => Promise<boolean>;
 }
 
 const EstoqueProdutoContext = createContext<EstoqueProdutoContextData | undefined>(undefined);
 
 export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const userId = user?.userId  
+  const userId = user?.userId;
+
   const [estoqueProdutos, setEstoqueProdutos] = useState<EstoqueProduto[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
-
-  const estoqueProdutoService = new EstoqueProdutoService(new EstoqueProdutoApiService());
+  const estoqueProdutoApiService = new EstoqueProdutoApiService();
+  const estoqueProdutoService = new EstoqueProdutoService(estoqueProdutoApiService);
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
+    if (!userId) return;
 
     try {
       setLoading(true);
-
       const result = await estoqueProdutoService.buscarTodos({
         limite: 5,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setEstoqueProdutos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
+      setEstoqueProdutos(prev => reset ? result.dados : [...prev, ...result.dados]);
     } catch (error) {
       setHasMore(false);
       ShowToast("error", "Erro ao carregar estoque de produtos.");
@@ -56,7 +58,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   const adicionar = async (dados: EstoqueProdutoInserirDTO) => {
     try {
       await estoqueProdutoService.inserir(dados);
-      await carregar(true);
+      await carregar(true); // recarrega todos
       ShowToast("success", "Estoque de produto adicionado com sucesso.");
       return true;
     } catch (error) {
@@ -66,21 +68,26 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   };
 
   useEffect(() => {
-    carregar();
+    if (!userId) return;
+
+    const unsubscribe = estoqueProdutoApiService.escutarAlteracoes(() => {
+      console.log("chamando carregar de estoqueProdutos")
+      carregar(true); // recarrega sempre que houver alteração no Firestore
+    });
+
+    return unsubscribe;
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) carregar();
   }, [userId]);
 
   return (
-    <EstoqueProdutoContext.Provider value={{ 
-      estoqueProdutos,
-      loading,
-      carregar,
-      adicionar, 
-    }}>
+    <EstoqueProdutoContext.Provider value={{ estoqueProdutos, loading, carregar, adicionar }}>
       {children}
     </EstoqueProdutoContext.Provider>
   );
 };
-
 
 export const useEstoqueProduto = () => {
   const context = useContext(EstoqueProdutoContext);
@@ -90,4 +97,4 @@ export const useEstoqueProduto = () => {
     );
   }
   return context;
-}; 
+};

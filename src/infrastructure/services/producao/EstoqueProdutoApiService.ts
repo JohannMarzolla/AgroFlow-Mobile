@@ -4,6 +4,8 @@ import { EstoqueProdutoInserirDTO } from "@/application/dtos/producao/EstoquePro
 import { EstoqueProdutoBuscarTodosDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoBuscarTodosDTO";
 import { EstoqueProdutoBuscarTodosResponseDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoTodosResponseDTO";
 import { IEstoqueProdutoApiService } from "@/application/interfaces/producao/IEstoqueProdutoApiService";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../outros/FirebaseConfig";
 
 
 export class EstoqueProdutoApiService implements IEstoqueProdutoApiService {
@@ -32,7 +34,17 @@ export class EstoqueProdutoApiService implements IEstoqueProdutoApiService {
       throw error instanceof Error
         ? error
         : new Error("Erro desconhecido ao tentar cadastrar festoque produto");
-    }
+    } 
+  }
+  escutarAlteracoes(callback: () => void): () => void {
+    const q = query(collection(db, "estoqueProduto"));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      // Não nos importamos com os dados, apenas notificamos que houve mudança
+      callback();
+    });
+  
+    return unsubscribe;
   }
 
   // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
