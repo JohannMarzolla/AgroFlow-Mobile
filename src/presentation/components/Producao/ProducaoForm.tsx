@@ -55,7 +55,6 @@ export default function ProducaoForm() {
       await adicionar({
         quantidade: data.quantidade,
         status: data.status,
-        data: new Date(),
         produtoId: data.produtoId,
         fazendaId: data.fazendaId
       });

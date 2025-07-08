@@ -18,7 +18,7 @@ interface ProducaoContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(producao: ProducaoInserirDTO): Promise<boolean>;
-  // atualizar(producao: Producao): Promise<boolean>;
+  atualizar(producao: Producao): Promise<boolean>;
 }
 const ProducaoContext = createContext<ProducaoContextData | undefined>(undefined);
 
@@ -31,7 +31,6 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const [lastId, setLastId] = useState<string | null>(null);
 
   const producaoService = new ProducaoService(new ProducaoApiService());
-  console.log("producao contexto", producao)
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
@@ -66,17 +65,17 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // const atualizar = async (producao: Producao) => {
-  //   try {
-  //     await producaoService.atualizar(producao);
-  //     await carregar(true);
-  //     ShowToast("success", "Produção atualizada com sucesso.");
-  //     return true;
-  //   } catch (error) {
-  //     ShowToast("error", "Erro ao atualizar produção.");
-  //     return false;
-  //   }
-  // };
+  const atualizar = async (producao: Producao) => {
+    try {
+      await producaoService.atualizar(producao);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
 
   useEffect(() => {
     carregar();
@@ -88,7 +87,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
       loading,
       carregar,
       adicionar,
-      // atualizar,
+      atualizar,
     }}>
       {children}
     </ProducaoContext.Provider>

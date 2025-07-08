@@ -3,6 +3,7 @@ import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/Produca
 import { ProducaoBuscarTodosDTO } from "@/application/dtos/producao/Producao/ProducaoBuscarTodosDTO";
 import { ProducaoBuscarTodosResponseDTO } from "@/application/dtos/producao/Producao/ProducaoBuscarTodosResponseDTO";
 import { IProducaoApiService } from "@/application/interfaces/producao/IProducaoApiService";
+import { ProducaoAtualizarDTO } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
 
 export class ProducaoApiService implements IProducaoApiService {
@@ -34,14 +35,14 @@ export class ProducaoApiService implements IProducaoApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: ProducaoAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<ProducaoAtualizarDTO, void>("producao/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar producao", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar producao");
+    }
+  }
 }

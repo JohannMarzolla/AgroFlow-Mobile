@@ -48,7 +48,7 @@ export default function ProducaoDetalhes() {
   const [loading, setLoading] = useState(false);
 
   const { producao } = route.params;
-  const { updateProducao } = useProducao();
+  const { atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
 
@@ -72,7 +72,7 @@ export default function ProducaoDetalhes() {
     try {
       Loading.show();
       setLoading(true);
-      await updateProducao({ ...producao, ...data });
+      await atualizar({ ...producao, ...data });
       ShowToast("success", "Produção atualizada com sucesso!");
     } catch (error) {
       ShowToast("error", "Erro ao atualizar produção");
@@ -100,9 +100,9 @@ export default function ProducaoDetalhes() {
                 <Icon name="calendar-today" size={18} color="#6B7280" />
                 <Text className="text-gray-600 ml-2">Criado em:</Text>
               </View>
-              <Text className="font-medium text-gray-800">
+              {/* <Text className="font-medium text-gray-800">
                 {formatarData(producao.data)}
-              </Text>
+              </Text> */}
             </View>
 
             <View className="flex-row justify-between pb-2 border-b border-gray-100">
@@ -110,9 +110,9 @@ export default function ProducaoDetalhes() {
                 <Icon name="refresh" size={18} color="#6B7280" />
                 <Text className="text-gray-600 ml-2">Última atualização:</Text>
               </View>
-              <Text className="font-medium text-gray-800">
+              {/* <Text className="font-medium text-gray-800">
                 {formatarData(producao.data)}
-              </Text>
+              </Text> */}
             </View>
 
             <View className="flex-row justify-between">

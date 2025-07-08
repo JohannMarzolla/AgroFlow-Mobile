@@ -3,7 +3,7 @@ import { ProducaoStatus } from "../enum/ProducaoStatus";
 export class Producao {
     id: string;
     quantidade: number;
-    status: ProducaoStatus;
+    status: string;
     data : Date;
     produtoId: string;
     fazendaId: string ;

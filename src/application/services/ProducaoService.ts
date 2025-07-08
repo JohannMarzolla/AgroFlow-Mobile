@@ -23,8 +23,9 @@ export class ProducaoService {
   async inserir(dados: ProducaoInserirDTO): Promise<void> {
     return await this.apiService.inserir(dados);
   }
+  
 
-  // async atualizar(producao: Producao): Promise<void> {
-  //   return await this.apiService.atualizar(producao);
-  // }
+  async atualizar(producao: Producao): Promise<void> {
+    return await this.apiService.atualizar(producao);
+  }
 }

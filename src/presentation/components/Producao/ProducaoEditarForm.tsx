@@ -12,7 +12,6 @@ import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
 import { Producao } from "@/domain/models/Producao";
 
-// 1. Simplifique o schema para trabalhar com IDs
 const producaoEditarSchema = z.object({
   fazendaId: z.string().min(1, "Fazenda é obrigatória"),
   produtoId: z.string().min(1, "Produto é obrigatório"),
@@ -28,14 +27,14 @@ interface ProducaoEditarFormProps {
 }
 
 export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEditarFormProps) {
-  const { updateProducao } = useProducao();
+  const { atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
   const [loading, setLoading] = useState(false);
   
   const lista = ["Aguardando colheita", "Aguardando Execução", "Colhido", "Executado"];
 
-  // 2. Use o novo schema simplificado
+  
   const {
     control,
     handleSubmit,
@@ -43,8 +42,8 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
   } = useForm<ProducaoEditarFormData>({
     resolver: zodResolver(producaoEditarSchema),
     defaultValues: {
-      fazendaId: producao.fazenda.id,
-      produtoId: producao.produto.id,
+      fazendaId: producao.fazendaId,
+      produtoId: producao.produtoId,
       quantidade: producao.quantidade,
       status: producao.status,
     },
@@ -66,7 +65,7 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
       };
 
       console.log("Dados enviados:", updatedProducao);
-      await updateProducao(updatedProducao);
+      await atualizar(updatedProducao);
       
       ShowToast("success", "Produção atualizada com sucesso!");
       if (onSubmit) onSubmit();
