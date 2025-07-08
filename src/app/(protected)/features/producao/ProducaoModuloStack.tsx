@@ -5,8 +5,10 @@ import FazendaStack from "./fazenda/FazendaStack";
 import InsumoStack from "./Insumo/InsumoStack";
 import EstoqueProdutoStack from "./estoqueProduto/EstoqueProdutoStack";
 import EstoqueInsumoStack from "./estoqueInsumo/EstoqueInsumoStack";
+import MedidasStack from "./medidas/MedidasStack";
 
 export type ProducaoStackParamList = {
+  Medidas: undefined;
   Fazenda: undefined;
   Produtos: undefined;
   Producao: undefined;
@@ -25,6 +27,7 @@ export default function ProducaoModuloStack() {
         animation: "none",
       }}
     >
+      <Stack.Screen name="Medidas" component={MedidasStack} />
       <Stack.Screen name="Fazenda" component={FazendaStack} />
       <Stack.Screen name="Produtos" component={ProdutosStack} />
       <Stack.Screen name="Insumo" component={InsumoStack} />

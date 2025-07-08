@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MetaForm from "@/presentation/components/comercial/meta/MetaForm";
 import { Meta } from "@/domain/models/comercial/Meta";
+import PageHeader from "@/presentation/components/ui/PageHeader";
 
 export default function EditarMeta() {
   const route = useRoute();
@@ -10,7 +11,8 @@ export default function EditarMeta() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 p-6 bg-white">
+    <View className="flex-1 bg-white">
+      <PageHeader pageName="Editar meta"></PageHeader>
       <MetaForm meta={meta} onCancel={() => navigation.goBack()} />
     </View>
   );

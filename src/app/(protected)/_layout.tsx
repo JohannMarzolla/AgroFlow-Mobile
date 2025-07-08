@@ -12,14 +12,14 @@ import { FazendaProvider } from "@/presentation/contexts/FazendaContext";
 import { MedidaProvider } from "@/presentation/contexts/MedidaContext";
 import { EstoqueProdutoProvider } from "@/presentation/contexts/EstoqueProdutoContext";
 import DrawerContentCustom from "./drawer/DrawerContentCustom";
-import AdministracaoStack from "./features/adiministracaoModulo/AdministracaoStack";
-import ProducaoModuloStack from "./features/producaoModulo/ProducaoModuloStack";
+import ProducaoModuloStack from "./features/producao/ProducaoModuloStack";
 import { InsumoProvider } from "@/presentation/contexts/InsumoContext";
 import { EstoqueInsumoProvider } from "@/presentation/contexts/EstoqueInsumoContext";
 import { colors } from "@/shared/constants/colors";
 import { useNotificacaoWS } from "@/presentation/hooks/useNotificacaoWS";
 import { Redirect, SplashScreen } from "expo-router";
 import ComercialStack from "./features/comercial/ComercialStack";
+import OutrosStack from "./features/outros/OutrosStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -72,10 +72,7 @@ export default function App() {
                       name="Comercial"
                       component={ComercialStack}
                     />
-                    <Drawer.Screen
-                      name="Administracao"
-                      component={AdministracaoStack}
-                    />
+                    <Drawer.Screen name="Outros" component={OutrosStack} />
                     <Drawer.Screen name="Sair" component={Logout} />
                   </Drawer.Navigator>
                 </EstoqueProdutoProvider>

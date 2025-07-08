@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import UsuarioForm from "@/presentation/components/outros/usuario/UsuarioForm";
 import { Usuario } from "@/domain/models/outros/Usuario";
+import PageHeader from "@/presentation/components/ui/PageHeader";
 
 export default function EditarUsuario() {
   const route = useRoute();
@@ -10,7 +11,8 @@ export default function EditarUsuario() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 p-6 bg-white">
+    <View className="flex-1 bg-white">
+      <PageHeader pageName="Editar usuario"></PageHeader>
       <UsuarioForm usuario={usuario} onCancel={() => navigation.goBack()} />
     </View>
   );

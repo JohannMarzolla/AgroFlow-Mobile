@@ -51,7 +51,7 @@ export default function UsuarioForm({ usuario, onCancel }: UsuarioFormProps) {
   };
 
   return (
-    <View className="gap-4">
+    <View className="p-6 pt-2 gap-4">
       <Controller
         control={control}
         name="email"

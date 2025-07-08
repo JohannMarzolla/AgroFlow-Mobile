@@ -16,6 +16,7 @@ const menuItems = [
     submenuKey: "producao",
     submenu: [
       { label: "Fazenda", screen: "Fazenda" },
+      { label: "Medidas", screen: "Medidas" },
       { label: "Produtos", screen: "Produtos" },
       { label: "Insumo", screen: "Insumo" },
       { label: "Produção", screen: "Producao" },
@@ -31,14 +32,13 @@ const menuItems = [
     parentScreen: "Comercial",
   },
   {
-    label: "Administração",
-    submenuKey: "administracao",
+    label: "Outros",
+    submenuKey: "outros",
     submenu: [
-      { label: "Medidas", screen: "Medidas" },
       { label: "Usuarios", screen: "Usuario" },
       { label: "Notificações", screen: "Notificacao" },
     ],
-    parentScreen: "Administracao",
+    parentScreen: "Outros",
   },
   {
     label: "Sair",

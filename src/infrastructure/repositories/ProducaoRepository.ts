@@ -9,7 +9,7 @@ import {
 import { db } from "../services/outros/FirebaseConfig";
 import { Producao } from "@/domain/models/Producao";
 import { IProducaoRepository } from "@/domain/repositories/IProducaoRepository";
-import Fazenda from "@/app/(protected)/features/producaoModulo/fazenda/Fazenda";
+import Fazenda from "@/app/(protected)/features/producao/fazenda/Fazenda";
 
 export class ProducaoRepository implements IProducaoRepository {
   async getAll(userId: string): Promise<Producao[]> {
