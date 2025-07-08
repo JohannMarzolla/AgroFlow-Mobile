@@ -3,6 +3,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useAuth } from "@/presentation/contexts/AuthContext";
@@ -32,8 +33,10 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   const [lastId, setLastId] = useState<string | null>(null);
 
   const estoqueProdutoApiService = new EstoqueProdutoApiService();
-  const estoqueProdutoService = new EstoqueProdutoService(estoqueProdutoApiService);
-
+  
+  const estoqueProdutoService = useMemo(() => 
+    new EstoqueProdutoService(new EstoqueProdutoApiService()), 
+  []);
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
     if (!userId) return;
@@ -70,7 +73,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   useEffect(() => {
     if (!userId) return;
 
-    const unsubscribe = estoqueProdutoApiService.escutarAlteracoes(() => {
+    const unsubscribe = estoqueProdutoService.escutarAlteracoes(() => {
       console.log("chamando carregar de estoqueProdutos")
       carregar(true); // recarrega sempre que houver alteração no Firestore
     });

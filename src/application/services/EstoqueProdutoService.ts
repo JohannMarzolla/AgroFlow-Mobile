@@ -15,6 +15,9 @@ export class EstoqueProdutoService {
   async inserir(dados : EstoqueProdutoInserirDTO) {
     return await this.apiService.inserir(dados);
   }
+  escutarAlteracoes(callback: () => void): () => void {
+    return this.apiService.escutarAlteracoes(callback);
+  }
  
   
 } 

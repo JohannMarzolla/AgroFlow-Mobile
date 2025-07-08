@@ -6,7 +6,7 @@ import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 export interface IEstoqueProdutoApiService {
     buscarTodos(dto:EstoqueProdutoBuscarTodosDTO): Promise<EstoqueProdutoBuscarTodosResponseDTO>;
     inserir(dados:  EstoqueProdutoInserirDTO): Promise<void>;
-    // escutarTodos(lista: EstoqueProduto[]): Promise<void>
+    escutarAlteracoes(callback: () => void): () => void;
     // atualizar(dados: FazendaAtualizarDTO): Promise<void>;
   }
 
