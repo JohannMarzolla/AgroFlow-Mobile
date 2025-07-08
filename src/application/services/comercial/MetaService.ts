@@ -1,7 +1,7 @@
-import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
-import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
-import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
-import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
+import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
+import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosDTO";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosResponseDTO";
+import { MetaInserirDTO } from "@/application/dtos/comercial/meta/MetaInserirDTO";
 import { IMetaApiService } from "@/application/interfaces/comercial/IMetaApiService";
 
 export class MetaService {

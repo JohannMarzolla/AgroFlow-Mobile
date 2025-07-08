@@ -1,5 +1,7 @@
 import axios from "axios";
 import { UserTokenService } from "./UserTokenService";
+import { AuthService } from "@/application/services/outros/AuthService";
+import { eventBus } from "@/shared/utils/EventBus";
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -31,7 +33,7 @@ api.interceptors.response.use(
     console.log(error);
     if (error.response?.status === 401) {
       console.warn("Token expirado ou inválido");
-      // aqui você poderia, por exemplo, redirecionar para login
+      eventBus.emit("logout");
     }
     return Promise.reject(error);
   }

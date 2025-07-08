@@ -5,12 +5,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
+import { MetaInserirDTO } from "@/application/dtos/comercial/meta/MetaInserirDTO";
 import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaService } from "@/application/services/comercial/MetaService";
 import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
-import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
+import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
 
 interface MetaContextData {
   metas: Meta[];

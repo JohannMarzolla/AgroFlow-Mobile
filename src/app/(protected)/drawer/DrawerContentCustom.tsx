@@ -35,7 +35,7 @@ const menuItems = [
     submenuKey: "administracao",
     submenu: [
       { label: "Medidas", screen: "Medidas" },
-      { label: "Cadastro", screen: "Cadastro" },
+      { label: "Usuarios", screen: "Usuario" },
       { label: "Notificações", screen: "Notificacao" },
     ],
     parentScreen: "Administracao",

@@ -6,7 +6,7 @@ import { Loading } from "@/presentation/components/ui/Loading";
 import {
   MetaInserirDTO,
   MetaInserirSchema,
-} from "@/application/dtos/comercial/MetaInserirDTO";
+} from "@/application/dtos/comercial/meta/MetaInserirDTO";
 import {
   MetaCalculoPorEnum,
   MetaStatusEnum,
@@ -14,7 +14,6 @@ import {
 } from "@/domain/enum/comercial/Meta.enum";
 import { useMeta } from "@/presentation/contexts/comercial/MetaContext";
 import InputSelect from "@/presentation/components/ui/InputSelect";
-import MetaSelectData from "@/shared/constants/meta.consts";
 import Button from "@/presentation/components/ui/Button";
 import Input from "@/presentation/components/ui/Input";
 import InputDate from "@/presentation/components/ui/InputDate";
@@ -23,9 +22,10 @@ import FazendaSelect from "@/presentation/components/Fazenda/FazendaSelect";
 import {
   MetaAtualizarDTO,
   MetaAtualizarSchema,
-} from "@/application/dtos/comercial/MetaAtualizarDTO";
+} from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
 import { Meta } from "@/domain/models/comercial/Meta";
 import { DateUtils } from "@/shared/utils/date.utils";
+import MetaConsts from "@/shared/constants/meta.consts";
 
 interface MetaFormProps {
   meta?: Meta;
@@ -94,7 +94,7 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
           <InputSelect
             label="Tipo"
             readOnly={readOnly}
-            options={MetaSelectData.Tipos}
+            options={MetaConsts.Tipos}
             value={value}
             onValueChanged={onChange}
             error={errors.tipo?.message}
@@ -147,7 +147,7 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
           <InputSelect
             label="Calcular por"
             readOnly={readOnly}
-            options={MetaSelectData.CalculoPor}
+            options={MetaConsts.CalculoPor}
             value={value}
             onValueChanged={onChange}
             error={errors.calculoPor?.message}

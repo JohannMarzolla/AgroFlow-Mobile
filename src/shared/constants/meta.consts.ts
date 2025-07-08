@@ -8,7 +8,7 @@ import {
 export default class MetaConsts {
   static readonly Tipos: SelectOption[] = [
     { value: MetaTipoEnum.VENDA, label: "Venda" },
-    { value: MetaTipoEnum.PRODUCAO, label: "Producao" },
+    { value: MetaTipoEnum.PRODUCAO, label: "Produção" },
   ];
 
   static readonly CalculoPor: SelectOption[] = [

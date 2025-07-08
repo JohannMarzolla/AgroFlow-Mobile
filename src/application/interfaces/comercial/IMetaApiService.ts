@@ -1,7 +1,7 @@
-import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
-import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
-import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
-import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
+import { MetaInserirDTO } from "@/application/dtos/comercial/meta/MetaInserirDTO";
+import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
+import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosDTO";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosResponseDTO";
 
 export interface IMetaApiService {
   buscarTodos(dto: MetaBuscarTodosDTO): Promise<MetaBuscarTodosResponseDTO>;

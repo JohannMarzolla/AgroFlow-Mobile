@@ -1,4 +1,4 @@
-import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
+import { UsuarioLogado } from "@/domain/models/outros/UsuarioLogado";
 import * as SecureStore from "expo-secure-store";
 
 export class UserTokenService {

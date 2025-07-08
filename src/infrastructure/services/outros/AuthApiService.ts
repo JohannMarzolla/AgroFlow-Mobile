@@ -1,4 +1,4 @@
-import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
+import { UsuarioLogado } from "@/domain/models/outros/UsuarioLogado";
 import { LoginDTO } from "../../dtos/LoginDTO";
 import { LoginResponseDTO } from "../../dtos/LoginResponseDTO";
 import { HttpClient } from "../base/HttpClient";

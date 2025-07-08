@@ -1,4 +1,4 @@
-import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
+import { UsuarioLogado } from "@/domain/models/outros/UsuarioLogado";
 import { AuthApiService } from "@/infrastructure/services/outros/AuthApiService";
 
 export class AuthService {

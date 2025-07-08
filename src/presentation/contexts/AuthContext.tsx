@@ -1,7 +1,15 @@
 import { ShowToast } from "@/presentation/components/ui/Toast";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { AuthService } from "@/application/services/outros/AuthService";
-import { UsuarioLogado } from "@/domain/models/UsuarioLogado";
+import { UsuarioLogado } from "@/domain/models/outros/UsuarioLogado";
+import { eventBus } from "@/shared/utils/EventBus";
+import { router } from "expo-router";
 
 interface IAuthContext {
   isAuthenticated: boolean;
@@ -40,10 +48,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
+      if (!isAuthenticated) return;
+
       await AuthService.logout();
       setUser(null);
       setIsAuthenticated(false);
       if (refreshTimeout) clearTimeout(refreshTimeout);
+      router.replace("/(auth)/login");
     } catch (error) {
       if (error instanceof Error) {
         ShowToast("error", error.message);
@@ -80,6 +91,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setRefreshTimeout(timeout);
     }
   };
+
+  useEffect(() => {
+    eventBus.on("logout", logout);
+
+    return () => {
+      eventBus.off("logout", logout);
+    };
+  }, []);
 
   return (
     <AuthContext.Provider

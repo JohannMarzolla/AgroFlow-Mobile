@@ -1,9 +1,9 @@
 import { HttpClient } from "../base/HttpClient";
-import { MetaInserirDTO } from "@/application/dtos/comercial/MetaInserirDTO";
-import { MetaAtualizarDTO } from "@/application/dtos/comercial/MetaAtualizarDTO";
+import { MetaInserirDTO } from "@/application/dtos/comercial/meta/MetaInserirDTO";
+import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
 import { IMetaApiService } from "@/application/interfaces/comercial/IMetaApiService";
-import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/MetaBuscarTodosDTO";
-import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/MetaBuscarTodosResponseDTO";
+import { MetaBuscarTodosDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosDTO";
+import { MetaBuscarTodosResponseDTO } from "@/application/dtos/comercial/meta/MetaBuscarTodosResponseDTO";
 
 export class MetaApiService implements IMetaApiService {
   async buscarTodos(

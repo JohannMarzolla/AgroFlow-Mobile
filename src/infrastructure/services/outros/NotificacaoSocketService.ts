@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 import * as Notifications from "expo-notifications";
-import { NotificacaoEnviarDTO } from "@/application/dtos/outros/NotificacaoEnviarDTO";
+import { NotificacaoEnviarDTO } from "@/application/dtos/outros/notificacao/NotificacaoEnviarDTO";
 import { eventBus } from "@/shared/utils/EventBus";
 import { NotificacaoToast } from "@/presentation/components/outros/notificacao/NotificacaoToast";
 
@@ -27,8 +27,6 @@ export class NotificacaoSocketService {
       });
 
       this.socket.on("notification", async (data: NotificacaoEnviarDTO) => {
-        console.log(data);
-
         await Notifications.scheduleNotificationAsync({
           content: {
             title: data.titulo,
