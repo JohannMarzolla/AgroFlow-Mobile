@@ -10,12 +10,15 @@ import { UsuarioInserirDTO } from "@/application/dtos/outros/usuario/UsuarioInse
 import { Usuario } from "@/domain/models/outros/Usuario";
 import { UsuarioApiService } from "@/infrastructure/services/outros/UsuarioApiService";
 import { UsuarioService } from "@/application/services/outros/UsuarioService";
+import { UsuarioAtualizarDTO } from "@/application/dtos/outros/usuario/UsuarioAtualizarDTO";
 
 interface UsuarioContextData {
   usuarios: Usuario[];
   loading: boolean;
   carregar(): Promise<void>;
-  adicionar(meta: UsuarioInserirDTO): Promise<boolean>;
+  adicionar(usuario: UsuarioInserirDTO): Promise<boolean>;
+  atualizar(usuario: UsuarioAtualizarDTO): Promise<boolean>;
+  recuperarSenha(usuarioId: string): Promise<boolean>;
 }
 
 const UsuarioContext = createContext<UsuarioContextData | undefined>(undefined);
@@ -25,7 +28,7 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
-  const metaService = new UsuarioService(new UsuarioApiService());
+  const usuarioService = new UsuarioService(new UsuarioApiService());
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
@@ -33,7 +36,7 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
     try {
       setLoading(true);
 
-      const result = await metaService.buscarTodos({
+      const result = await usuarioService.buscarTodos({
         limite: 5,
         ultimoId: !reset ? lastId : null,
       });
@@ -50,14 +53,37 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const adicionar = async (meta: UsuarioInserirDTO) => {
+  const adicionar = async (usuario: UsuarioInserirDTO) => {
     try {
-      await metaService.inserir(meta);
+      await usuarioService.inserir(usuario);
       await carregar(true);
-      ShowToast("success", "Usuario adicionada com sucesso.");
+      ShowToast("success", "Usuario adicionado com sucesso.");
       return true;
     } catch (error) {
-      ShowToast("error", "Erro ao adicionar meta.");
+      ShowToast("error", "Erro ao adicionar usuario.");
+      return false;
+    }
+  };
+
+  const atualizar = async (usuario: UsuarioAtualizarDTO) => {
+    try {
+      await usuarioService.atualizar(usuario);
+      await carregar(true);
+      ShowToast("success", "Usuario atualizado com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar usuario.");
+      return false;
+    }
+  };
+
+  const recuperarSenha = async (usuarioId: string) => {
+    try {
+      await usuarioService.recuperarSenha(usuarioId);
+      ShowToast("success", "Link de recuperação de senha enviado com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao recuperar senha do usuario.");
       return false;
     }
   };
@@ -67,7 +93,16 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UsuarioContext.Provider value={{ usuarios, loading, carregar, adicionar }}>
+    <UsuarioContext.Provider
+      value={{
+        usuarios,
+        loading,
+        carregar,
+        adicionar,
+        atualizar,
+        recuperarSenha,
+      }}
+    >
       {children}
     </UsuarioContext.Provider>
   );

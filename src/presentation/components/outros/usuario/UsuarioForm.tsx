@@ -20,31 +20,48 @@ interface UsuarioFormProps {
   onCancel?: () => void;
 }
 
-const useUsuarioForm = () => {
+const useUsuarioForm = (usuario: Usuario | undefined) => {
   return useForm<UsuarioInserirDTO>({
     resolver: zodResolver(UsuarioInserirSchema),
     defaultValues: {
-      email: "",
-      nome: "",
-      setor: UsuarioSetorEnum.PRODUCAO,
+      email: usuario?.email ?? "",
+      nome: usuario?.nome ?? "",
+      setor: (usuario?.setor as any) ?? UsuarioSetorEnum.PRODUCAO,
     },
   });
 };
 
 export default function UsuarioForm({ usuario, onCancel }: UsuarioFormProps) {
-  const { adicionar } = useUsuario();
+  const { adicionar, atualizar, recuperarSenha } = useUsuario();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useUsuarioForm();
+  } = useUsuarioForm(usuario);
 
   const onSubmit = async (data: UsuarioInserirDTO) => {
     try {
       Loading.show();
-      const success = await adicionar(data as UsuarioInserirDTO);
+
+      const success = !!usuario
+        ? await atualizar({
+            id: usuario.id,
+            nome: data.nome,
+            setor: data.setor,
+          })
+        : await adicionar(data as UsuarioInserirDTO);
+
       if (success) reset(data);
+    } finally {
+      Loading.hide();
+    }
+  };
+
+  const onRecuperarAcesso = async () => {
+    try {
+      Loading.show();
+      if (usuario) await recuperarSenha(usuario?.id);
     } finally {
       Loading.hide();
     }
@@ -58,6 +75,7 @@ export default function UsuarioForm({ usuario, onCancel }: UsuarioFormProps) {
         render={({ field: { onChange, value } }) => (
           <Input
             label="Email"
+            readOnly={!!usuario}
             value={value}
             onValueChanged={onChange}
             error={errors.email?.message}
@@ -103,6 +121,15 @@ export default function UsuarioForm({ usuario, onCancel }: UsuarioFormProps) {
           onPress={handleSubmit(onSubmit)}
         />
       </View>
+
+      {!!usuario && (
+        <Button
+          className="flex-1"
+          text="Recuperar acesso"
+          color="gray"
+          onPress={onRecuperarAcesso}
+        />
+      )}
     </View>
   );
 }

@@ -16,13 +16,17 @@ export const UsuarioItem: React.FC<Props> = ({ usuario, onPress }) => {
     >
       <View className="flex-row justify-between items-center">
         <View>
-          <Text className="text-base font-semibold text-gray-800">
-            {usuario.nome}
-          </Text>
+          <View className="flex flex-row justify-between w-full">
+            <Text className="text-base font-semibold text-gray-800">
+              {usuario.nome}
+            </Text>
+            <Text className="text-sm text-gray-600 mt-1">
+              {UsuarioConsts.getSetorLabel(usuario.setor)}
+            </Text>
+          </View>
+
           <Text className="text-sm text-gray-500">{usuario.email}</Text>
-          <Text className="text-sm text-gray-400 mt-1">
-            Setor: {UsuarioConsts.getSetorLabel(usuario.setor)}
-          </Text>
+
           {usuario.primeiroAcesso && (
             <Text className="text-xs text-yellow-600 font-bold mt-1">
               Primeiro acesso pendente

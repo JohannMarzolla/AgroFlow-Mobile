@@ -1,3 +1,4 @@
+import { UsuarioAtualizarDTO } from "@/application/dtos/outros/usuario/UsuarioAtualizarDTO";
 import { UsuarioBuscarTodosDTO } from "@/application/dtos/outros/usuario/UsuarioBuscarTodosDTO";
 import { UsuarioBuscarTodosResponseDTO } from "@/application/dtos/outros/usuario/UsuarioBuscarTodosResponseDTO";
 import { UsuarioInserirDTO } from "@/application/dtos/outros/usuario/UsuarioInserirDTO";
@@ -16,7 +17,11 @@ export class UsuarioService {
     return this.apiService.inserir(dados);
   }
 
-  // async atualizar(dados: UsuarioAtualizarDTO): Promise<void> {
-  //   return this.apiService.atualizar(dados);
-  // }
+  async atualizar(dados: UsuarioAtualizarDTO): Promise<void> {
+    return this.apiService.atualizar(dados);
+  }
+
+  async recuperarSenha(usuarioId: string): Promise<void> {
+    return this.apiService.recuperarSenha(usuarioId);
+  }
 }

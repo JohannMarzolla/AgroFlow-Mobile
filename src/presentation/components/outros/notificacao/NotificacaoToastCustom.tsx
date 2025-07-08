@@ -27,9 +27,13 @@ export function NotificacaoToastCustom({
       ></Icon>
 
       <View className="flex-1">
-        <Text className="text-base font-semibold text-gray-800">{text1}</Text>
+        <Text className="text-base font-semibold text-gray-800 flex-shrink flex-wrap">
+          {text1}
+        </Text>
         {!!text2 && (
-          <Text className="text-sm text-gray-500 mt-0.5">{text2}</Text>
+          <Text className="text-sm text-gray-500 mt-0.5 flex-shrink flex-wrap">
+            {text2}
+          </Text>
         )}
       </View>
     </View>
