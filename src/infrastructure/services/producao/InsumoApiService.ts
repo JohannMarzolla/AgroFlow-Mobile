@@ -3,6 +3,7 @@ import { IInsumoApiService } from "@/application/interfaces/producao/IInsumoApiS
 import { InsumoBuscarTodosDTO } from "@/application/dtos/producao/Insumos/InsumoBuscarTodosDTO";
 import { InsumoBuscarTodosResponseDTO } from "@/application/dtos/producao/Insumos/InsumoBuscarTodosResponseDTO";
 import { InsumoInserirDTO } from "@/application/dtos/producao/Insumos/InsumoInserirDTO";
+import { InsumoAtualizarDTO } from "@/application/dtos/producao/Insumos/InsumoAtualizarDTO";
 
 export class InsumoApiService implements IInsumoApiService {
 
@@ -33,14 +34,14 @@ export class InsumoApiService implements IInsumoApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: InsumoAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<InsumoAtualizarDTO, void>("insumo/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar producao", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar producao");
+    }
+  }
 }

@@ -7,8 +7,8 @@ export class Producao {
     data : Date;
     produtoId: string;
     fazendaId: string ;
-    produtoNome: string ;
-    fazendaNome: string 
+    produtoNome?: string ;
+    fazendaNome?: string 
 
     constructor(obj:Producao){
         this.id = obj.id;

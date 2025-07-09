@@ -3,6 +3,7 @@ import { HttpClient } from "../base/HttpClient";
 import { FazendaBuscarTodosResponseDTO } from "@/application/dtos/producao/fazenda/FazendaBuscarTodosResponseDTO";
 import { FazendaInserirDTO } from "@/application/dtos/producao/fazenda/FazendaInserirDTO";
 import { IFazendaApiService } from "@/application/interfaces/producao/IFazendaApiService";
+import { FazendaAtualizarDTO } from "@/application/dtos/producao/fazenda/FazendaAtualizarDTO";
 
 
 export class FazendaApiService implements IFazendaApiService {
@@ -34,14 +35,14 @@ export class FazendaApiService implements IFazendaApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar fazenda", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar fazenda");
+    }
+  }
 }

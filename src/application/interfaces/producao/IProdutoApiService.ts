@@ -1,3 +1,4 @@
+import { ProdutoAtualizarDTO } from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
 import { ProdutoBuscarTodosDTO } from "@/application/dtos/producao/Produtos/ProdutoBuscarTodosDTO";
 import { ProdutoBuscarTodosResponseDTO } from "@/application/dtos/producao/Produtos/ProdutoBuscarTodosResponseDTO";
 import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
@@ -5,5 +6,5 @@ import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoI
 export interface IProdutoApiService {
     buscarTodos(dto:ProdutoBuscarTodosDTO): Promise<  ProdutoBuscarTodosResponseDTO>;
     inserir(dados:   ProdutoInserirDTO): Promise<void>;
-    // atualizar(dados: FazendaAtualizarDTO): Promise<void>;
+    atualizar(dados: ProdutoAtualizarDTO): Promise<void>;
   }

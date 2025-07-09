@@ -12,13 +12,14 @@ import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 import { EstoqueProdutoService } from "@/application/services/EstoqueProdutoService";
 import { EstoqueProdutoInserirDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoInserirDTO";
 import { EstoqueProdutoApiService } from "@/infrastructure/services/producao/EstoqueProdutoApiService";
-import { db } from "@/infrastructure/services/outros/FirebaseConfig";
+import { EstoqueProdutoAtualizarDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueInsumoAtualizarDTO";
 
 interface EstoqueProdutoContextData {
   estoqueProdutos: EstoqueProduto[];
   loading: boolean;
   carregar: (reset?: boolean) => Promise<void>;
   adicionar: (estoqueProduto: EstoqueProdutoInserirDTO) => Promise<boolean>;
+  atualizar(estoque:EstoqueProdutoAtualizarDTO): Promise<boolean>;
 }
 
 const EstoqueProdutoContext = createContext<EstoqueProdutoContextData | undefined>(undefined);
@@ -69,6 +70,18 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
       return false;
     }
   };
+  const atualizar = async (estoque: EstoqueProdutoAtualizarDTO) => {
+    try {
+      await estoqueProdutoService.atualizar(estoque);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
+
 
   useEffect(() => {
     if (!userId) return;
@@ -86,7 +99,7 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   }, [userId]);
 
   return (
-    <EstoqueProdutoContext.Provider value={{ estoqueProdutos, loading, carregar, adicionar }}>
+    <EstoqueProdutoContext.Provider value={{ estoqueProdutos, loading, carregar, adicionar, atualizar }}>
       {children}
     </EstoqueProdutoContext.Provider>
   );

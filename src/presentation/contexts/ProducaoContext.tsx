@@ -11,6 +11,7 @@ import { Producao } from "@/domain/models/Producao";
 import { ProducaoService } from "@/application/services/ProducaoService";
 import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
 import { ProducaoApiService } from "@/infrastructure/services/producao/ProducaoApiService";
+import { ProducaoAtualizarDTO } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
 
 interface ProducaoContextData {
@@ -18,7 +19,7 @@ interface ProducaoContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(producao: ProducaoInserirDTO): Promise<boolean>;
-  atualizar(producao: Producao): Promise<boolean>;
+  atualizar(producao: ProducaoAtualizarDTO): Promise<boolean>;
 }
 const ProducaoContext = createContext<ProducaoContextData | undefined>(undefined);
 
@@ -31,6 +32,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const [lastId, setLastId] = useState<string | null>(null);
 
   const producaoService = new ProducaoService(new ProducaoApiService());
+  console.log("tstando     fdfdsfds")
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
@@ -65,7 +67,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const atualizar = async (producao: Producao) => {
+  const atualizar = async (producao: ProducaoAtualizarDTO) => {
     try {
       await producaoService.atualizar(producao);
       await carregar(true);

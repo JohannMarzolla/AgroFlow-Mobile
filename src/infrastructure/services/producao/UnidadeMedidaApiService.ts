@@ -3,6 +3,7 @@ import { UnidadeMedidaBuscarTodosDTO } from "@/application/dtos/producao/Unidade
 import { UnidadeMedidaBuscarTodosResponseDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaBuscarResponseDTO";
 import { UnidadeMedidaInserirDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaInserirDTO";
 import { IUnidadeMEdidaApiService } from "@/application/interfaces/producao/IUnidadeMedidaApiService";
+import { UnidadeMedidaAtualizarDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaAtualizarDTO";
 
 
 export class UnidadeMedidaApiService implements IUnidadeMEdidaApiService {
@@ -34,14 +35,14 @@ export class UnidadeMedidaApiService implements IUnidadeMEdidaApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: UnidadeMedidaAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<UnidadeMedidaAtualizarDTO, void>("unidadeMedida/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar producao", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar producao");
+    }
+  }
 }

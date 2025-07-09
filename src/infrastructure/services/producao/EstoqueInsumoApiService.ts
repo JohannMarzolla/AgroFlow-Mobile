@@ -3,6 +3,7 @@ import { EstoqueInsumoInserirDTO } from "@/application/dtos/producao/EstoqueInsu
 import { EstoqueInsumoBuscarTodosDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosDTO";
 import { EstoqueInsumoBuscarTodosResponseDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosResponseDTO";
 import { IEstoqueInsumoApiService } from "@/application/interfaces/producao/IEstoqueInsumoApiService";
+import { EstoqueInsumoAtualizarDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
 
 
 export class EstoqueInsumoApiService implements IEstoqueInsumoApiService {
@@ -34,14 +35,14 @@ export class EstoqueInsumoApiService implements IEstoqueInsumoApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: EstoqueInsumoAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<EstoqueInsumoAtualizarDTO, void>("estoqueInsumo/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar producao", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar producao");
+    }
+  }
 }

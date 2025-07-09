@@ -10,6 +10,7 @@ import { IProducaoApiService } from "../interfaces/producao/IProducaoApiService"
 import { ProducaoBuscarTodosDTO } from "../dtos/producao/Producao/ProducaoBuscarTodosDTO";
 import { ProducaoInserirDTO } from "../dtos/producao/Producao/ProducaoInserirDTO";
 import { ProducaoBuscarTodosResponseDTO } from "../dtos/producao/Producao/ProducaoBuscarTodosResponseDTO";
+import { ProducaoAtualizarDTO } from "../dtos/producao/Producao/ProducaoAtualizarDTO";
 
 export class ProducaoService {
   constructor(
@@ -25,7 +26,7 @@ export class ProducaoService {
   }
   
 
-  async atualizar(producao: Producao): Promise<void> {
+  async atualizar(producao: ProducaoAtualizarDTO): Promise<void> {
     return await this.apiService.atualizar(producao);
   }
   

@@ -64,6 +64,17 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
   };
+  const atualizar = async (produto: Produto) => {
+    try {
+      await produtoService.atualizar(produto);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
 
 
  useEffect(() => {

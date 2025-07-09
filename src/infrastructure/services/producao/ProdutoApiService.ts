@@ -1,3 +1,4 @@
+import { ProdutoAtualizarDTO } from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
 import { HttpClient } from "../base/HttpClient";
 import { ProdutoBuscarTodosDTO } from "@/application/dtos/producao/Produtos/ProdutoBuscarTodosDTO";
 import { ProdutoBuscarTodosResponseDTO } from "@/application/dtos/producao/Produtos/ProdutoBuscarTodosResponseDTO";
@@ -34,14 +35,14 @@ export class ProdutoApiService implements IProdutoApiService {
     }
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: ProdutoAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<ProdutoAtualizarDTO, void>("produto/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar producao", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar producao");
+    }
+  }
 }

@@ -11,6 +11,7 @@ import { Insumo } from "@/domain/models/Insumo";
 import { InsumoService } from "@/application/services/InsumoService";
 import { InsumoInserirDTO } from "@/application/dtos/producao/Insumos/InsumoInserirDTO";
 import { InsumoApiService } from "@/infrastructure/services/producao/InsumoApiService";
+import { InsumoAtualizarDTO } from "@/application/dtos/producao/Insumos/InsumoAtualizarDTO";
 
 
 interface InsumoContextData {
@@ -18,6 +19,7 @@ interface InsumoContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(insumo: InsumoInserirDTO): Promise<boolean>;
+  atualizar(insumo:InsumoAtualizarDTO): Promise<boolean>;
 }
 
 const InsumoContext = createContext<InsumoContextData | undefined>(undefined);
@@ -64,7 +66,17 @@ export const InsumoProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
   };
-
+  const atualizar = async (insumo: InsumoAtualizarDTO) => {
+    try {
+      await insumoService.atualizar(insumo);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
 
  useEffect(() => {
     carregar();
@@ -75,7 +87,8 @@ export const InsumoProvider = ({ children }: { children: ReactNode }) => {
       insumos,
       loading,
       carregar,
-      adicionar, }}>
+      adicionar, 
+      atualizar}}>
       {children}
     </InsumoContext.Provider>
   );

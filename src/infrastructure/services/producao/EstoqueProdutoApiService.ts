@@ -6,6 +6,8 @@ import { EstoqueProdutoBuscarTodosResponseDTO } from "@/application/dtos/produca
 import { IEstoqueProdutoApiService } from "@/application/interfaces/producao/IEstoqueProdutoApiService";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../outros/FirebaseConfig";
+import { EstoqueProdutoAtualizarDTO } from "@/application/dtos/producao/EstoqueProduto/EstoqueInsumoAtualizarDTO";
+import { ProducaoAtualizarDTO } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
 
 export class EstoqueProdutoApiService implements IEstoqueProdutoApiService {
@@ -47,14 +49,14 @@ export class EstoqueProdutoApiService implements IEstoqueProdutoApiService {
     return unsubscribe;
   }
 
-  // async atualizar(dto: FazendaAtualizarDTO): Promise<void> {
-  //   try {
-  //     await HttpClient.post<FazendaAtualizarDTO, void>("fazenda/atualizar", dto);
-  //   } catch (error: any) {
-  //     console.error("Erro ao atualizar fazenda", error);
-  //     throw error instanceof Error
-  //       ? error
-  //       : new Error("Erro desconhecido ao tentar atualizar fazenda");
-  //   }
-  // }
+  async atualizar(dto: EstoqueProdutoAtualizarDTO): Promise<void> {
+    try {
+      await HttpClient.post<ProducaoAtualizarDTO, void>("estoqueProduto/atualizar", dto);
+    } catch (error: any) {
+      console.error("Erro ao atualizar estoque Produto", error);
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar atualizar estoque Produto ");
+    }
+  }
 }

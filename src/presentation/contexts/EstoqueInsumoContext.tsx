@@ -7,12 +7,11 @@ import {
 } from "react";
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { ShowToast } from "../components/ui/Toast";
-import { EstoqueInsumoAdicionarForm } from "@/domain/models/EstoqueInsumoAdicionarForm";
 import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
 import { EstoqueInsumoService } from "@/application/services/EstoqueInsumoService";
-import { EstoqueInsumoRepository } from "@/infrastructure/repositories/EstoqueInsumoRepository";
 import { EstoqueInsumoInserirDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
 import { EstoqueInsumoApiService } from "@/infrastructure/services/producao/EstoqueInsumoApiService";
+import { EstoqueInsumoAtualizarDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
 
 
 
@@ -21,6 +20,7 @@ interface EstoqueInsumoContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(estoqueInsumo: EstoqueInsumoInserirDTO): Promise<boolean>;
+  atualizar(estoque:EstoqueInsumoAtualizarDTO): Promise<boolean>;
 }
 const EstoqueInsumoContext = createContext<EstoqueInsumoContextData | undefined>(undefined);
 
@@ -67,6 +67,17 @@ export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => 
       return false;
     }
   };
+  const atualizar = async (estoque: EstoqueInsumoAtualizarDTO) => {
+    try {
+      await estoqueInsumoService.atualizar(estoque);
+      await carregar(true);
+      ShowToast("success", "Meta atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar meta.");
+      return false;
+    }
+  };
 
  useEffect(() => {
      carregar();
@@ -76,7 +87,8 @@ export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => 
     <EstoqueInsumoContext.Provider value={{ estoqueInsumos,
       loading,
       carregar,
-      adicionar, }}>
+      adicionar,
+      atualizar }}>
       {children}
     </EstoqueInsumoContext.Provider>
   );

@@ -5,6 +5,7 @@ import { IInsumoApiService } from "../interfaces/producao/IInsumoApiService";
 import { InsumoInserirDTO } from "../dtos/producao/Insumos/InsumoInserirDTO";
 import { InsumoBuscarTodosResponseDTO } from "../dtos/producao/Insumos/InsumoBuscarTodosResponseDTO";
 import { InsumoBuscarTodosDTO } from "../dtos/producao/Insumos/InsumoBuscarTodosDTO";
+import { InsumoAtualizarDTO } from "../dtos/producao/Insumos/InsumoAtualizarDTO";
 
 export class InsumoService {
   constructor(
@@ -17,6 +18,9 @@ export class InsumoService {
 
   async inserir(dados : InsumoInserirDTO): Promise<void> {
     await this.apiService.inserir(dados);
+  }
+  async atualizar(insumo: InsumoAtualizarDTO): Promise<void> {
+    return await this.apiService.atualizar(insumo);
   }
 
 }

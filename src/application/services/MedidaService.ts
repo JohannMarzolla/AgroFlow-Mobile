@@ -2,6 +2,8 @@ import { UnidadeMedidaBuscarTodosDTO } from "../dtos/producao/UnidadeMedida/Unid
 import { IUnidadeMEdidaApiService } from "../interfaces/producao/IUnidadeMedidaApiService";
 import { UnidadeMedidaBuscarTodosResponseDTO } from "../dtos/producao/UnidadeMedida/UnidadeMedidaBuscarResponseDTO";
 import { UnidadeMedidaInserirDTO } from "../dtos/producao/UnidadeMedida/UnidadeMedidaInserirDTO";
+import { Medida } from "@/domain/models/Medida";
+import { UnidadeMedidaAtualizarDTO } from "../dtos/producao/UnidadeMedida/UnidadeMedidaAtualizarDTO";
 
 
 export class MedidasService{
@@ -17,5 +19,8 @@ export class MedidasService{
         return await this.apiService.inserir(dados)
 
     }
+    async atualizar(medida: UnidadeMedidaAtualizarDTO): Promise<void> {
+        return await this.apiService.atualizar(medida);
+      }
      
 }

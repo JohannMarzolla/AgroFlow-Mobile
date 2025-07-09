@@ -4,6 +4,8 @@ import { IEstoqueInsumoApiService } from "../interfaces/producao/IEstoqueInsumoA
 import { EstoqueInsumoInserirDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
 import { EstoqueInsumoBuscarTodosResponseDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosResponseDTO";
 import { EstoqueInsumoBuscarTodosDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosDTO";
+import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
+import { EstoqueInsumoAtualizarDTO } from "../dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
 
 export class EstoqueInsumoService{
    constructor(
@@ -17,4 +19,7 @@ export class EstoqueInsumoService{
          return await this.apiService.inserir(dados)
  
      }
+     async atualizar(estoqueInsumo: EstoqueInsumoAtualizarDTO): Promise<void> {
+        return await this.apiService.atualizar(estoqueInsumo);
+      }
 }

@@ -11,6 +11,7 @@ import { Medida } from "@/domain/models/Medida";
 import { MedidasService } from "@/application/services/MedidaService";
 import { UnidadeMedidaInserirDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaInserirDTO";
 import { UnidadeMedidaApiService } from "@/infrastructure/services/producao/UnidadeMedidaApiService";
+import { UnidadeMedidaAtualizarDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaAtualizarDTO";
 
 
 interface MedidaContextData {
@@ -18,6 +19,7 @@ interface MedidaContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(unidade: UnidadeMedidaInserirDTO): Promise<boolean>;
+  atualizar(medida:UnidadeMedidaAtualizarDTO): Promise<boolean>;
 }
 
 
@@ -65,6 +67,18 @@ export const MedidaProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
   };
+  const atualizar = async (medida: UnidadeMedidaAtualizarDTO) => {
+    try {
+      await medidaService.atualizar(medida);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
+
 
  useEffect(() => {
     carregar();
@@ -76,6 +90,7 @@ export const MedidaProvider = ({ children }: { children: ReactNode }) => {
       loading,
       carregar,
       adicionar,
+      atualizar
     }}
   >
       {children}

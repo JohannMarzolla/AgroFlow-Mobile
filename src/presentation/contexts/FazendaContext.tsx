@@ -11,13 +11,14 @@ import { FazendaService } from "@/application/services/FazendaService";
 import { Fazenda } from "@/domain/models/Fazenda";
 import { FazendaApiService } from "@/infrastructure/services/producao/FazendaApiService";
 import { FazendaInserirDTO } from "@/application/dtos/producao/fazenda/FazendaInserirDTO";
+import { FazendaAtualizarDTO } from "@/application/dtos/producao/fazenda/FazendaAtualizarDTO";
 
 interface FazendaContextData {
   fazenda: Fazenda[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(fazenda: FazendaInserirDTO): Promise<boolean>;
-  // atualizar(meta: MetaAtualizarDTO): Promise<boolean>;
+  atualizar(fazenda:FazendaAtualizarDTO): Promise<boolean>;
 }
 
 const FazendaContext = createContext<FazendaContextData | undefined>(undefined);
@@ -63,6 +64,18 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
   };
+  const atualizar = async (fazenda: FazendaAtualizarDTO) => {
+    try {
+      await fazendaService.atualizar(fazenda);
+      await carregar(true);
+      ShowToast("success", "Produção atualizada com sucesso.");
+      return true;
+    } catch (error) {
+      ShowToast("error", "Erro ao atualizar produção.");
+      return false;
+    }
+  };
+
 
   useEffect(() => {
     carregar();
@@ -74,7 +87,8 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
         fazenda, 
         loading,   
         carregar,  
-        adicionar
+        adicionar,
+        atualizar
       }}
     >
       {children}
