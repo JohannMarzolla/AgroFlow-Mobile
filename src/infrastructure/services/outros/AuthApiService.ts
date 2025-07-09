@@ -25,6 +25,7 @@ export class AuthApiService {
   static async signOut(): Promise<void> {
     try {
       await HttpClient.post("auth/logout");
+      UserTokenService.getInstance().clear();
     } catch (error: any) {
       return;
     }

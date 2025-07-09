@@ -75,8 +75,6 @@ const DrawerContentCustom = (props: DrawerContentComponentProps) => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const { user } = useAuth();
 
-  console.log(user);
-
   const toggleSubmenu = (submenuKey: string) => {
     setOpenSubmenu(openSubmenu === submenuKey ? null : submenuKey);
   };
