@@ -1,6 +1,5 @@
 import axios from "axios";
 import { UserTokenService } from "./UserTokenService";
-import { AuthService } from "@/application/services/outros/AuthService";
 import { eventBus } from "@/shared/utils/EventBus";
 
 const api = axios.create({

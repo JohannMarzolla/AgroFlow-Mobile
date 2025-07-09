@@ -61,11 +61,13 @@ export class AuthApiService {
     return expirationTime <= new Date();
   }
 
-  private static _createUsuarioLogado(dto: LoginResponseDTO) {
+  private static _createUsuarioLogado(dto: LoginResponseDTO): UsuarioLogado {
     return {
       refreshToken: dto.refreshToken,
       token: dto.token,
       userId: dto.userId,
+      nome: dto.nome,
+      setor: dto.setor,
       expiresIn: dto.expiresIn,
     };
   }
