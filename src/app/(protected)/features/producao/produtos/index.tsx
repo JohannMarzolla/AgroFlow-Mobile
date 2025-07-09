@@ -15,7 +15,7 @@ type ProdutosNavigationProp = NativeStackNavigationProp<ProdutosStackParamList, 
 
 export  function TelaDeProdutos() {
   const navigation = useNavigation<ProdutosNavigationProp>();
-  const { produtos } = useProdutos();
+  const { produtos , carregar, loading} = useProdutos();
 
 
   return (
@@ -32,12 +32,21 @@ export  function TelaDeProdutos() {
     <InputSelect
       label="Tipo"
       labelTextBold={false}
-      // options={MetaConsts.Tipos}
+      
     />
    
   </View>
 
-      <Lista data={produtos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <ProdutoItem produto={item} /> }/>
+  <Lista
+       data={produtos} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <ProdutoItem produto={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
+        />
     </View>
   );
 }

@@ -9,12 +9,13 @@ import Lista from "@/shared/utils/Lista";
 import ProducaoItem from "@/presentation/components/Producao/ProducaoItem";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
+import { Producao as ProducaoModel } from "@/domain/models/Producao";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<ProducaoStackParamList, "Producao">;
 
 export  function TelaDeProducao() {
   const navigation = useNavigation<ProdutosNavigationProp>();
-  const { producao } = useProducao();
+  const { producao, carregar, loading } = useProducao();
   
   return (
     <View className="flex-1 bg-white">
@@ -23,25 +24,25 @@ export  function TelaDeProducao() {
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarProducao")}
       ></PageHeader>
+
         <View className="px-6 pb-4">
         <InputSelect
           label="Tipo"
           labelTextBold={false}
-          // options={MetaConsts.Tipos}
         />
        
       </View>
 
-
-      {/* <TouchableHighlight
-        className="bg-green-600 px-6 py-3 rounded-lg mb-6"
-        underlayColor="#38a169"
-        onPress={() => navigation.navigate("AdicionarProducao")} 
-      >
-        <Text className="text-white text-lg font-semibold text-center">Adicionar</Text>
-      </TouchableHighlight> */}
-
-      <Lista data={producao} keyExtractor={(prod)=> prod.id.toString()}  renderItem={({ item }) => <ProducaoItem producao={item} /> } />
+      <Lista
+       data={producao} 
+       keyExtractor={(prod)=> prod.id.toString()}  
+       renderItem={({ item }) => <ProducaoItem producao={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+       onEdit={(item: ProducaoModel) =>
+        navigation.navigate("ProducaoDetalhes", { producao: item })
+      }
+        />
     </View>
   );
 }

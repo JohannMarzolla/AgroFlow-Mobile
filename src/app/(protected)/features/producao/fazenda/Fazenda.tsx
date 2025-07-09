@@ -13,7 +13,7 @@ type ProdutosNavigationProp = NativeStackNavigationProp<FazendaStackParamList, "
 
 export  function TelaDeProducao() {
   const navigation = useNavigation<ProdutosNavigationProp>();
-  const { fazenda } = useFazenda();
+  const { fazenda , carregar, loading} = useFazenda();
   
   return (
     <View className="flex-1 bg-white">
@@ -30,7 +30,16 @@ export  function TelaDeProducao() {
         />
        
       </View>
-      <Lista data={fazenda} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <FazendaItem fazenda={item} /> } />
+      <Lista
+       data={fazenda} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <FazendaItem fazenda={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
+        />
     </View>
   );
 }

@@ -32,8 +32,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const [lastId, setLastId] = useState<string | null>(null);
 
   const producaoService = new ProducaoService(new ProducaoApiService());
-  console.log("tstando     fdfdsfds")
-
+ 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
 

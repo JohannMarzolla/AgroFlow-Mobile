@@ -7,15 +7,20 @@ import Lista from "@/shared/utils/Lista";
 
 
 function TelaDeEstoqueProduto() {
-  const { estoqueProdutos } = useEstoqueProduto();
+  const { estoqueProdutos , loading, carregar} = useEstoqueProduto();
 
 
   return (
     <View className="flex-1 pt-6 px-6">
-        <Lista
-          data={estoqueProdutos}
-          renderItem={({ item }) => <EstoqueProdutoItem estoqueProduto={item} />}
-          keyExtractor={(item) => item.id}
+          <Lista
+       data={estoqueProdutos} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <EstoqueProdutoItem estoqueProduto={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
         />
       </View>
   

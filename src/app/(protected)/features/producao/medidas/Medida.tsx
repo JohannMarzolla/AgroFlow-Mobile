@@ -14,7 +14,7 @@ type MedidaNavigationProp = NativeStackNavigationProp<MedidaStackParamList, "Med
 
 export  function TelaDeProducao() {
   const navigation = useNavigation<MedidaNavigationProp>();
-  const { medida } = useMedida();
+  const { medida, carregar, loading } = useMedida();
   
   
   return (
@@ -28,11 +28,20 @@ export  function TelaDeProducao() {
     <InputSelect
       label="Tipo"
       labelTextBold={false}
-      // options={MetaConsts.Tipos}
+      
     />
    
   </View>
-      <Lista data={medida} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <MedidaItem medida={item} /> } />
+  <Lista
+       data={medida} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <MedidaItem medida={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
+        />
     </View>
   );
 }

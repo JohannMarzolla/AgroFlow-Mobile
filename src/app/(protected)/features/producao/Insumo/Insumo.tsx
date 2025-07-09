@@ -13,7 +13,7 @@ type InsumoNavigationProp = NativeStackNavigationProp<InsumoStackParamList, "Ins
 
 export  function TelaDeProducao() {
   const navigation = useNavigation<InsumoNavigationProp>();
-  const { insumos } = useInsumo();
+  const { insumos, carregar, loading } = useInsumo();
 
   
   return (
@@ -32,7 +32,16 @@ export  function TelaDeProducao() {
    
   </View>
 
-      <Lista data={insumos} keyExtractor={(item)=> item.id.toString()}  renderItem={({ item }) => <InsumoItem insumo={item} /> } />
+  <Lista
+       data={insumos} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <InsumoItem insumo={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
+        />
     </View>
   );
 }

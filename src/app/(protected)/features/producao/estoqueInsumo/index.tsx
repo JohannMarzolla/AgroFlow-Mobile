@@ -12,7 +12,7 @@ import InputSelect from "@/presentation/components/ui/InputSelect";
 type EstoqueInsumoNavigationProp = NativeStackNavigationProp<EstoqueInsumoStackParamList, "EstoqueInsumo">;
 
 export default function EstoqueInsumo() {
-  const { estoqueInsumos } = useProducao();
+  const { estoqueInsumos, carregar, loading } = useProducao();
   const navigation = useNavigation<EstoqueInsumoNavigationProp>();
   console.log("estoque insumo item", estoqueInsumos )
 
@@ -32,11 +32,15 @@ export default function EstoqueInsumo() {
        
       </View>
       <Lista
-        data={estoqueInsumos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <EstoqueInsumoItem estoqueInsumo={item} />}
-        
-      />
+       data={estoqueInsumos} 
+       keyExtractor={(item)=> item.id.toString()}  
+       renderItem={({ item }) => <EstoqueInsumoItem estoqueInsumo={item} />}
+       loadingMore={loading}
+       onEndReached={() => carregar()}
+      //  onEdit={(item: ProducaoModel) =>
+      //   navigation.navigate("ProducaoDetalhes", { producao: item })
+      // }
+        />
     </View>
   );
 } 
