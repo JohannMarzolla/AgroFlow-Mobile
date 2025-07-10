@@ -1,111 +1,110 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { View, Text, TextInput, Pressable} from "react-native";
-import { ShowToast } from "../ui/Toast";
-import React, { useState } from "react";
+import { View } from "react-native";
+import React from "react";
 import { Loading } from "../ui/Loading";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import InputSelect from "../ui/InputSelect";
 import { useInsumo } from "@/presentation/contexts/InsumoContext";
-import { Picker } from "@react-native-picker/picker";
 import { useMedida } from "@/presentation/contexts/MedidaContext";
+import { Insumo } from "@/domain/models/Insumo";
+import {
+  InsumoInserirDTO,
+  InsumoInserirBaseSchema,
+} from "@/application/dtos/producao/Insumos/InsumoInserirDTO";
+import {
+  InsumoAtualizarDTO,
+  InsumoAtualizarSchema,
+} from "@/application/dtos/producao/Insumos/InsumoAtualizarDTO";
+import { SelectOption } from "@/shared/models/SelectOption";
 
-const insumoSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório"),
-  unidadeMedidaId: z.string().min(1, "Nome é obrigatório"),
-});
+interface InsumoFormProps {
+  insumo?: Insumo;
+  onCancel?: () => void;
+}
 
-type InsumoFormData = z.infer<typeof insumoSchema>;
+const useInsumoForm = (insumo: Insumo | undefined) => {
+  return useForm<InsumoInserirDTO | InsumoAtualizarDTO>({
+    resolver: zodResolver(!!insumo ? InsumoAtualizarSchema : InsumoInserirBaseSchema),
+    defaultValues: {
+      id: insumo?.id,
+      nome: insumo?.nome ?? "",
+      unidadeMedidaId: insumo?.unidadeMedidaId ?? "",
+    },
+  });
+};
 
-export default function InsumoForm() {
-  const { adicionar } = useInsumo();
-  const {medida} = useMedida()
-  const [loading, setLoading] = useState(false);
-
+export default function InsumoForm({ insumo, onCancel }: InsumoFormProps) {
+  const { adicionar, atualizar } = useInsumo();
+  const { medida } = useMedida();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<InsumoFormData>({
-    resolver: zodResolver(insumoSchema),
-    defaultValues: {
-      nome: "",
-     
-    }
-  });
+  } = useInsumoForm(insumo);
+  const readOnly = false; 
 
-  const onSubmit = async (data: InsumoFormData) => {
+  const medidaOptions: SelectOption[] = medida.map((m) => ({
+    value: m.id,
+    label: m.nome,
+  }));
+
+  const onSubmit = async (data: InsumoInserirDTO | InsumoAtualizarDTO) => {
     try {
-      Loading.show()
-      setLoading(true);
-      await adicionar(data);
-      ShowToast("success", "insumo cadastrado com sucesso!");
-      reset();
-      Loading.hide()
-    } catch (error) {
-      console.error("Erro ao adicionar insumo", error);
-      ShowToast("error", "Erro ao salvar a insumo.");
-      Loading.hide()
+      Loading.show();
+      const success = !!insumo
+        ? await atualizar(data as InsumoAtualizarDTO)
+        : await adicionar(data as InsumoInserirDTO);
+      if (success) reset(data);
     } finally {
-      setLoading(false);
+      Loading.hide();
     }
   };
 
   return (
-    
-      <View >
-        <Text className="text-xl font-semibold mb-2 ">Insumo</Text>
-        <Controller
-          control={control}
-          name="nome"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2 mb-1 "
-              placeholder="Ex: Algodao, adubo "
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              editable={!loading}
-            />
-          )}
-        />
-        {errors.nome && (
-          <View className="flex flex-row items-center mt-1">
-            <Text className="text-red-500 ml-1 text-x">{errors.nome.message}</Text>
-          </View>
+    <View className="gap-4">
+      <Controller
+        control={control}
+        name="nome"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Nome do Insumo"
+            readOnly={readOnly}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.nome?.message}
+          />
         )}
-        <Controller
-          control={control}
-          name="unidadeMedidaId"
-          render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={(itemValue) => onChange(itemValue)}
-              enabled={!loading}
-              className="border border-gray-300 rounded"
-            >
-              <Picker.Item label="Selecione uma medida" value={undefined} />
-              {medida.map((medida) => (
-                <Picker.Item
-                  key={medida.id}
-                  label={medida.nome}
-                  value={medida.id}
-                />
-              ))}
-            </Picker>
-          )}
-        />
-        {errors.unidadeMedidaId && (
-          <Text className="text-red-500 mt-1">{errors.unidadeMedidaId.message}</Text>
+      />
+      <Controller
+        control={control}
+        name="unidadeMedidaId"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Unidade de Medida"
+            readOnly={readOnly}
+            options={medidaOptions}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.unidadeMedidaId?.message}
+          />
         )}
-      
-      <Pressable
-        className={`p-4 rounded-lg flex-row justify-center items-center ${loading ? "bg-gray-400" : "bg-green-600"}`}
-        onPress={handleSubmit(onSubmit)}
-        disabled={loading}
-      >
-        <Text className="text-white font-medium">Salvar</Text>
-      </Pressable>
+      />
+      <View className="flex-row gap-3 min-w-0">
+        <Button
+          className="flex-1"
+          text="Cancelar"
+          color="red"
+          onPress={onCancel}
+        />
+        <Button
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
     </View>
   );
 }

@@ -10,6 +10,7 @@ import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
+import { Fazenda  as FazendaModel} from "@/domain/models/Fazenda";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<
   FazendaStackParamList,
@@ -45,9 +46,9 @@ export function TelaDeProducao() {
         renderItem={({ item }) => <FazendaItem fazenda={item} />}
         loadingMore={loading}
         onEndReached={() => carregar()}
-        //  onEdit={(item: ProducaoModel) =>
-        //   navigation.navigate("ProducaoDetalhes", { producao: item })
-        // }
+         onEdit={(item: FazendaModel) =>
+          navigation.navigate("EditarFazenda", { fazenda: item })
+        }
       />
     </View>
   );

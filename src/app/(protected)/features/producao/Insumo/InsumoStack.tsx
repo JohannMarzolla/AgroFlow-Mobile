@@ -2,11 +2,14 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AdicionarInsumo from "./Adicionar";
 import Insumo from "./Insumo";
+import { Insumo as InsumoModel } from "@/domain/models/Insumo";
+import EditarInsumo from "./Editar";
 
 
 export type InsumoStackParamList = {
   Insumo: undefined;
   AdicionarInsumo: undefined;
+  EditarInsumo: { insumo: InsumoModel };
 };
 
 const Stack = createNativeStackNavigator<InsumoStackParamList>();
@@ -22,5 +25,10 @@ export default function InsumoStack() {
         headerShown: false, 
     }}
   />
+   <Stack.Screen
+          name="EditarInsumo"
+          component={EditarInsumo}
+          options={{ headerShown: false }}
+        />
 </Stack.Navigator>
 )}

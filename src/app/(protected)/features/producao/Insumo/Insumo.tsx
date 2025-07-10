@@ -8,6 +8,7 @@ import InsumoItem from "@/presentation/components/Insumo/InsumoItem";
 import { InsumoStackParamList } from "./InsumoStack";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
+import { Insumo as InsumoModel } from "@/domain/models/Insumo";
 
 type InsumoNavigationProp = NativeStackNavigationProp<InsumoStackParamList, "Insumo">;
 
@@ -38,10 +39,11 @@ export  function TelaDeProducao() {
        renderItem={({ item }) => <InsumoItem insumo={item} />}
        loadingMore={loading}
        onEndReached={() => carregar()}
-      //  onEdit={(item: ProducaoModel) =>
-      //   navigation.navigate("ProducaoDetalhes", { producao: item })
-      // }
-        />
+       onEdit={(item: InsumoModel) =>
+        navigation.navigate("EditarInsumo", { insumo: item })
+      }
+    />
+      
     </View>
   );
 }

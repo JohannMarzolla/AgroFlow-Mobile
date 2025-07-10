@@ -2,62 +2,62 @@ import React from "react";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProducao } from "@/presentation/contexts/EstoqueInsumoContext";
-import { useInsumo } from "@/presentation/contexts/InsumoContext";
+import { useEstoqueProduto } from "@/presentation/contexts/EstoqueProdutoContext";
+import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { Loading } from "../ui/Loading";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import InputSelect from "../ui/InputSelect";
-import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
+import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
 import {
-  EstoqueInsumoInserirDTO,
-  EstoqueInsumoInserirSchema,
-} from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoInserirDTO";
+  EstoqueProdutoInserirDTO,
+  EstoqueProdutoInserirSchema,
+} from "@/application/dtos/producao/EstoqueProduto/EstoqueProdutoInserirDTO";
 import {
-  EstoqueInsumoAtualizarDTO,
-  EstoqueInsumoAtualizarSchema,
-} from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
+  EstoqueProdutoAtualizarDTO,
+  EstoqueProdutoAtualizarSchema,
+} from "@/application/dtos/producao/EstoqueProduto/EstoqueInsumoAtualizarDTO";
 import { SelectOption } from "@/shared/models/SelectOption";
 
-interface EstoqueInsumoFormProps {
-  estoqueInsumo?: EstoqueInsumo;
+interface EstoqueProdutoFormProps {
+  estoqueProduto?: EstoqueProduto;
   onCancel?: () => void;
 }
 
-const useEstoqueInsumoForm = (estoqueInsumo: EstoqueInsumo | undefined) => {
-  return useForm<EstoqueInsumoInserirDTO | EstoqueInsumoAtualizarDTO>({
-    resolver: zodResolver(!!estoqueInsumo ? EstoqueInsumoAtualizarSchema : EstoqueInsumoInserirSchema),
+const useEstoqueProdutoForm = (estoqueProduto: EstoqueProduto | undefined) => {
+  return useForm<EstoqueProdutoInserirDTO | EstoqueProdutoAtualizarDTO>({
+    resolver: zodResolver(!!estoqueProduto ? EstoqueProdutoAtualizarSchema : EstoqueProdutoInserirSchema),
     defaultValues: {
-      id: estoqueInsumo?.id,
-      insumoId: estoqueInsumo?.insumoId ?? "",
-      quantidade: estoqueInsumo?.quantidade ?? 0,
-      preco: estoqueInsumo?.preco ?? 0,
+      id: estoqueProduto?.id,
+      produtoId: estoqueProduto?.produtoId ?? "",
+      quantidade: estoqueProduto?.quantidade ?? 0,
+      preco: estoqueProduto?.preco ?? 0,
     },
   });
 };
 
-export default function EstoqueInsumoForm({ estoqueInsumo, onCancel }: EstoqueInsumoFormProps) {
-  const { adicionar, atualizar } = useProducao();
-  const { insumos } = useInsumo();
+export default function EstoqueProdutoForm({ estoqueProduto, onCancel }: EstoqueProdutoFormProps) {
+  const { adicionar, atualizar } = useEstoqueProduto();
+  const { produtos } = useProdutos();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useEstoqueInsumoForm(estoqueInsumo);
+  } = useEstoqueProdutoForm(estoqueProduto);
   const readOnly = false;
 
-  const insumoOptions: SelectOption[] = insumos.map((i) => ({
-    value: i.id,
-    label: i.nome,
+  const produtoOptions: SelectOption[] = produtos.map((p) => ({
+    value: p.id,
+    label: p.nome,
   }));
 
-  const onSubmit = async (data: EstoqueInsumoInserirDTO | EstoqueInsumoAtualizarDTO) => {
+  const onSubmit = async (data: EstoqueProdutoInserirDTO | EstoqueProdutoAtualizarDTO) => {
     try {
       Loading.show();
-      const success = !!estoqueInsumo
-        ? await atualizar(data as EstoqueInsumoAtualizarDTO)
-        : await adicionar(data as EstoqueInsumoInserirDTO);
+      const success = !!estoqueProduto
+        ? await atualizar(data as EstoqueProdutoAtualizarDTO)
+        : await adicionar(data as EstoqueProdutoInserirDTO);
       if (success) reset(data);
     } finally {
       Loading.hide();
@@ -68,15 +68,15 @@ export default function EstoqueInsumoForm({ estoqueInsumo, onCancel }: EstoqueIn
     <View className="gap-4">
       <Controller
         control={control}
-        name="insumoId"
+        name="produtoId"
         render={({ field: { onChange, value } }) => (
           <InputSelect
-            label="Insumo"
+            label="Produto"
             readOnly={readOnly}
-            options={insumoOptions}
+            options={produtoOptions}
             value={value}
             onValueChanged={onChange}
-            error={errors.insumoId?.message}
+            error={errors.produtoId?.message}
           />
         )}
       />
@@ -123,4 +123,4 @@ export default function EstoqueInsumoForm({ estoqueInsumo, onCancel }: EstoqueIn
       </View>
     </View>
   );
-}
+} 

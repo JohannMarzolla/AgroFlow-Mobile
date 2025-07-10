@@ -16,15 +16,17 @@ export default function EstoqueProdutoItem({ estoqueProduto }: IEstoqueProdutoIt
           {estoqueProduto.produtoNome}
         </Text>
         <Text className="text-gray-800 font-semibold text-lg">
-           {estoqueProduto.unidadeMedidaSigla}
+           {estoqueProduto.quantidade}
         </Text>
       </View>
 
       <View className="flex-row justify-between ">
         <Text className="text-gray-800 font-semibold text-lg">
-           {estoqueProduto.quantidade}
+        R$ {estoqueProduto.preco}
         </Text>
-       
+        <Text className="text-gray-800 font-semibold text-lg">
+           {estoqueProduto.unidadeMedidaSigla}
+        </Text>
        
       </View>
     </View>

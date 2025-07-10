@@ -10,6 +10,7 @@ import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
+import { Produto  as ProdutoModel} from "@/domain/models/Produto";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<
   ProdutosStackParamList,
@@ -43,10 +44,11 @@ export function TelaDeProdutos() {
         renderItem={({ item }) => <ProdutoItem produto={item} />}
         loadingMore={loading}
         onEndReached={() => carregar()}
-        //  onEdit={(item: ProducaoModel) =>
-        //   navigation.navigate("ProducaoDetalhes", { producao: item })
-        // }
+        onEdit={(item: ProdutoModel) =>
+          navigation.navigate("EditarProduto", { produto: item })
+        }
       />
+       
     </View>
   );
 }

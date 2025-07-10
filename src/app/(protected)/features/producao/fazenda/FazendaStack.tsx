@@ -2,10 +2,13 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AdicionarFazenda from "./Adicionar";
 import Fazenda from "./Fazenda";
+import EditarFazenda from "./Editar";
+import { Fazenda as fazendaModel } from "@/domain/models/Fazenda";
 
 export type FazendaStackParamList = {
   Fazenda: undefined;
   AdicionarFazenda: undefined;
+  EditarFazenda: { fazenda: fazendaModel };
 };
 
 const Stack = createNativeStackNavigator<FazendaStackParamList>();
@@ -21,6 +24,11 @@ export default function FazendaStack() {
           headerShown: false,
         }}
       />
+       <Stack.Screen
+          name="EditarFazenda"
+          component={EditarFazenda}
+          options={{ headerShown: false }}
+        />
     </Stack.Navigator>
   );
 }

@@ -1,84 +1,89 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { View, Text, TextInput, Pressable, ActivityIndicator} from "react-native";
-import { ShowToast } from "../ui/Toast";
-import React, { useState } from "react";
+import { View, Text } from "react-native";
+import React from "react";
 import { Loading } from "../ui/Loading";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
+import { Fazenda } from "@/domain/models/Fazenda";
+import {
+  FazendaInserirDTO,
+  FazendaInserirSchema,
+} from "@/application/dtos/producao/fazenda/FazendaInserirDTO";
+import {
+  FazendaAtualizarDTO,
+  FazendaAtualizarSchema,
+} from "@/application/dtos/producao/fazenda/FazendaAtualizarDTO";
 
-const fazendaSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório"),
-});
+interface FazendaFormProps {
+  fazenda?: Fazenda;
+  onCancel?: () => void;
+}
 
-type FazendaFormData = z.infer<typeof fazendaSchema>;
+const useFazendaForm = (fazenda: Fazenda | undefined) => {
+  return useForm<FazendaInserirDTO | FazendaAtualizarDTO>({
+    resolver: zodResolver(!!fazenda ? FazendaAtualizarSchema : FazendaInserirSchema),
+    defaultValues: {
+      id: fazenda?.id,
+      nome: fazenda?.nome ?? "",
+    },
+  });
+};
 
-export default function FazendaForm() {
-  const { adicionar } = useFazenda();
-  const [loading, setLoading] = useState(false);
-
+export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
+  const { adicionar, atualizar } = useFazenda();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FazendaFormData>({
-    resolver: zodResolver(fazendaSchema),
-    defaultValues: {
-      nome: "",
-     
-    }
-  });
+  } = useFazendaForm(fazenda);
+  const readOnly = false; 
 
-  const onSubmit = async (data: FazendaFormData) => {
+  const onSubmit = async (data: FazendaInserirDTO | FazendaAtualizarDTO) => {
     try {
-      Loading.show()
-      setLoading(true);
-      await adicionar(data);
-      ShowToast("success", "fazenda cadastrado com sucesso!");
-      reset();
-      Loading.hide()
-    } catch (error) {
-      console.error("Erro ao adicionar fazenda", error);
-      ShowToast("error", "Erro ao salvar a fazenda.");
-      Loading.hide()
+      Loading.show();
+      const success = !!fazenda
+        ? await atualizar(data as FazendaAtualizarDTO)
+        : await adicionar(data as FazendaInserirDTO);
+      if (success) reset(data);
     } finally {
-      setLoading(false);
+      Loading.hide();
     }
   };
 
   return (
-    
-      <View >
-        <Text className="text-xl font-semibold mb-2 ">Fazenda</Text>
-        <Controller
-          control={control}
-          name="nome"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2 mb-1 "
-              placeholder="Ex: Fazenda das laranjeiras"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              editable={!loading}
-              
-            />
-          )}
-        />
-        {errors.nome && (
-          <View className="flex flex-row items-center mt-1">
-            <Text className="text-red-500 ml-1 text-x">{errors.nome.message}</Text>
-          </View>
+    <View className="gap-4">
+      {!!fazenda?.criadaEm && (
+        <Input label="Criada em" readOnly={true} value={new Date(fazenda.criadaEm).toLocaleDateString()} />
+      )}
+      <Controller
+        control={control}
+        name="nome"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Nome da Fazenda"
+            readOnly={readOnly}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.nome?.message}
+          />
         )}
-      
-      <Pressable
-        className={`p-4 rounded-lg flex-row justify-center items-center ${loading ? "bg-gray-400" : "bg-green-600"}`}
-        onPress={handleSubmit(onSubmit)}
-        disabled={loading}
-      >
-        <Text className="text-white font-medium">Salvar</Text>
-      </Pressable>
+      />
+      <View className="flex-row gap-3 min-w-0">
+        <Button
+          className="flex-1"
+          text="Cancelar"
+          color="red"
+          onPress={onCancel}
+        />
+        <Button
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
     </View>
   );
 }

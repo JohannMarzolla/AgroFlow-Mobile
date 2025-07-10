@@ -1,116 +1,111 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { View, Text, TextInput, Pressable, ActivityIndicator} from "react-native";
-import { useProdutos } from "@/presentation/contexts/ProdutoContext";
-import { ShowToast } from "../ui/Toast";
-import React, { useState } from "react";
+import { View } from "react-native";
+import React from "react";
 import { Loading } from "../ui/Loading";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import InputSelect from "../ui/InputSelect";
+import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { useMedida } from "@/presentation/contexts/MedidaContext";
-import { Picker } from "@react-native-picker/picker";
-import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
+import { Produto } from "@/domain/models/Produto";
+import {
+  ProdutoInserirDTO,
+  ProdutoSchema,
+} from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
+import {
+  ProdutoAtualizarDTO,
+  ProdutoAtualizarSchema,
+} from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
+import { SelectOption } from "@/shared/models/SelectOption";
 
+interface ProdutoFormProps {
+  produto?: Produto;
+  onCancel?: () => void;
+}
 
+const useProdutoForm = (produto: Produto | undefined) => {
+  return useForm<ProdutoInserirDTO | ProdutoAtualizarDTO>({
+    resolver: zodResolver(!!produto ? ProdutoAtualizarSchema : ProdutoSchema),
+    defaultValues: {
+      id: produto?.id,
+      nome: produto?.nome ?? "",
+      unidadeMedidaId: produto?.unidadeMedidaId ?? "",
+    },
+  });
+};
 
-const produtoSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório"),
-  unidadeMedidaId:  z.string().min(1, "Nome é obrigatório"),
-});
-
-type ProdutoFormData = z.infer<typeof produtoSchema>;
-
-export default function ProdutoForm() {
+export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
   const { adicionar } = useProdutos();
-  const {medida} = useMedida();
-  const [loading, setLoading] = useState(false);
-
+  const { medida } = useMedida();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ProdutoFormData>({
-    resolver: zodResolver(produtoSchema),
-    defaultValues: {
-      nome: "",
-     
-    }
-  });
+  } = useProdutoForm(produto);
+  const readOnly = false;
 
-  const onSubmit = async (data: ProdutoInserirDTO) => {
+  const medidaOptions: SelectOption[] = medida.map((m) => ({
+    value: m.id,
+    label: m.nome,
+  }));
+
+  const onSubmit = async (data: ProdutoInserirDTO | ProdutoAtualizarDTO) => {
     try {
-      Loading.show()
-      setLoading(true);
-      await adicionar(data);
-      ShowToast("success", "Produto cadastrado com sucesso!");
-      reset();
-      Loading.hide()
-    } catch (error) {
-      console.error("Erro ao adicionar produto", error);
-      ShowToast("error", "Erro ao salvar o produto.");
-      Loading.hide()
+      Loading.show();
+      // O contexto só tem adicionar, mas já deixo pronto para atualizar se for implementado
+      const success = !!produto
+        ? false // await atualizar(data as ProdutoAtualizarDTO)
+        : await adicionar(data as ProdutoInserirDTO);
+      if (success) reset(data);
     } finally {
-      setLoading(false);
+      Loading.hide();
     }
   };
 
   return (
-    
-      <View >
-        <Text className="text-xl font-semibold mb-2 ">Produto</Text>
-        <Controller
-          control={control}
-          name="nome"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2 mb-1 "
-              placeholder="Ex: Arroz"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              editable={!loading}
-            />
-          )}
-        />
-        {errors.nome && (
-          <View className="flex flex-row items-center mt-1">
-            <Text className="text-red-500 ml-1 text-x">{errors.nome.message}</Text>
-          </View>
+    <View className="gap-4">
+      <Controller
+        control={control}
+        name="nome"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Nome do Produto"
+            readOnly={readOnly}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.nome?.message}
+          />
         )}
-      
-     <Controller
-          control={control}
-          name="unidadeMedidaId"
-          render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={(itemValue) => onChange(itemValue)}
-              enabled={!loading}
-              className="border border-gray-300 rounded"
-            >
-              <Picker.Item label="Selecione um produto" value={undefined} />
-              {medida.map((medida) => (
-                <Picker.Item
-                  key={medida.id}
-                  label={medida.nome}
-                  value={medida.id}
-                />
-              ))}
-            </Picker>
-          )}
-        />
-        {errors.unidadeMedidaId && (
-          <Text className="text-red-500 mt-1">{errors.unidadeMedidaId.message}</Text>
+      />
+      <Controller
+        control={control}
+        name="unidadeMedidaId"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Unidade de Medida"
+            readOnly={readOnly}
+            options={medidaOptions}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.unidadeMedidaId?.message}
+          />
         )}
-     
-
-      <Pressable
-        className={`p-4 rounded-lg flex-row justify-center items-center ${loading ? "bg-gray-400" : "bg-green-600"}`}
-        onPress={handleSubmit(onSubmit)}
-        disabled={loading}
-      >
-        <Text className="text-white font-medium">Salvar</Text>
-      </Pressable>
+      />
+      <View className="flex-row gap-3 min-w-0">
+        <Button
+          className="flex-1"
+          text="Cancelar"
+          color="red"
+          onPress={onCancel}
+        />
+        <Button
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
     </View>
   );
 }

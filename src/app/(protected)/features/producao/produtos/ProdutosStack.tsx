@@ -3,11 +3,14 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Produtos from ".";
 import AdicionarProduto from "./adicionar";
+import EditarProduto from "./Editar";
+import { Produto } from "@/domain/models/Produto";
 
 
 export type ProdutosStackParamList = {
   Produtos: undefined;
   AdicionarProduto: undefined;
+  EditarProduto: { produto: Produto };
 };
 
 const Stack = createNativeStackNavigator<ProdutosStackParamList>();
@@ -23,5 +26,10 @@ export default function ProdutosStack() {
         headerShown: false, 
     }}
   />
+  <Stack.Screen
+          name="EditarProduto"
+          component={EditarProduto}
+          options={{ headerShown: false }}
+        />
 </Stack.Navigator>
 )}

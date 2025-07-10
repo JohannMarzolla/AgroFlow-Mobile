@@ -8,14 +8,14 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { EstoqueInsumoStackParamList } from "./EstoqueInsumoStack";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
+import { EstoqueInsumo as EstoqueInsumoModel } from "@/domain/models/EstoqueInsumo";
 
 type EstoqueInsumoNavigationProp = NativeStackNavigationProp<EstoqueInsumoStackParamList, "EstoqueInsumo">;
 
 export default function EstoqueInsumo() {
   const { estoqueInsumos, carregar, loading } = useProducao();
   const navigation = useNavigation<EstoqueInsumoNavigationProp>();
-  console.log("estoque insumo item", estoqueInsumos )
-
+ 
   return (
     <View className="flex-1 bg-white">
         <PageHeader
@@ -37,10 +37,10 @@ export default function EstoqueInsumo() {
        renderItem={({ item }) => <EstoqueInsumoItem estoqueInsumo={item} />}
        loadingMore={loading}
        onEndReached={() => carregar()}
-      //  onEdit={(item: ProducaoModel) =>
-      //   navigation.navigate("ProducaoDetalhes", { producao: item })
-      // }
-        />
+       onEdit={(item: EstoqueInsumoModel) =>
+        navigation.navigate("EditarEstoqueInsumo", { estoqueInsumo: item })
+      }
+    />
     </View>
   );
 } 

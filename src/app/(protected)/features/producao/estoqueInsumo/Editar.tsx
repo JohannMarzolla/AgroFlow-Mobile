@@ -2,15 +2,17 @@ import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
 import { EstoqueInsumo } from "@/domain/models/EstoqueInsumo";
+import EstoqueInsumoForm from "@/presentation/components/estoqueInsumo/EstoqueInsumoForm";
 
 export default function EditarEstoqueInsumo() {
   const route = useRoute();
   const { estoqueInsumo } = route.params as { estoqueInsumo: EstoqueInsumo };
   const navigation = useNavigation();
+  console.log("estoque insumo", estoqueInsumo)
 
   return (
     <PageAdicionarLayout  pageName="Editar estoqueInsumo">
-      <text>ld</text>
+     <EstoqueInsumoForm estoqueInsumo={estoqueInsumo} onCancel={() => navigation.goBack()}/>
     </PageAdicionarLayout>
   );
 }
