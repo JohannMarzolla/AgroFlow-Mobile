@@ -1,33 +1,29 @@
 import { Text, View } from "react-native";
 import { EstoqueProduto } from "@/domain/models/EstoqueProduto";
-
+import { formatarMoeda } from "@/shared/utils/formatarMoeda";
 
 export interface IEstoqueProdutoItem {
   estoqueProduto: EstoqueProduto;
 }
 
-export default function EstoqueProdutoItem({ estoqueProduto }: IEstoqueProdutoItem) {
- 
+export default function EstoqueProdutoItem({
+  estoqueProduto,
+}: IEstoqueProdutoItem) {
   return (
-    <View className="bg-white p-4 rounded shadow-md mb-4">
-      
-      <View className="flex-row justify-between mb-2">
-        <Text className="text-gray-800 font-medium capitalize">
+    <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
+      <View className="flex-row justify-between items-center">
+        <Text className="text-gray-900 font-semibold capitalize text-lg">
           {estoqueProduto.produtoNome}
         </Text>
-        <Text className="text-gray-800 font-semibold text-lg">
-           {estoqueProduto.quantidade}
+        <Text className="text-gray-500 font-semibold">
+          {estoqueProduto.quantidade} {estoqueProduto.unidadeMedidaSigla}
         </Text>
       </View>
 
       <View className="flex-row justify-between ">
-        <Text className="text-gray-800 font-semibold text-lg">
-        R$ {estoqueProduto.preco}
+        <Text className="text-gray-700">
+          {formatarMoeda(estoqueProduto.preco ?? 0)}
         </Text>
-        <Text className="text-gray-800 font-semibold text-lg">
-           {estoqueProduto.unidadeMedidaSigla}
-        </Text>
-       
       </View>
     </View>
   );

@@ -22,15 +22,14 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
     meta.tipo === MetaTipoEnum.VENDA ? "attach-money" : "agriculture";
 
   return (
-    <View className="bg-white p-4 mb-4 rounded-2xl shadow-md">
+    <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center">
           <Icon name={iconName} size={20} color="#4B5563"></Icon>
 
-          <Text className="pl-2 text-lg font-semibold text-gray-800">
+          <Text className="pl-2 text-lg font-semibold text-gray-900">
             {meta.titulo}
           </Text>
-          
         </View>
 
         <Text className={cn("text-sm font-bold", statusColor)}>
@@ -38,19 +37,19 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
         </Text>
       </View>
 
-      <Text className="text-sm text-gray-600 mt-1">
+      <Text className="text-sm text-gray-800 mt-1">
         {meta.valorAtual} / {meta.valorAlvo} ({Math.round(progresso)}%)
       </Text>
 
       {/* Barra de progresso */}
-      <View className="w-full h-2 bg-gray-200 rounded-full mt-1">
+      <View className="w-full h-2 bg-gray-400 rounded-full mt-1">
         <View
           className="h-2 rounded-full bg-agroflow-orange"
           style={{ width: `${progresso}%` }}
         />
       </View>
 
-      <Text className="flex justify-center align-middle text-sm text-agroflow-gray mt-2">
+      <Text className="flex justify-center align-middle text-sm text-gray-600 mt-2">
         {formatarData(new Date(meta.dataInicio))}
         {"  "}à {formatarData(new Date(meta.dataFim))}
       </Text>

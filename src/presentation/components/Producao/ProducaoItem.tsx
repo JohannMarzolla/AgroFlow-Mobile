@@ -18,25 +18,21 @@ export default function ProducaoItem({ producao }: IProducaoItem) {
 
   return (
     <Pressable
-      className="bg-white p-4 rounded shadow-md mb-4"
+      className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200"
       onPress={() => navigation.navigate("ProducaoDetalhes", { producao })}
     >
-      <View className="flex-row justify-between mb-2">
-        <Text className="text-gray-800 font-medium capitalize">
+      <View className="flex-row justify-between items-center">
+        <Text className="text-gray-900 font-semibold capitalize text-lg">
           {producao.produtoNome}
         </Text>
-        <Text className="text-gray-800 font-medium capitalize">
-          {producao.status}
+        <Text className="text-gray-700 font-semibold">
+          {producao.quantidade}
         </Text>
       </View>
 
-      <View className="flex-row justify-between ">
-        <Text className="text-gray-800 font-semibold text-lg">
-          {producao.quantidade}
-        </Text>
-        <Text className="text-gray-800 font-semibold text-lg">
-          {producao.fazendaNome}
-        </Text>
+      <View className="flex-row justify-between items-center">
+        <Text className="text-gray-800">{producao.fazendaNome}</Text>
+        <Text className="text-gray-600 capitalize">{producao.status}</Text>
       </View>
     </Pressable>
   );
