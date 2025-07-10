@@ -34,7 +34,6 @@ const menuItems: MenuItem[] = [
       {
         label: "Estoque de Produtos",
         screen: "EstoqueProduto",
-        setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.PRODUCAO],
       },
       {
         label: "Estoque de Insumos",
