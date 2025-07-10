@@ -10,6 +10,7 @@ import PageHeader from "@/presentation/components/ui/PageHeader";
 import InputSelect from "@/presentation/components/ui/InputSelect";
 import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
 import { useAuth } from "@/presentation/contexts/AuthContext";
+import { Medida as MedidaModel } from "@/domain/models/Medida";
 
 type MedidaNavigationProp = NativeStackNavigationProp<
   MedidaStackParamList,
@@ -41,10 +42,10 @@ export function TelaDeProducao() {
         renderItem={({ item }) => <MedidaItem medida={item} />}
         loadingMore={loading}
         onEndReached={() => carregar()}
-        //  onEdit={(item: ProducaoModel) =>
-        //   navigation.navigate("ProducaoDetalhes", { producao: item })
-        // }
-      />
+        onEdit={(item: MedidaModel) =>
+          navigation.navigate("EditarMedida", { medida: item })
+        }
+        />
     </View>
   );
 }

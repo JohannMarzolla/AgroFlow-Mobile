@@ -1,16 +1,17 @@
 import { Medida } from "@/domain/models/Medida";
+import MedidaForm from "@/presentation/components/Medida/MedidaForm";
 import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 
-export default function EditarEstoqueInsumo() {
+export default function EditarMedida() {
     const route = useRoute();
     const { medida} = route.params as { medida: Medida };
     const navigation = useNavigation();
   
     return (
       <PageAdicionarLayout  pageName="Editar unidadeMedida">
-        <text>ld</text>
+         <MedidaForm medida={medida}  onCancel={() => navigation.goBack()} />
       </PageAdicionarLayout>
     );
   }

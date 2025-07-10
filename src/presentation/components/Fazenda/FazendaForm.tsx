@@ -63,7 +63,7 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
         name="nome"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Nome da Fazenda"
+            label="Fazenda"
             readOnly={readOnly}
             value={value}
             onValueChanged={onChange}

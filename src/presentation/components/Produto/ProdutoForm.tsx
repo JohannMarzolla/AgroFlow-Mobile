@@ -54,9 +54,8 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
   const onSubmit = async (data: ProdutoInserirDTO | ProdutoAtualizarDTO) => {
     try {
       Loading.show();
-      // O contexto só tem adicionar, mas já deixo pronto para atualizar se for implementado
       const success = !!produto
-        ? false // await atualizar(data as ProdutoAtualizarDTO)
+        ? false 
         : await adicionar(data as ProdutoInserirDTO);
       if (success) reset(data);
     } finally {

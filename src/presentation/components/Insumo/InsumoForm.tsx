@@ -70,7 +70,7 @@ export default function InsumoForm({ insumo, onCancel }: InsumoFormProps) {
         name="nome"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Nome do Insumo"
+            label="Insumo"
             readOnly={readOnly}
             value={value}
             onValueChanged={onChange}

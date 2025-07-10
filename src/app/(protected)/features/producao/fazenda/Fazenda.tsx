@@ -37,7 +37,7 @@ export function TelaDeProducao() {
         <InputSelect
           label="Tipo"
           labelTextBold={false}
-          // options={MetaConsts.Tipos}
+         
         />
       </View>
       <Lista
