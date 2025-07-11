@@ -39,9 +39,10 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
     formState: { errors },
     reset,
   } = useFazendaForm(fazenda);
-  const readOnly = false; 
+  const readOnly = false; // Não há status/bloqueio, sempre editável
 
   const onSubmit = async (data: FazendaInserirDTO | FazendaAtualizarDTO) => {
+    console.log("on submit data", data)
     try {
       Loading.show();
       const success = !!fazenda
@@ -63,7 +64,7 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
         name="nome"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Fazenda"
+            label="Nome da Fazenda"
             readOnly={readOnly}
             value={value}
             onValueChanged={onChange}

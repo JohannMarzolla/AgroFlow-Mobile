@@ -6,6 +6,7 @@ export interface IProdutoItem {
 }
 
 export default function ProdutoItem({ produto }: IProdutoItem) {
+  
   return (
     <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
       <View className="flex-row justify-between">
@@ -17,6 +18,19 @@ export default function ProdutoItem({ produto }: IProdutoItem) {
           {produto.unidadeMedidaSigla}
         </Text>
       </View>
+      {produto.insumosDetalhados?.length ? (
+        <View className="mt-2">
+          <Text className="font-medium">Insumos:</Text>
+          {produto.insumosDetalhados.map((insumo) => (
+            <Text key={insumo.id} className="text-gray-700 ml-2">
+              - {insumo.nome}
+            </Text>
+          ))}
+        </View>
+      ) : (
+        <Text className="text-gray-500 italic">Sem insumos cadastrados.</Text>
+      )}
+
     </View>
   );
 }
