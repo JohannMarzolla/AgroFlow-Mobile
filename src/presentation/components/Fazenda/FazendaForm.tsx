@@ -42,7 +42,7 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
   const readOnly = false; // Não há status/bloqueio, sempre editável
 
   const onSubmit = async (data: FazendaInserirDTO | FazendaAtualizarDTO) => {
-    console.log("on submit data", data)
+   
     try {
       Loading.show();
       const success = !!fazenda

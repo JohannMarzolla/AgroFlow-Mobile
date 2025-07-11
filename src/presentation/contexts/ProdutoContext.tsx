@@ -11,6 +11,7 @@ import { ShowToast } from "../components/ui/Toast";
 import { ProdutoService } from "@/application/services/ProdutoService";
 import { ProdutoApiService } from "@/infrastructure/services/producao/ProdutoApiService";
 import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
+import { ProdutoAtualizarDTO } from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
 
 
 interface ProdutoContextData {
@@ -18,6 +19,7 @@ interface ProdutoContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(produto: ProdutoInserirDTO): Promise<boolean>;
+  atualizar(produto:ProdutoAtualizarDTO):Promise<boolean>
 }
 
 const ProdutosContext = createContext<ProdutoContextData | undefined>(undefined);
@@ -86,7 +88,8 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
     <ProdutosContext.Provider value={{ produtos,
       loading,
       carregar,
-      adicionar,}}>
+      adicionar,
+      atualizar}}>
       {children}
     </ProdutosContext.Provider>
   );

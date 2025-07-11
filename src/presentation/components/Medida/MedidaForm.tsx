@@ -25,6 +25,7 @@ const useMedidaForm = (medida: Medida | undefined) => {
   return useForm<UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO>({
     resolver: zodResolver(!!medida ? UnidadeMedidaAtualizarSchema : MedidaSchema),
     defaultValues: {
+      id: medida?.id,
       nome: medida?.nome ?? "",
       sigla: medida?.sigla ?? "",
     },
@@ -42,6 +43,7 @@ export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
   const readOnly = false;
 
   const onSubmit = async (data: UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO) => {
+    console.log("medida data", data)
     try {
       Loading.show();
       const success = !!medida

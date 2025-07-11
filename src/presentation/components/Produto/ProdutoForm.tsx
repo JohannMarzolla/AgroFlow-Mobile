@@ -39,7 +39,7 @@ const useProdutoForm = (produto: Produto | undefined) => {
 };
 
 export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
-  const { adicionar } = useProdutos();
+  const { adicionar, atualizar } = useProdutos();
   const { medida } = useMedida();
   const { insumos } = useInsumo();
   const {
@@ -76,6 +76,7 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
     setInsumosSelecionados((prev) => prev.filter((i) => i !== id));
   };
 
+
   const onSubmit = async (data: ProdutoInserirDTO | ProdutoAtualizarDTO) => {
     const dadosComInsumos = {
       ...data,
@@ -85,7 +86,7 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
     try {
       Loading.show();
       const success = !!produto
-        ? false 
+        ? await atualizar(dadosComInsumos as ProdutoAtualizarDTO)
         : await adicionar(dadosComInsumos as ProdutoInserirDTO);
       if (success) reset(dadosComInsumos);
     } finally {
@@ -95,13 +96,13 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
 
   return (
     <View className="gap-4">
-      <View>{produto?.insumos}</View>
+      
       <Controller
         control={control}
         name="nome"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Nome do Produto"
+            label="Produto"
             readOnly={readOnly}
             value={value}
             onValueChanged={onChange}
@@ -126,7 +127,7 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
 
 <View className="gap-2">
         <InputSelect
-          label="Adicionar Insumo"
+          label="Insumo"
           value={insumoSelecionado}
           options={insumoOptions}
           onValueChanged={setInsumoSelecionado}
