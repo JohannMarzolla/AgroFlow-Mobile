@@ -38,7 +38,6 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
         limite: 5,
         ultimoId: !reset ? lastId : null,
       });
-      console.log(result);
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
       setNotificacoes((prev) =>

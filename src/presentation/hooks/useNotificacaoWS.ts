@@ -11,11 +11,7 @@ export function useNotificacaoWS() {
 
   async function mostrarQtdNaoLida() {
     const qtdNaoLida = await metaService.buscarQtdNaoLidas();
-    console.log("mostrarQtdNaoLida", qtdNaoLida);
-
-    if (qtdNaoLida > 0) {
-      NotificacaoToast.QtdNaoLida(qtdNaoLida);
-    }
+    if (qtdNaoLida > 0) NotificacaoToast.QtdNaoLida(qtdNaoLida);
   }
 
   useEffect(() => {

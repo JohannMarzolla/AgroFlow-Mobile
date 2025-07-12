@@ -1,9 +1,10 @@
-import { ScrollView, Text } from "react-native";
+import Dashboards from "@/presentation/components/dashboard/Dashboards";
+import { View } from "react-native";
 
 export default function Home() {
   return (
-    <ScrollView className="flex-1 bg-agroflow-light-green p-6 h-full">
-      <Text>Gráficos</Text>
-    </ScrollView>
+    <View className="h-full">
+      <Dashboards />
+    </View>
   );
 }
