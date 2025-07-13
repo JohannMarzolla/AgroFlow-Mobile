@@ -1,6 +1,6 @@
 import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
 import { useAuth } from "@/presentation/contexts/AuthContext";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import {
   VictoryAxis,
@@ -8,29 +8,53 @@ import {
   VictoryChart,
   VictoryTheme,
 } from "victory-native";
+import { DashboardService } from "@/application/services/outros/DashboardService";
+import { DashboardApiService } from "@/infrastructure/services/outros/DashboardApiService";
+import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
+import ProducaoConsts from "@/shared/constants/producao.consts";
+
+interface DashboardData {
+  status: ProducaoStatusEnum;
+  statusText: string;
+  qtd: number;
+}
 
 export default function DashboardProducaoPorStatus() {
   const { user } = useAuth();
+  const [data, setData] = useState<DashboardData[]>([]);
+  const dashboardService = new DashboardService(new DashboardApiService());
 
   if (user?.setor === UsuarioSetorEnum.COMERCIAL) return;
 
-  const statusCounts = {
-    aguardando: 8,
-    emProducao: 12,
-    colhido: 5,
+  const colorsMap: Record<ProducaoStatusEnum, string> = {
+    AGUARDANDO: "#f59e0b",
+    EM_PRODUCAO: "#2563eb",
+    COLHIDA: "#059669",
   };
 
-  const data = [
-    { ID: 1, status: "Aguardando", qtd: statusCounts.aguardando },
-    { ID: 2, status: "Em produção", qtd: statusCounts.emProducao },
-    { ID: 3, status: "Colhido", qtd: statusCounts.colhido },
-  ];
+  const buscarDados = async () => {
+    const dados = await dashboardService.buscarProducaoPorStatus();
 
-  const colorsMap: Record<number, string> = {
-    1: "#f59e0b",
-    2: "#2563eb",
-    3: "#059669",
+    setData(
+      dados?.map((apiResult) => {
+        return {
+          statusText: ProducaoConsts.statusText[apiResult.status],
+          status: apiResult.status,
+          qtd: apiResult.qtd,
+        } as DashboardData;
+      })
+    );
   };
+
+  useEffect(() => {
+    buscarDados();
+
+    const unsub = dashboardService.escutarProducaoPorStatus(() =>
+      buscarDados()
+    );
+
+    return () => unsub();
+  }, []);
 
   return (
     <View className="rounded-xl shadow-sm bg-gray-200 w-full">
@@ -54,11 +78,15 @@ export default function DashboardProducaoPorStatus() {
 
         <VictoryBar
           data={data}
-          x="ID"
+          x="status"
           y="qtd"
           labels={({ datum }) => datum.qtd}
           style={{
-            data: { width: 40, fill: ({ datum }) => colorsMap[datum.ID] },
+            data: {
+              width: 40,
+              fill: ({ datum }) =>
+                colorsMap[datum.status as ProducaoStatusEnum],
+            },
             labels: { fill: "#1e293b", fontSize: 14 },
           }}
         />

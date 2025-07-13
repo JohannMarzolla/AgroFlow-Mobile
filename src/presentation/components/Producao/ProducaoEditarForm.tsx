@@ -11,12 +11,13 @@ import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ShowToast } from "../ui/Toast";
 import { Loading } from "../ui/Loading";
 import { Producao } from "@/domain/models/Producao";
+import { ProducaoStatusEnumZod } from "@/domain/enum/producao/producao.enum";
 
 const producaoEditarSchema = z.object({
   fazendaId: z.string().min(1, "Fazenda é obrigatória"),
   produtoId: z.string().min(1, "Produto é obrigatório"),
   quantidade: z.coerce.number().positive("A quantidade é obrigatória"),
-  status: z.string().min(1, "Status é obrigatório"),
+  status: ProducaoStatusEnumZod,
 });
 
 type ProducaoEditarFormData = z.infer<typeof producaoEditarSchema>;
@@ -26,15 +27,22 @@ interface ProducaoEditarFormProps {
   onSubmit?: () => void;
 }
 
-export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEditarFormProps) {
+export default function ProducaoEditarForm({
+  producao,
+  onSubmit,
+}: ProducaoEditarFormProps) {
   const { atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
   const [loading, setLoading] = useState(false);
-  
-  const lista = ["Aguardando colheita", "Aguardando Execução", "Colhido", "Executado"];
 
-  
+  const lista = [
+    "Aguardando colheita",
+    "Aguardando Execução",
+    "Colhido",
+    "Executado",
+  ];
+
   const {
     control,
     handleSubmit,
@@ -54,19 +62,19 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
     try {
       Loading.show();
       setLoading(true);
-      
+
       // 3. Construa o objeto completo para atualização
       const updatedProducao: Producao = {
         ...producao,
         quantidade: data.quantidade,
         status: data.status,
-        fazenda: fazenda.find(f => f.id === data.fazendaId)!,
-        produto: produtos.find(p => p.id === data.produtoId)!,
+        fazenda: fazenda.find((f) => f.id === data.fazendaId)!,
+        produto: produtos.find((p) => p.id === data.produtoId)!,
       };
 
       console.log("Dados enviados:", updatedProducao);
       await atualizar(updatedProducao);
-      
+
       ShowToast("success", "Produção atualizada com sucesso!");
       if (onSubmit) onSubmit();
     } catch (error) {
@@ -87,10 +95,7 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
           control={control}
           name="fazendaId"
           render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={onChange}
-            >
+            <Picker selectedValue={value} onValueChange={onChange}>
               <Picker.Item label="Selecione uma fazenda" value="" />
               {fazenda.map((f) => (
                 <Picker.Item key={f.id} label={f.nome} value={f.id} />
@@ -109,10 +114,7 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
           control={control}
           name="produtoId"
           render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={onChange}
-            >
+            <Picker selectedValue={value} onValueChange={onChange}>
               <Picker.Item label="Selecione um produto" value="" />
               {produtos.map((p) => (
                 <Picker.Item key={p.id} label={p.nome} value={p.id} />
@@ -151,10 +153,7 @@ export default function ProducaoEditarForm({ producao, onSubmit }: ProducaoEdita
           control={control}
           name="status"
           render={({ field: { onChange, value } }) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={onChange}
-            >
+            <Picker selectedValue={value} onValueChange={onChange}>
               <Picker.Item label="Selecione um status" value="" />
               {lista.map((status) => (
                 <Picker.Item key={status} label={status} value={status} />

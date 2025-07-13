@@ -5,7 +5,7 @@ import { UsuarioInserirDTO } from "@/application/dtos/outros/usuario/UsuarioInse
 import { IUsuarioApiService } from "@/application/interfaces/outros/IUsuarioApiService";
 
 export class UsuarioService {
-  constructor(public apiService: IUsuarioApiService) {}
+  constructor(private apiService: IUsuarioApiService) {}
 
   async buscarTodos(
     dto: UsuarioBuscarTodosDTO

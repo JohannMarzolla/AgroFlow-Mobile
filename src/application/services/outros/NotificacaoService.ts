@@ -3,7 +3,7 @@ import { NotificacaoBuscarTodasResponseDTO } from "@/application/dtos/outros/not
 import { INotificacaoApiService } from "@/application/interfaces/outros/INotificacaoApiService";
 
 export class NotificacaoService {
-  constructor(public apiService: INotificacaoApiService) {}
+  constructor(private apiService: INotificacaoApiService) {}
 
   async buscarTodas(
     dto: NotificacaoBuscarTodasDTO

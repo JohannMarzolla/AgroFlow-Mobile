@@ -14,8 +14,8 @@ import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { Loading } from "@/presentation/components/ui/Loading";
-import { ProducaoStatus } from "@/domain/enum/ProducaoStatus";
 import Icon from "@/presentation/components/ui/Icon";
+import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
 
 type ProducaoDetalhesRouteProp = RouteProp<
   ProducaoStackParamList,
@@ -23,7 +23,7 @@ type ProducaoDetalhesRouteProp = RouteProp<
 >;
 
 const producaoEditarSchema = z.object({
-  fazendaId:z.string(),
+  fazendaId: z.string(),
   produtoId: z.string(),
   quantidade: z.coerce.number().positive("A quantidade é obrigatória"),
   status: z.string().min(1, "Status é obrigatório"),
@@ -41,7 +41,7 @@ export default function ProducaoDetalhes() {
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
 
-  const statusList = Object.values(ProducaoStatus);
+  const statusList = Object.values(ProducaoStatusEnum);
 
   const {
     control,
