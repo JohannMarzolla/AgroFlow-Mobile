@@ -32,7 +32,6 @@ export default function DashboardProduzidoXPerdas() {
 
   const buscarDados = async () => {
     const dados = await dashboardService.buscarProducaoProduzidoVsPerdas();
-    console.log(dados);
     setData([
       { color: "#059669", x: "Produzido", y: dados.produzido },
       { color: "#ef4444", x: "Perdas", y: dados.perdas },

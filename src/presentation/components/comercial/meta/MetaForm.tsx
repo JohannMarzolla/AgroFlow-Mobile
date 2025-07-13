@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Loading } from "@/presentation/components/ui/Loading";
 import {
   MetaInserirDTO,
@@ -55,11 +55,14 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
   const { adicionar, atualizar } = useMeta();
   const {
     control,
-    handleSubmit,
     formState: { errors },
+    handleSubmit,
+    watch,
     reset,
+    setValue,
   } = useMetaForm(meta);
   const readOnly = isReadOnly(meta);
+  const tipo = watch("tipo");
 
   function isReadOnly(meta?: Meta): boolean {
     if (!meta) return false;
@@ -82,6 +85,12 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
       Loading.hide();
     }
   };
+
+  useEffect(() => {
+    if (tipo !== MetaTipoEnum.VENDA) {
+      setValue("calculoPor", MetaCalculoPorEnum.QUANTIDADE);
+    }
+  }, [tipo]);
 
   return (
     <View className="gap-4">
@@ -140,20 +149,22 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
           />
         )}
       />
-      <Controller
-        control={control}
-        name="calculoPor"
-        render={({ field: { onChange, value } }) => (
-          <InputSelect
-            label="Calcular por"
-            readOnly={readOnly}
-            options={MetaConsts.CalculoPor}
-            value={value}
-            onValueChanged={onChange}
-            error={errors.calculoPor?.message}
-          />
-        )}
-      />
+      {tipo === MetaTipoEnum.VENDA && (
+        <Controller
+          control={control}
+          name="calculoPor"
+          render={({ field: { onChange, value } }) => (
+            <InputSelect
+              label="Calcular por"
+              readOnly={readOnly}
+              options={MetaConsts.CalculoPor}
+              value={value}
+              onValueChanged={onChange}
+              error={errors.calculoPor?.message}
+            />
+          )}
+        />
+      )}
       <Controller
         control={control}
         name="valorAlvo"

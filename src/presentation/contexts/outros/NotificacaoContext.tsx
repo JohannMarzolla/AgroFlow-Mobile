@@ -55,7 +55,6 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
     carregar();
 
     const atualizarDados = async () => {
-      console.log("recebeu mensagem e vai atualizar context");
       carregar(true);
     };
     eventBus.on("notificacao:receive", atualizarDados);
