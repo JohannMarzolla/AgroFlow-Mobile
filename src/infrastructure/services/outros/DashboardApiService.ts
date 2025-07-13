@@ -1,8 +1,9 @@
 import { DashboardProducaoPorStatusDTO } from "@/application/dtos/outros/DashboardProducaoPorStatusDTO";
 import { HttpClient } from "../base/HttpClient";
 import { IDashboardApiService } from "@/application/interfaces/outros/IDashboardApiService";
-import { doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../outros/FirebaseConfig";
+import { DashboardProducaoProduzidoVsPerdasDTO } from "@/application/dtos/outros/DashboardProducaoProduzidoVsPerdasDTO";
 
 export class DashboardApiService implements IDashboardApiService {
   async buscarProducaoPorStatus(): Promise<DashboardProducaoPorStatusDTO[]> {
@@ -19,11 +20,35 @@ export class DashboardApiService implements IDashboardApiService {
     }
   }
 
+  async buscarProducaoProduzidoVsPerdas(): Promise<DashboardProducaoProduzidoVsPerdasDTO> {
+    try {
+      return HttpClient.get<DashboardProducaoProduzidoVsPerdasDTO>(
+        "dashboard/producaoProduzidoVsPerdas"
+      );
+    } catch (error: any) {
+      throw error instanceof Error
+        ? error
+        : new Error(
+            "Erro desconhecido ao tentar buscar a quantidade produzida e de perda das produções"
+          );
+    }
+  }
+
   escutarProducaoPorStatus(callback: () => void): () => void {
     const ref = doc(db, "dashboard", "producaoPorStatus");
 
     const unsubscribe = onSnapshot(ref, (snapshot) => {
       if (snapshot.exists()) callback();
+    });
+
+    return unsubscribe;
+  }
+
+  escutarProducaoProduzidoVsPerdas(callback: () => void): () => void {
+    const ref = collection(db, "dashboard", "producaoPerdas", "colhidas");
+
+    const unsubscribe = onSnapshot(ref, (snapshot) => {
+      callback();
     });
 
     return unsubscribe;
