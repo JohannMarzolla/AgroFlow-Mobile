@@ -11,6 +11,7 @@ import { Loading } from "../ui/Loading";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
 import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
+import { Produto } from "@/domain/models/Produto";
 
 const producaoSchema = z.object({
   fazendaId: z.string(),
@@ -26,6 +27,10 @@ export default function ProducaoForm() {
   const { adicionar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null);
+  const [insumosQuantidades, setInsumosQuantidades] = useState<Record<string, string|number>>({});
+  
+
 
   const {
     control,
@@ -90,30 +95,59 @@ export default function ProducaoForm() {
         <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
       )}
       <Text className="text-xl font-semibold mb-2">Produto</Text>
-      <Controller
-        control={control}
-        name="produtoId"
-        render={({ field: { onChange, value } }) => (
-          <Picker
+        <Controller
+          control={control}
+          name="produtoId"
+          render={({ field: { onChange, value } }) => (
+            <Picker
             selectedValue={value}
-            onValueChange={(itemValue) => onChange(itemValue)}
+            onValueChange={(itemValue) => {
+              onChange(itemValue);
+              const produto = produtos.find((p) => p.id === itemValue);
+              setProdutoSelecionado(produto || null);
+            }}
             enabled={!loading}
             className="border border-gray-300 rounded"
           >
-            <Picker.Item label="Selecione um produto" value={undefined} />
-            {produtos.map((produto) => (
-              <Picker.Item
-                key={produto.id}
-                label={produto.nome}
-                value={produto.id}
-              />
-            ))}
-          </Picker>
+              <Picker.Item label="Selecione um produto" value={undefined} />
+              {produtos.map((produto) => (
+                <Picker.Item
+                  key={produto.id}
+                  label={produto.nome}
+                  value={produto.id}
+                />
+              ))}
+            </Picker>
+          )}
+        />
+        {errors.produtoId && (
+          <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
         )}
-      />
-      {errors.produtoId && (
-        <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
-      )}
+        {produtoSelecionado && (
+  <View className="mt-4">
+    <Text className="text-xl font-semibold mb-2">Insumos necessários</Text>
+    {produtoSelecionado?.insumosDetalhados?.map((insumo) => (
+      <View key={insumo.id} className="mb-2">
+        <Text className="text-base font-medium">{insumo.nome}</Text>
+        <TextInput
+      className="border border-gray-300 rounded px-3 py-2 mt-1"
+      placeholder="Quantidade "
+      keyboardType="numeric"
+      value={insumosQuantidades[insumo.id]?.toString() || ""}
+      onChangeText={(text) => {
+        const quantidade = parseFloat(text) || 0;
+        setInsumosQuantidades((prev) => ({
+          ...prev,
+          [insumo.id]: quantidade,
+        }));
+      }}
+    />
+        {/* Aqui você pode permitir que o usuário informe a quantidade desejada */}
+      </View>
+    ))}
+  </View>
+)}
+
 
       <View className="mb-4">
         <Text className="text-xl font-semibold mb-2">Quantidade</Text>
