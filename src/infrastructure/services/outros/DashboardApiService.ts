@@ -4,6 +4,7 @@ import { IDashboardApiService } from "@/application/interfaces/outros/IDashboard
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../outros/FirebaseConfig";
 import { DashboardProducaoProduzidoVsPerdasDTO } from "@/application/dtos/outros/DashboardProducaoProduzidoVsPerdasDTO";
+import { DashboardLucroPorProdutoDTO } from "@/application/dtos/outros/DashboardLucroPorProdutoDTO";
 
 export class DashboardApiService implements IDashboardApiService {
   async buscarProducaoPorStatus(): Promise<DashboardProducaoPorStatusDTO[]> {
@@ -34,6 +35,18 @@ export class DashboardApiService implements IDashboardApiService {
     }
   }
 
+  async buscarLucroPorProduto(): Promise<DashboardLucroPorProdutoDTO[]> {
+    try {
+      return HttpClient.get<DashboardLucroPorProdutoDTO[]>(
+        "dashboard/lucroPorProduto"
+      );
+    } catch (error: any) {
+      throw error instanceof Error
+        ? error
+        : new Error("Erro desconhecido ao tentar buscar o lucro por produto");
+    }
+  }
+
   escutarProducaoPorStatus(callback: () => void): () => void {
     const ref = doc(db, "dashboard", "producaoPorStatus");
 
@@ -46,6 +59,16 @@ export class DashboardApiService implements IDashboardApiService {
 
   escutarProducaoProduzidoVsPerdas(callback: () => void): () => void {
     const ref = collection(db, "dashboard", "producaoPerdas", "colhidas");
+
+    const unsubscribe = onSnapshot(ref, (snapshot) => {
+      callback();
+    });
+
+    return unsubscribe;
+  }
+
+  escutarLucroPorProduto(callback: () => void): () => void {
+    const ref = collection(db, "dashboard", "produtoLucro", "registros");
 
     const unsubscribe = onSnapshot(ref, (snapshot) => {
       callback();

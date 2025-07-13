@@ -14,9 +14,9 @@ export default function Dashboards() {
       <View className="px-5 pt-3 pb-20 gap-5">
         <DashboardProducaoPorStatus />
         <DashboardProduzidoXPerdas />
-        <DashboardLucroPorMes />
         <DashboardLucroPorProduto />
-        <DashboardLucroPorFazenda />
+        {/* <DashboardLucroPorMes /> */}
+        {/* <DashboardLucroPorFazenda /> */}
       </View>
     </ScrollView>
   );
