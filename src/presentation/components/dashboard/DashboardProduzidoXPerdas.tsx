@@ -20,16 +20,6 @@ export default function DashboardProduzidoXPerdas() {
 
   if (user?.setor === UsuarioSetorEnum.COMERCIAL) return;
 
-  // const data = [
-  //   { x: "Produzido", y: produzido, ID: 1 },
-  //   { x: "Perdas", y: perdas, ID: 2 },
-  // ];
-
-  // const colorsMap: Record<number, string> = {
-  //   1: "#059669",
-  //   2: "#ef4444",
-  // };
-
   const buscarDados = async () => {
     const dados = await dashboardService.buscarProducaoProduzidoVsPerdas();
     setData([

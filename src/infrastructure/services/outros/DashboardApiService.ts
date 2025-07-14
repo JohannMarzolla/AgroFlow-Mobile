@@ -2,7 +2,7 @@ import { DashboardProducaoPorStatusDTO } from "@/application/dtos/outros/Dashboa
 import { HttpClient } from "../base/HttpClient";
 import { IDashboardApiService } from "@/application/interfaces/outros/IDashboardApiService";
 import { collection, doc, onSnapshot } from "firebase/firestore";
-import { db } from "../outros/FirebaseConfig";
+import { db } from "./FirebaseConfig";
 import { DashboardProducaoProduzidoVsPerdasDTO } from "@/application/dtos/outros/DashboardProducaoProduzidoVsPerdasDTO";
 import { DashboardLucroPorProdutoDTO } from "@/application/dtos/outros/DashboardLucroPorProdutoDTO";
 
