@@ -17,7 +17,6 @@ import {
 } from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
 import { DateUtils } from "@/shared/utils/date.utils";
 import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
-import { Produto } from "@/domain/models/Produto";
 import { Producao } from "@/domain/models/Producao";
 import { ProducaoAtualizarDTO, ProducaoAtualizarSchema } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
@@ -187,6 +186,20 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
             value={value}
             onValueChanged={onChange}
             error={errors.lote?.message}
+          />
+        )}
+      />
+       <Controller
+        control={control}
+        name="precoPlanejado"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Preço Planejado (R$)"
+            type="number"
+            value={value !== undefined ? value.toString() : "0"}
+            onValueChanged={text => onChange(Number(text))}
+            error={errors.precoPlanejado?.message}
+           
           />
         )}
       />
