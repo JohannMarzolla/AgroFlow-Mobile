@@ -1,192 +1,238 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm, useFieldArray } from "react-hook-form";
+import { View, Text, ScrollView } from "react-native";
+import React from "react";
+import { Loading } from "@/presentation/components/ui/Loading";
+import Input from "@/presentation/components/ui/Input";
+import InputSelect from "@/presentation/components/ui/InputSelect";
+import InputDate from "@/presentation/components/ui/InputDate";
+import Button from "@/presentation/components/ui/Button";
 import { useProducao } from "@/presentation/contexts/ProducaoContext";
 import { useProdutos } from "@/presentation/contexts/ProdutoContext";
-import { Picker } from "@react-native-picker/picker";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import React, { useState } from "react";
-import { View, Text, Pressable, TextInput } from "react-native";
-import { Controller, useForm } from "react-hook-form";
-import { ShowToast } from "../ui/Toast";
-import { Loading } from "../ui/Loading";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
+import { ShowToast } from "../ui/Toast";
+import {
+  ProducaoInserirDTO,
+  ProducaoInserirSchema,
+} from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
+import { DateUtils } from "@/shared/utils/date.utils";
 import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
-import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/ProducaoInserirDTO";
 import { Produto } from "@/domain/models/Produto";
+import { Producao } from "@/domain/models/Producao";
+import { ProducaoAtualizarDTO, ProducaoAtualizarSchema } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
-const producaoSchema = z.object({
-  fazendaId: z.string(),
-  produtoId: z.string(),
-  quantidade: z.coerce.number().positive("A quantidade é obrigatoria"),
-  status: z.string().min(1, "Status é obrigatório"),
-});
+interface ProducaoFormProps {
+  producao?: Producao;
+  onCancel?: () => void;
+}
 
-type ProducaoFormData = z.infer<typeof producaoSchema>;
+const useProducaoForm = (producao: Producao | undefined) => {
+  return useForm<ProducaoInserirDTO | ProducaoAtualizarDTO>({
+    resolver: zodResolver(!!producao ? ProducaoAtualizarSchema : ProducaoInserirSchema),
+    defaultValues: {
+      id: producao?.id,
+      quantidadePlanejada: producao?.quantidadePlanejada,
+      precoPlanejado: producao?.precoPlanejado,
+      status: producao?.status ?? ProducaoStatusEnum.AGUARDANDO,
+      produtoId: producao?.produtoId,
+      fazendaId: producao?.fazendaId,
+      lote: producao?.lote,
+      dataInicio: producao?.dataInicio ? new Date(producao.dataInicio) : new Date(),
+      dataFim: producao?.dataFim
+        ? new Date(producao.dataFim)
+        : DateUtils.nowToEndOfMonth(),
+      insumos: producao?.insumos ??[],
+    },
+  });
+};
 
-export default function ProducaoForm() {
-  const [loading, setLoading] = useState(false);
-  const { adicionar } = useProducao();
+export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps)  {
+  const { adicionar,atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
-  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null);
-  const [insumosQuantidades, setInsumosQuantidades] = useState<Record<string, string|number>>({});
-  
-
 
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<ProducaoFormData>({
-    resolver: zodResolver(producaoSchema),
-    defaultValues: {
-      quantidade: 0,
-      status: ProducaoStatusEnum.AGUARDANDO,
-    },
+  } = useProducaoForm(producao);
+  const readOnly = isReadOnly(producao);
+ 
+
+  function isReadOnly(producao?: Producao): boolean {
+    if (!producao) return false;
+    const hoje = new Date();
+    const dataInicio = new Date(producao.dataInicio);
+    return (
+      dataInicio.getTime() < hoje.getTime() 
+    );
+  }
+  const { fields } = useFieldArray({
+    control,
+    name: "insumos",
   });
 
-  const onSubmit = async (data: ProducaoInserirDTO) => {
+  const produtoId = watch("produtoId");
+  const produtoSelecionado = produtos.find(p => p.id === produtoId);
+
+  const onSubmit = async (data: ProducaoInserirDTO| ProducaoAtualizarDTO) => {
+    console.log("data",data)
     try {
       Loading.show();
-      setLoading(true);
-      await adicionar({
-        quantidade: data.quantidade,
-        status: data.status,
-        produtoId: data.produtoId,
-        fazendaId: data.fazendaId,
-      });
-      reset();
-      ShowToast("success", "Produção adicionada com sucesso!");
-      Loading.hide();
-    } catch (error) {
-      console.error("Erro ao adicionar produto", error);
-      ShowToast("error", "Erro ao adicionar produção");
-      Loading.hide();
+      const success = !!producao
+        ? await atualizar(data as ProducaoAtualizarDTO)
+        : await adicionar(data as ProducaoInserirDTO);
+      if (success) reset(data);
     } finally {
-      setLoading(false);
+      Loading.hide();
     }
   };
 
+  React.useEffect(() => {
+    if (produtoSelecionado) {
+      setValue(
+        "insumos",
+        produtoSelecionado.insumosDetalhados?.map(i => ({
+          insumoId: i.id,
+          quantidade: 0,
+        })) || []
+      );
+    }
+  }, [produtoSelecionado]);
+
   return (
-    <View>
-      <Text className="text-xl font-semibold mb-2">Fazenda</Text>
+    <ScrollView className="p-4 gap-4">
+      {/* Seleção de Fazenda */}
       <Controller
         control={control}
         name="fazendaId"
         render={({ field: { onChange, value } }) => (
-          <Picker
-            selectedValue={value}
-            onValueChange={(itemValue) => onChange(itemValue)}
-            enabled={!loading}
-            className="border border-gray-300 rounded"
-          >
-            <Picker.Item label="Selecione uma fazenda" value={undefined} />
-            {fazenda.map((fazenda) => (
-              <Picker.Item
-                key={fazenda.id}
-                label={fazenda.nome}
-                value={fazenda.id}
-              />
-            ))}
-          </Picker>
+          <InputSelect
+            label="Fazenda"
+            options={fazenda.map(f => ({ label: f.nome, value: f.id }))}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.fazendaId?.message}
+          />
         )}
       />
-      {errors.produtoId && (
-        <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
-      )}
-      <Text className="text-xl font-semibold mb-2">Produto</Text>
-        <Controller
-          control={control}
-          name="produtoId"
-          render={({ field: { onChange, value } }) => (
-            <Picker
-            selectedValue={value}
-            onValueChange={(itemValue) => {
-              onChange(itemValue);
-              const produto = produtos.find((p) => p.id === itemValue);
-              setProdutoSelecionado(produto || null);
-            }}
-            enabled={!loading}
-            className="border border-gray-300 rounded"
-          >
-              <Picker.Item label="Selecione um produto" value={undefined} />
-              {produtos.map((produto) => (
-                <Picker.Item
-                  key={produto.id}
-                  label={produto.nome}
-                  value={produto.id}
-                />
-              ))}
-            </Picker>
-          )}
-        />
-        {errors.produtoId && (
-          <Text className="text-red-500 mt-1">{errors.produtoId.message}</Text>
+
+      {/* Seleção de Produto */}
+      <Controller
+        control={control}
+        name="produtoId"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Produto"
+            options={produtos.map(p => ({ label: p.nome, value: p.id }))}
+            value={value}
+            onValueChanged={onChange}
+            error={errors.produtoId?.message}
+          />
         )}
-        {produtoSelecionado && (
-  <View className="mt-4">
-    <Text className="text-xl font-semibold mb-2">Insumos necessários</Text>
-    {produtoSelecionado?.insumosDetalhados?.map((insumo) => (
-      <View key={insumo.id} className="mb-2">
-        <Text className="text-base font-medium">{insumo.nome}</Text>
-        <TextInput
-      className="border border-gray-300 rounded px-3 py-2 mt-1"
-      placeholder="Quantidade "
-      keyboardType="numeric"
-      value={insumosQuantidades[insumo.id]?.toString() || ""}
-      onChangeText={(text) => {
-        const quantidade = parseFloat(text) || 0;
-        setInsumosQuantidades((prev) => ({
-          ...prev,
-          [insumo.id]: quantidade,
-        }));
-      }}
-    />
-        {/* Aqui você pode permitir que o usuário informe a quantidade desejada */}
-      </View>
-    ))}
-  </View>
-)}
+      />
 
+      {/* Insumos */}
+      {produtoSelecionado && fields.length > 0 && (
+        <View className="gap-2">
+          <Text className="text-lg font-semibold">Insumos</Text>
+          {fields.map((field, index) => {
+            const insumo = produtoSelecionado.insumosDetalhados?.find(
+              i => i.id === field.insumoId
+            );
+            return (
+              <Controller
+                key={field.id}
+                control={control}
+                name={`insumos.${index}.quantidade`}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    label={insumo?.nome || "Insumo"}
+                    type="number"
+                    value={value !== undefined ? value.toString() : "0"}
+                    onValueChanged={text => onChange(Number(text))}
+                    error={errors.insumos?.[index]?.quantidade?.message}
+                  />
+                )}
+              />
+            );
+          })}
+        </View>
+      )}
 
-      <View className="mb-4">
-        <Text className="text-xl font-semibold mb-2">Quantidade</Text>
+      {/* Quantidade e Lote */}
+      <Controller
+        control={control}
+        name="quantidadePlanejada"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Quantidade Planejada"
+            type="number"
+            value={value !== undefined ? value.toString() : "0"}
+            onValueChanged={text => onChange(Number(text))}
+            error={errors.quantidadePlanejada?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="lote"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            label="Lote"
+            value={value}
+            onValueChanged={onChange}
+            error={errors.lote?.message}
+          />
+        )}
+      />
+
+      {/* Datas */}
+      <View className="flex-row gap-3">
         <Controller
           control={control}
-          name="quantidade"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="border border-gray-300 rounded px-3 py-2"
-              placeholder="Ex: 500"
-              keyboardType="numeric"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value?.toString()}
-              editable={!loading}
+          name="dataInicio"
+          render={({ field: { onChange, value } }) => (
+            <InputDate
+              className="flex-1"
+              label="Data Início"
+              value={value}
+              onValueChanged={onChange}
             />
           )}
         />
-        {errors.quantidade && (
-          <Text className="text-red-500 mt-1">{errors.quantidade.message}</Text>
-        )}
+        <Controller
+          control={control}
+          name="dataFim"
+          render={({ field: { onChange, value } }) => (
+            <InputDate
+              className="flex-1"
+              label="Data Fim"
+              value={value}
+              onValueChanged={onChange}
+            />
+          )}
+        />
       </View>
 
-      <View className="mb-4">
-        <Text className="text-xl font-semibold mb-2">Status</Text>
-        <View className="border border-gray-300 rounded px-3 py-2">
-          <Text>{ProducaoStatusEnum.AGUARDANDO}</Text>
-        </View>
+      {/* Botões */}
+      <View className="flex-row gap-3 mt-4">
+      <Button
+          className="flex-1"
+          text="Cancelar"
+          color="red"
+          onPress={onCancel}
+        />
+        <Button
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
-
-      <Pressable
-        className="bg-green-600 p-3 rounded mt-2"
-        onPress={handleSubmit(onSubmit)}
-        disabled={loading}
-      >
-        <Text className="text-white text-center font-semibold">
-          {loading ? "Salvando..." : "Salvar"}
-        </Text>
-      </Pressable>
-    </View>
+    </ScrollView>
   );
 }

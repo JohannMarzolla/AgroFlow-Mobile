@@ -40,7 +40,7 @@ export  function TelaDeProducao() {
        loadingMore={loading}
        onEndReached={() => carregar()}
        onEdit={(item: ProducaoModel) =>
-        navigation.navigate("ProducaoDetalhes", { producao: item })
+        navigation.navigate("EditarProducao", { producao: item })
       }
         />
     </View>

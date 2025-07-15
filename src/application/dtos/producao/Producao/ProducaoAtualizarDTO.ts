@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { ProducaoSchema } from "./ProducaoInserirDTO";
+import { ProducaoInserirSchema } from "./ProducaoInserirDTO";
 
 
-export const ProducaoAtualizarSchema = ProducaoSchema.and(
+
+export const ProducaoAtualizarSchema = ProducaoInserirSchema.and(
   z.object({
     id: z.string().min(1, "ID é obrigatório"),
   })

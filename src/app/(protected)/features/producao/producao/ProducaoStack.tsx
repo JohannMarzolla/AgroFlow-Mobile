@@ -2,12 +2,14 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Producao from "./Producao";
 import AdicionarProducao from "./Adicionar";
-import ProducaoDetalhes from "./ProducaoDetalhes";
+import { Producao as ProducaoModel } from "@/domain/models/Producao";
+import EditarProducao from "./Editar";
+
 
 export type ProducaoStackParamList = {
   Producao: undefined;
   AdicionarProducao: undefined;
-  ProducaoDetalhes: { producao: any }; // vamos tipar melhor depois
+  EditarProducao: { producao: ProducaoModel }; 
 };
 
 const Stack = createNativeStackNavigator<ProducaoStackParamList>();
@@ -23,13 +25,11 @@ export default function ProducaoStack() {
         headerShown: false, 
     }}
   />
-     <Stack.Screen
-    name="ProducaoDetalhes"
-    component={ProducaoDetalhes}
-    options={{
-        headerShown: false, 
-    }}
-  />
+       <Stack.Screen
+          name="EditarProducao"
+          component={EditarProducao}
+          options={{ headerShown: false }}
+        />
 </Stack.Navigator>
   );
 }

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { View, TextInput, Text } from "react-native";
+import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { Loading } from "../ui/Loading";
 import Button from "../ui/Button";

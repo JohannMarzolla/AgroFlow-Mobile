@@ -51,7 +51,7 @@ export class EstoqueProdutoApiService implements IEstoqueProdutoApiService {
 
   async atualizar(dto: EstoqueProdutoAtualizarDTO): Promise<void> {
     try {
-      await HttpClient.post<ProducaoAtualizarDTO, void>("estoqueProduto/atualizar", dto);
+      await HttpClient.post<EstoqueProdutoAtualizarDTO, void>("estoqueProduto/atualizar", dto);
     } catch (error: any) {
       console.error("Erro ao atualizar estoque Produto", error);
       throw error instanceof Error

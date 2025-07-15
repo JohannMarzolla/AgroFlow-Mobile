@@ -27,7 +27,6 @@ export default function EstoqueInsumo() {
         <InputSelect
           label="Tipo"
           labelTextBold={false}
-          // options={MetaConsts.Tipos}
         />
        
       </View>

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { Loading } from "../ui/Loading";
 import Button from "../ui/Button";
@@ -39,7 +39,7 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
     formState: { errors },
     reset,
   } = useFazendaForm(fazenda);
-  const readOnly = false; // Não há status/bloqueio, sempre editável
+  const readOnly = false; 
 
   const onSubmit = async (data: FazendaInserirDTO | FazendaAtualizarDTO) => {
    
