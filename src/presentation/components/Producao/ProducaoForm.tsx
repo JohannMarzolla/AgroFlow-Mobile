@@ -20,6 +20,7 @@ import { Producao } from "@/domain/models/Producao";
 import { ProducaoAtualizarDTO, ProducaoAtualizarSchema } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 import ModalColheita from "./Modal";
 
+
 interface ProducaoFormProps {
   producao?: Producao;
   onCancel?: () => void;
@@ -49,7 +50,6 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
   const { adicionar, atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
-  const [primeiraVezColhida, setPrimeiraVezColhida] = useState(true);  
   const [mostrarModalColheita, setMostrarModalColheita] = useState(false);
   const [colheitaTemp, setColheitaTemp] = useState<{
     quantidadeColhida: number;
@@ -59,6 +59,9 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
   } | null>(null);
   
   const [submitting, setSubmitting] = useState(false);
+
+  const formSomenteLeitura =
+  !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
 
   const {
     control,
@@ -72,12 +75,6 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
   const status = watch("status");
   const readOnly = isReadOnly(producao);
 
-  // Abre a modal automaticamente quando o status é alterado para COLHIDA
-  useEffect(() => {
-    if (status === ProducaoStatusEnum.COLHIDA && !colheitaTemp) {
-      setMostrarModalColheita(true);
-    }
-  }, [status]);
 
   function isReadOnly(producao?: Producao): boolean {
     if (!producao) return false;
@@ -104,7 +101,6 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
         ...(data.status === ProducaoStatusEnum.COLHIDA ? colheitaTemp : {}),
       };
     
-      console.log("data final", dataFinal)
       const success = !!producao
         ? await atualizar(dataFinal as ProducaoAtualizarDTO)
         : await adicionar(dataFinal as ProducaoInserirDTO);
@@ -142,6 +138,7 @@ useEffect(() => {
             options={fazenda.map(f => ({ label: f.nome, value: f.id }))}
             value={value}
             onValueChanged={onChange}
+            readOnly={formSomenteLeitura}
             error={errors.fazendaId?.message}
           />
         )}
@@ -157,6 +154,7 @@ useEffect(() => {
             options={produtos.map(p => ({ label: p.nome, value: p.id }))}
             value={value}
             onValueChanged={onChange}
+            readOnly={formSomenteLeitura}
             error={errors.produtoId?.message}
           />
         )}
@@ -181,6 +179,7 @@ useEffect(() => {
                     type="number"
                     value={value !== undefined ? value.toString() : "0"}
                     onValueChanged={text => onChange(Number(text))}
+                    readOnly={formSomenteLeitura}
                     error={errors.insumos?.[index]?.quantidade?.message}
                   />
                 )}
@@ -200,6 +199,7 @@ useEffect(() => {
             type="number"
             value={value !== undefined ? value.toString() : "0"}
             onValueChanged={text => onChange(Number(text))}
+            readOnly={formSomenteLeitura}
             error={errors.quantidadePlanejada?.message}
           />
         )}
@@ -213,6 +213,7 @@ useEffect(() => {
             label="Lote"
             value={value}
             onValueChanged={onChange}
+            readOnly={formSomenteLeitura}
             error={errors.lote?.message}
           />
         )}
@@ -226,23 +227,36 @@ useEffect(() => {
             type="number"
             value={value !== undefined ? value.toString() : "0"}
             onValueChanged={text => onChange(Number(text))}
+            readOnly={formSomenteLeitura}
             error={errors.precoPlanejado?.message}
            
           />
         )}
       />
-      <Controller
+<Controller
   control={control}
   name="status"
   render={({ field: { onChange, value } }) => (
     <InputSelect
-      label="Status2"
+      label="Status"
       value={value}
-      onValueChanged={onChange}
+      onValueChanged={(val: string) => {
+        const novoStatus = val as ProducaoStatusEnum;
+        onChange(novoStatus);
+
+        if (
+          novoStatus === ProducaoStatusEnum.COLHIDA &&
+          !colheitaTemp &&
+          producao?.status !== ProducaoStatusEnum.COLHIDA
+        ) {
+          setMostrarModalColheita(true);
+        }
+      }}
       options={Object.entries(ProducaoStatusEnum).map(([key, val]) => ({
         label: val,
         value: val,
       }))}
+      readOnly={formSomenteLeitura}
       error={errors.status?.message}
     />
   )}
@@ -252,22 +266,26 @@ useEffect(() => {
     <Text className="text-sm font-semibold mb-1 text-gray-700">
       Dados da Colheita
     </Text>
-    <Text className="text-xs text-gray-600">
+    <Text className="text-x text-gray-600">
       Quantidade Colhida: {colheitaTemp.quantidadeColhida}
     </Text>
-    <Text className="text-xs text-gray-600">
+    <Text className="text-x text-gray-600">
       Perdas: {colheitaTemp.perdas}
     </Text>
-    <Text className="text-xs text-gray-600">
+    <Text className="text-x text-gray-600">
       Custo de Produção: R$ {colheitaTemp.custo.toFixed(2)}
     </Text>
-    <Text className="text-xs text-gray-600">
+    <Text className="text-x text-gray-600">
       Preço de Venda Final: R$ {colheitaTemp.precoFinal.toFixed(2)}
     </Text>
+    <Button
+      text="Editar"
+      onPress={() => setMostrarModalColheita(true)}
+      className="px-2 py-1 mt-2 self-end bg-green-350 rounded-md"
+      />
   </View>
 )}
       
-
       {/* Datas */}
       <View className="flex-row gap-3">
         <Controller
@@ -279,6 +297,7 @@ useEffect(() => {
               label="Data Início"
               value={value}
               onValueChanged={onChange}
+              readOnly={formSomenteLeitura}
             />
           )}
         />
@@ -291,6 +310,7 @@ useEffect(() => {
               label="Data Fim"
               value={value}
               onValueChanged={onChange}
+              readOnly={formSomenteLeitura}
             />
           )}
         />
@@ -308,7 +328,7 @@ useEffect(() => {
           className="flex-1"
           text="Salvar"
           onPress={handleSubmit(onSubmit)}
-          disabled={submitting} // Desabilitar durante submissão
+          disabled={submitting} 
         />
       </View>
       <ModalColheita

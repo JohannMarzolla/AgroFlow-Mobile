@@ -20,19 +20,12 @@ export default function ModalColheita({
   visible,
   onClose,
   onConfirm,
-  quantidadePlanejada,
-  precoPlanejado,
 }: ModalColheitaProps) {
-  const [quantidadeColhida, setQuantidadeColhida] = useState(quantidadePlanejada);
-  const [custo, setCusto] = useState(0);
-  const [precoFinal, setPrecoFinal] = useState(precoPlanejado);
-  const [perdas, setPerdas] = useState(0);
 
-  // Atualiza os valores quando as props mudam
-  useEffect(() => {
-    setQuantidadeColhida(quantidadePlanejada);
-    setPrecoFinal(precoPlanejado);
-  }, [quantidadePlanejada, precoPlanejado]);
+  const [quantidadeColhida, setQuantidadeColhida] = useState(0);
+  const [custo, setCusto] = useState(0);
+  const [precoFinal, setPrecoFinal] = useState(0);
+  const [perdas, setPerdas] = useState(0);
 
   const confirmar = () => {
     onConfirm({

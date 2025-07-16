@@ -61,7 +61,7 @@ export default function DashboardProduzidoXPerdas() {
           style={{
             labels: { fontSize: 14, fill: "#1e293b", fontWeight: "bold" },
           }}
-          height={280}
+          height={380}
           padding={{ top: 40, bottom: 40, left: 20, right: 55 }}
         />
       )}
