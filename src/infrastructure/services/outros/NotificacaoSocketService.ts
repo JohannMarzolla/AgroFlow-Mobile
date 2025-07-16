@@ -20,7 +20,7 @@ export class NotificacaoSocketService {
   connect(token: string) {
     const wsURL = process.env.EXPO_PUBLIC_NOTIF_WS_URL;
     if (wsURL) {
-      this.socket = io(process.env.EXPO_PUBLIC_NOTIF_WS_URL, {
+      this.socket = io(wsURL, {
         query: {},
         auth: { token },
         transports: ["websocket"],
