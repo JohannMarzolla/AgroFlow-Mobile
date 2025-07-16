@@ -1,107 +1,111 @@
-// // // components/ColheitaModal.tsx
-// import { View, Text, Modal, StyleSheet } from "react-native";
-// import Input from "@/presentation/components/ui/Input";
-// import Button from "@/presentation/components/ui/Button";
-// import { useState } from "react";
+import Input from "@/presentation/components/ui/Input";
+import Button from "@/presentation/components/ui/Button";
+import { useState, useEffect } from "react";
+import { Modal, View, Text, ScrollView } from "react-native";
 
-// interface ColheitaModalProps {
-//   visible: boolean;
-//   onClose: () => void;
-//   onSave: (data: ColheitaData) => void;
-// }
+interface ModalColheitaProps {
+  visible: boolean;
+  onClose: () => void;
+  onConfirm: (dados: {
+    quantidadeColhida: number;
+    perdas: number;
+    precoFinal: number;
+    custo: number;
+  }) => void;
+  quantidadePlanejada: number;
+  precoPlanejado: number;
+}
 
-// export interface ColheitaData {
-//   perdas: number;
-//   quantidadeColhida: number;
-//   precoVenda: number;
-// }
+export default function ModalColheita({
+  visible,
+  onClose,
+  onConfirm,
+  quantidadePlanejada,
+  precoPlanejado,
+}: ModalColheitaProps) {
+  const [quantidadeColhida, setQuantidadeColhida] = useState(quantidadePlanejada);
+  const [custo, setCusto] = useState(0);
+  const [precoFinal, setPrecoFinal] = useState(precoPlanejado);
+  const [perdas, setPerdas] = useState(0);
 
-// export default function ColheitaModal({ visible, onClose, onSave }: ColheitaModalProps) {
-//   const [perdas, setPerdas] = useState("");
-//   const [quantidadeColhida, setQuantidadeColhida] = useState("");
-//   const [precoVenda, setPrecoVenda] = useState("");
+  // Atualiza os valores quando as props mudam
+  useEffect(() => {
+    setQuantidadeColhida(quantidadePlanejada);
+    setPrecoFinal(precoPlanejado);
+  }, [quantidadePlanejada, precoPlanejado]);
 
-//   const handleSave = () => {
-//     onSave({
-//       perdas: Number(perdas),
-//       quantidadeColhida: Number(quantidadeColhida),
-//       precoVenda: Number(precoVenda),
-//     });
-//     onClose();
-//   };
+  const confirmar = () => {
+    onConfirm({
+      quantidadeColhida,
+      perdas,
+      precoFinal,
+      custo,
+    });
+    onClose();
+  };
 
-//   return (
-//     <Modal visible={visible} animationType="slide" transparent>
-//       <View style={styles.modalOverlay}>
-//         <View style={styles.modalContent}>
-//           <Text style={styles.modalTitle}>Registro de Colheita</Text>
+  return (
+    <Modal 
+      visible={visible} 
+      transparent 
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View className="flex-1 justify-center items-center bg-black/50">
+        <View className="bg-white p-6 rounded-2xl w-[90%] max-h-[80%]">
+          <Text className="text-xl font-bold text-center mb-4">
+            Informações de Colheita
+          </Text>
           
-//           <Input
-//             label="Perdas"
-//             type="number"
-//             value={perdas}
-//             onValueChanged={setPerdas}
-//           />
+          <Text className="text-sm text-gray-500 mb-4">
+            Preencha os dados reais da colheita
+          </Text>
           
-//           <Input
-//             label="Quantidade Colhida"
-//             type="number"
-//             value={quantidadeColhida}
-//             onValueChanged={setQuantidadeColhida}
-//           />
-          
-//           <Input
-//             label="Preço de Venda"
-//             type="number"
-//             value={precoVenda}
-//             onValueChanged={setPrecoVenda}
-//           />
-          
-//           <View style={styles.buttonContainer}>
-//             <Button
-//               text="Cancelar"
-//               color="red"
-//               onPress={onClose}
-//               style={styles.button}
-//             />
-//             <Button
-//               text="Salvar"
-//               onPress={handleSave}
-//               style={styles.button}
-//             />
-//           </View>
-//         </View>
-//       </View>
-//     </Modal>
-//   );
-// }
+          <ScrollView className="max-h-[60vh]">
+            <Input
+              label="Quantidade Colhida"
+              value={quantidadeColhida.toString()}
+              onValueChanged={(text) => setQuantidadeColhida(Number(text))}
+              type="number"
+            />
 
-// const styles = StyleSheet.create({
-//   modalOverlay: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'rgba(0,0,0,0.5)',
-//   },
-//   modalContent: {
-//     width: '90%',
-//     backgroundColor: 'white',
-//     padding: 20,
-//     borderRadius: 10,
-//   },
-//   modalTitle: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     marginBottom: 15,
-//     textAlign: 'center',
-//   },
-//   buttonContainer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     marginTop: 10,
-//   },
-//   button: {
-//     flex: 1,
-//     marginHorizontal: 5,
-//   },
-// });
+            <Input
+              label="Perdas"
+              value={perdas.toString()}
+              onValueChanged={(text) => setPerdas(Number(text))}
+              type="number"
+            />
+
+            <Input
+              label="Custo de Produção (R$)"
+              value={custo.toString()}
+              onValueChanged={(text) => setCusto(Number(text))}
+              type="number"
+            />
+
+            <Input
+              label="Preço Final de Venda (R$)"
+              value={precoFinal.toString()}
+              onValueChanged={(text) => setPrecoFinal(Number(text))}
+              type="number"
+            />
+          </ScrollView>
+          
+          <View className="flex-row justify-between gap-4 mt-4">
+            <Button 
+              text="Cancelar" 
+              color="red" 
+              onPress={onClose} 
+              className="flex-1" 
+            />
+            <Button 
+              text="Confirmar" 
+              onPress={confirmar} 
+              className="flex-1" 
+            />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useFieldArray } from "react-hook-form";
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Loading } from "@/presentation/components/ui/Loading";
 import Input from "@/presentation/components/ui/Input";
 import InputSelect from "@/presentation/components/ui/InputSelect";
@@ -10,7 +10,6 @@ import Button from "@/presentation/components/ui/Button";
 import { useProducao } from "@/presentation/contexts/ProducaoContext";
 import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import { useFazenda } from "@/presentation/contexts/FazendaContext";
-import { ShowToast } from "../ui/Toast";
 import {
   ProducaoInserirDTO,
   ProducaoInserirSchema,
@@ -19,6 +18,7 @@ import { DateUtils } from "@/shared/utils/date.utils";
 import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
 import { Producao } from "@/domain/models/Producao";
 import { ProducaoAtualizarDTO, ProducaoAtualizarSchema } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
+import ModalColheita from "./Modal";
 
 interface ProducaoFormProps {
   producao?: Producao;
@@ -46,9 +46,19 @@ const useProducaoForm = (producao: Producao | undefined) => {
 };
 
 export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps)  {
-  const { adicionar,atualizar } = useProducao();
+  const { adicionar, atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
+  const [primeiraVezColhida, setPrimeiraVezColhida] = useState(true);  
+  const [mostrarModalColheita, setMostrarModalColheita] = useState(false);
+  const [colheitaTemp, setColheitaTemp] = useState<{
+    quantidadeColhida: number;
+    perdas: number;
+    precoFinal: number;
+    custo: number;
+  } | null>(null);
+  
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     control,
@@ -58,17 +68,24 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
     watch,
     formState: { errors },
   } = useProducaoForm(producao);
+  
+  const status = watch("status");
   const readOnly = isReadOnly(producao);
- 
+
+  // Abre a modal automaticamente quando o status é alterado para COLHIDA
+  useEffect(() => {
+    if (status === ProducaoStatusEnum.COLHIDA && !colheitaTemp) {
+      setMostrarModalColheita(true);
+    }
+  }, [status]);
 
   function isReadOnly(producao?: Producao): boolean {
     if (!producao) return false;
     const hoje = new Date();
     const dataInicio = new Date(producao.dataInicio);
-    return (
-      dataInicio.getTime() < hoje.getTime() 
-    );
+    return dataInicio.getTime() < hoje.getTime();
   }
+  
   const { fields } = useFieldArray({
     control,
     name: "insumos",
@@ -77,21 +94,32 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
   const produtoId = watch("produtoId");
   const produtoSelecionado = produtos.find(p => p.id === produtoId);
 
-  const onSubmit = async (data: ProducaoInserirDTO| ProducaoAtualizarDTO) => {
-    console.log("data",data)
+  const onSubmit = async (data: ProducaoInserirDTO | ProducaoAtualizarDTO) => {
+    
     try {
       Loading.show();
+
+      const dataFinal = {
+        ...data,
+        ...(data.status === ProducaoStatusEnum.COLHIDA ? colheitaTemp : {}),
+      };
+    
+      console.log("data final", dataFinal)
       const success = !!producao
-        ? await atualizar(data as ProducaoAtualizarDTO)
-        : await adicionar(data as ProducaoInserirDTO);
-      if (success) reset(data);
+        ? await atualizar(dataFinal as ProducaoAtualizarDTO)
+        : await adicionar(dataFinal as ProducaoInserirDTO);
+  
+      if (success) {
+        reset(dataFinal); 
+        setColheitaTemp(null);
+      }
     } finally {
       Loading.hide();
     }
   };
 
-  React.useEffect(() => {
-    if (produtoSelecionado) {
+useEffect(() => {
+    if (!producao && produtoSelecionado) {
       setValue(
         "insumos",
         produtoSelecionado.insumosDetalhados?.map(i => ({
@@ -194,7 +222,7 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
         name="precoPlanejado"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Preço Planejado (R$)"
+            label="Preço Estimado (R$)"
             type="number"
             value={value !== undefined ? value.toString() : "0"}
             onValueChanged={text => onChange(Number(text))}
@@ -203,6 +231,42 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
           />
         )}
       />
+      <Controller
+  control={control}
+  name="status"
+  render={({ field: { onChange, value } }) => (
+    <InputSelect
+      label="Status2"
+      value={value}
+      onValueChanged={onChange}
+      options={Object.entries(ProducaoStatusEnum).map(([key, val]) => ({
+        label: val,
+        value: val,
+      }))}
+      error={errors.status?.message}
+    />
+  )}
+/>
+{colheitaTemp && (
+  <View className="bg-gray-100 p-3 rounded-xl mt-2">
+    <Text className="text-sm font-semibold mb-1 text-gray-700">
+      Dados da Colheita
+    </Text>
+    <Text className="text-xs text-gray-600">
+      Quantidade Colhida: {colheitaTemp.quantidadeColhida}
+    </Text>
+    <Text className="text-xs text-gray-600">
+      Perdas: {colheitaTemp.perdas}
+    </Text>
+    <Text className="text-xs text-gray-600">
+      Custo de Produção: R$ {colheitaTemp.custo.toFixed(2)}
+    </Text>
+    <Text className="text-xs text-gray-600">
+      Preço de Venda Final: R$ {colheitaTemp.precoFinal.toFixed(2)}
+    </Text>
+  </View>
+)}
+      
 
       {/* Datas */}
       <View className="flex-row gap-3">
@@ -244,8 +308,19 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
           className="flex-1"
           text="Salvar"
           onPress={handleSubmit(onSubmit)}
+          disabled={submitting} // Desabilitar durante submissão
         />
       </View>
+      <ModalColheita
+        visible={mostrarModalColheita}
+        onClose={() => setMostrarModalColheita(false)}
+        onConfirm={(dados) => {
+          setColheitaTemp(dados); 
+          setMostrarModalColheita(false)
+  }}
+  quantidadePlanejada={watch("quantidadePlanejada") || 0}
+  precoPlanejado={watch("precoPlanejado") || 0}
+/>
     </ScrollView>
   );
 }
