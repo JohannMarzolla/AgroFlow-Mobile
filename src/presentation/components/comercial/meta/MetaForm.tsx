@@ -94,8 +94,6 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
 
   return (
     <View className="gap-4">
-      {!!meta && <Input label="Status" readOnly={true} value={meta.status} />}
-
       <Controller
         control={control}
         name="tipo"
