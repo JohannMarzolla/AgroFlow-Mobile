@@ -1,5 +1,3 @@
-import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
-import { useAuth } from "@/presentation/contexts/AuthContext";
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import {
@@ -11,10 +9,6 @@ import {
 } from "victory-native";
 
 export default function DashboardLucroPorFazenda() {
-  const { user } = useAuth();
-
-  if (user?.setor === UsuarioSetorEnum.PRODUCAO) return;
-
   const rawData = [
     { fazenda: "Fazenda Sao Joao", lucro: 50000, vendas: 120 },
     { fazenda: "Fazenda B", lucro: 30000, vendas: 90 },

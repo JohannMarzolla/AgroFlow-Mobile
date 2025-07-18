@@ -1,5 +1,3 @@
-import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
-import { useAuth } from "@/presentation/contexts/AuthContext";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import {
@@ -20,11 +18,8 @@ interface DashboardData {
 }
 
 export default function DashboardProducaoPorStatus() {
-  const { user } = useAuth();
   const [data, setData] = useState<DashboardData[]>([]);
   const dashboardService = new DashboardService(new DashboardApiService());
-
-  if (user?.setor === UsuarioSetorEnum.COMERCIAL) return;
 
   const colorsMap: Record<ProducaoStatusEnum, string> = {
     AGUARDANDO: "#f59e0b",

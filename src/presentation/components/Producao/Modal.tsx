@@ -21,7 +21,6 @@ export default function ModalColheita({
   onClose,
   onConfirm,
 }: ModalColheitaProps) {
-
   const [quantidadeColhida, setQuantidadeColhida] = useState(0);
   const [custo, setCusto] = useState(0);
   const [precoFinal, setPrecoFinal] = useState(0);
@@ -38,9 +37,9 @@ export default function ModalColheita({
   };
 
   return (
-    <Modal 
-      visible={visible} 
-      transparent 
+    <Modal
+      visible={visible}
+      transparent
       animationType="slide"
       onRequestClose={onClose}
     >
@@ -49,11 +48,11 @@ export default function ModalColheita({
           <Text className="text-xl font-bold text-center mb-4">
             Informações de Colheita
           </Text>
-          
+
           <Text className="text-sm text-gray-500 mb-4">
             Preencha os dados reais da colheita
           </Text>
-          
+
           <ScrollView className="max-h-[60vh]">
             <Input
               label="Quantidade Colhida"
@@ -83,19 +82,15 @@ export default function ModalColheita({
               type="number"
             />
           </ScrollView>
-          
+
           <View className="flex-row justify-between gap-4 mt-4">
-            <Button 
-              text="Cancelar" 
-              color="red" 
-              onPress={onClose} 
-              className="flex-1" 
+            <Button
+              text="Cancelar"
+              color="red"
+              onPress={onClose}
+              className="flex-1"
             />
-            <Button 
-              text="Confirmar" 
-              onPress={confirmar} 
-              className="flex-1" 
-            />
+            <Button text="Confirmar" onPress={confirmar} className="flex-1" />
           </View>
         </View>
       </View>

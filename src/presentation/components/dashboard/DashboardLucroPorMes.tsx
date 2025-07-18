@@ -1,5 +1,3 @@
-import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
-import { useAuth } from "@/presentation/contexts/AuthContext";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import {
@@ -11,10 +9,6 @@ import {
 } from "victory-native";
 
 export default function DashboardLucroPorMes() {
-  const { user } = useAuth();
-
-  if (user?.setor === UsuarioSetorEnum.PRODUCAO) return;
-
   const lucroPorMes = [
     { mes: "Jan", lucro: 320000 },
     { mes: "Fev", lucro: 410000 },

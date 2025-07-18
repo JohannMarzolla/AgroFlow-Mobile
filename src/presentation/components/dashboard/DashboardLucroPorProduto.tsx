@@ -14,12 +14,9 @@ import {
 
 export default function DashboardLucroPorProduto() {
   const dashboardService = new DashboardService(new DashboardApiService());
-  const { user } = useAuth();
   const [data, setData] = useState<DashboardLucroPorProdutoDTO[]>([]);
   const [maxY, setMaxY] = useState<number>(0);
   const [ticksY, setTicksY] = useState<number[]>([0]);
-
-  if (user?.setor === UsuarioSetorEnum.PRODUCAO) return;
 
   const buscarDados = async () => {
     const dados = await dashboardService.buscarLucroPorProduto();

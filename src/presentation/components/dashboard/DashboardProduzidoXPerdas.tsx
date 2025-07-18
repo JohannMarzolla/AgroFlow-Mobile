@@ -1,7 +1,5 @@
 import { DashboardService } from "@/application/services/outros/DashboardService";
-import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
 import { DashboardApiService } from "@/infrastructure/services/outros/DashboardApiService";
-import { useAuth } from "@/presentation/contexts/AuthContext";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { VictoryPie } from "victory-native";
@@ -13,12 +11,9 @@ interface DashboardData {
 }
 
 export default function DashboardProduzidoXPerdas() {
-  const { user } = useAuth();
   const [data, setData] = useState<DashboardData[]>([]);
   const [total, setTotal] = useState<number>(0);
   const dashboardService = new DashboardService(new DashboardApiService());
-
-  if (user?.setor === UsuarioSetorEnum.COMERCIAL) return;
 
   const buscarDados = async () => {
     const dados = await dashboardService.buscarProducaoProduzidoVsPerdas();

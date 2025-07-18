@@ -17,9 +17,11 @@ import {
 import { DateUtils } from "@/shared/utils/date.utils";
 import { ProducaoStatusEnum } from "@/domain/enum/producao/producao.enum";
 import { Producao } from "@/domain/models/Producao";
-import { ProducaoAtualizarDTO, ProducaoAtualizarSchema } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
+import {
+  ProducaoAtualizarDTO,
+  ProducaoAtualizarSchema,
+} from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 import ModalColheita from "./Modal";
-
 
 interface ProducaoFormProps {
   producao?: Producao;
@@ -28,7 +30,9 @@ interface ProducaoFormProps {
 
 const useProducaoForm = (producao: Producao | undefined) => {
   return useForm<ProducaoInserirDTO | ProducaoAtualizarDTO>({
-    resolver: zodResolver(!!producao ? ProducaoAtualizarSchema : ProducaoInserirSchema),
+    resolver: zodResolver(
+      !!producao ? ProducaoAtualizarSchema : ProducaoInserirSchema
+    ),
     defaultValues: {
       id: producao?.id,
       quantidadePlanejada: producao?.quantidadePlanejada,
@@ -37,16 +41,21 @@ const useProducaoForm = (producao: Producao | undefined) => {
       produtoId: producao?.produtoId,
       fazendaId: producao?.fazendaId,
       lote: producao?.lote,
-      dataInicio: producao?.dataInicio ? new Date(producao.dataInicio) : new Date(),
+      dataInicio: producao?.dataInicio
+        ? new Date(producao.dataInicio)
+        : new Date(),
       dataFim: producao?.dataFim
         ? new Date(producao.dataFim)
         : DateUtils.nowToEndOfMonth(),
-      insumos: producao?.insumos ??[],
+      insumos: producao?.insumos ?? [],
     },
   });
 };
 
-export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps)  {
+export default function ProducaoForm({
+  producao,
+  onCancel,
+}: ProducaoFormProps) {
   const { adicionar, atualizar } = useProducao();
   const { produtos } = useProdutos();
   const { fazenda } = useFazenda();
@@ -57,11 +66,11 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
     precoFinal: number;
     custo: number;
   } | null>(null);
-  
+
   const [submitting, setSubmitting] = useState(false);
 
   const formSomenteLeitura =
-  !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
+    !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
 
   const {
     control,
@@ -71,10 +80,9 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
     watch,
     formState: { errors },
   } = useProducaoForm(producao);
-  
+
   const status = watch("status");
   const readOnly = isReadOnly(producao);
-
 
   function isReadOnly(producao?: Producao): boolean {
     if (!producao) return false;
@@ -82,17 +90,16 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
     const dataInicio = new Date(producao.dataInicio);
     return dataInicio.getTime() < hoje.getTime();
   }
-  
+
   const { fields } = useFieldArray({
     control,
     name: "insumos",
   });
 
   const produtoId = watch("produtoId");
-  const produtoSelecionado = produtos.find(p => p.id === produtoId);
+  const produtoSelecionado = produtos.find((p) => p.id === produtoId);
 
   const onSubmit = async (data: ProducaoInserirDTO | ProducaoAtualizarDTO) => {
-    
     try {
       Loading.show();
 
@@ -100,13 +107,13 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
         ...data,
         ...(data.status === ProducaoStatusEnum.COLHIDA ? colheitaTemp : {}),
       };
-    
+
       const success = !!producao
         ? await atualizar(dataFinal as ProducaoAtualizarDTO)
         : await adicionar(dataFinal as ProducaoInserirDTO);
-  
+
       if (success) {
-        reset(dataFinal); 
+        reset(dataFinal);
         setColheitaTemp(null);
       }
     } finally {
@@ -114,11 +121,11 @@ export default function ProducaoForm({ producao, onCancel }: ProducaoFormProps) 
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
     if (!producao && produtoSelecionado) {
       setValue(
         "insumos",
-        produtoSelecionado.insumosDetalhados?.map(i => ({
+        produtoSelecionado.insumosDetalhados?.map((i) => ({
           insumoId: i.id,
           quantidade: 0,
         })) || []
@@ -135,7 +142,7 @@ useEffect(() => {
         render={({ field: { onChange, value } }) => (
           <InputSelect
             label="Fazenda"
-            options={fazenda.map(f => ({ label: f.nome, value: f.id }))}
+            options={fazenda.map((f) => ({ label: f.nome, value: f.id }))}
             value={value}
             onValueChanged={onChange}
             readOnly={formSomenteLeitura}
@@ -151,7 +158,7 @@ useEffect(() => {
         render={({ field: { onChange, value } }) => (
           <InputSelect
             label="Produto"
-            options={produtos.map(p => ({ label: p.nome, value: p.id }))}
+            options={produtos.map((p) => ({ label: p.nome, value: p.id }))}
             value={value}
             onValueChanged={onChange}
             readOnly={formSomenteLeitura}
@@ -166,7 +173,7 @@ useEffect(() => {
           <Text className="text-lg font-semibold">Insumos</Text>
           {fields.map((field, index) => {
             const insumo = produtoSelecionado.insumosDetalhados?.find(
-              i => i.id === field.insumoId
+              (i) => i.id === field.insumoId
             );
             return (
               <Controller
@@ -178,7 +185,7 @@ useEffect(() => {
                     label={insumo?.nome || "Insumo"}
                     type="number"
                     value={value !== undefined ? value.toString() : "0"}
-                    onValueChanged={text => onChange(Number(text))}
+                    onValueChanged={(text) => onChange(Number(text))}
                     readOnly={formSomenteLeitura}
                     error={errors.insumos?.[index]?.quantidade?.message}
                   />
@@ -198,7 +205,7 @@ useEffect(() => {
             label="Quantidade Planejada"
             type="number"
             value={value !== undefined ? value.toString() : "0"}
-            onValueChanged={text => onChange(Number(text))}
+            onValueChanged={(text) => onChange(Number(text))}
             readOnly={formSomenteLeitura}
             error={errors.quantidadePlanejada?.message}
           />
@@ -218,7 +225,7 @@ useEffect(() => {
           />
         )}
       />
-       <Controller
+      <Controller
         control={control}
         name="precoPlanejado"
         render={({ field: { onChange, value } }) => (
@@ -226,66 +233,65 @@ useEffect(() => {
             label="Preço Estimado (R$)"
             type="number"
             value={value !== undefined ? value.toString() : "0"}
-            onValueChanged={text => onChange(Number(text))}
+            onValueChanged={(text) => onChange(Number(text))}
             readOnly={formSomenteLeitura}
             error={errors.precoPlanejado?.message}
-           
           />
         )}
       />
-<Controller
-  control={control}
-  name="status"
-  render={({ field: { onChange, value } }) => (
-    <InputSelect
-      label="Status"
-      value={value}
-      onValueChanged={(val: string) => {
-        const novoStatus = val as ProducaoStatusEnum;
-        onChange(novoStatus);
+      <Controller
+        control={control}
+        name="status"
+        render={({ field: { onChange, value } }) => (
+          <InputSelect
+            label="Status"
+            value={value}
+            onValueChanged={(val: string) => {
+              const novoStatus = val as ProducaoStatusEnum;
+              onChange(novoStatus);
 
-        if (
-          novoStatus === ProducaoStatusEnum.COLHIDA &&
-          !colheitaTemp &&
-          producao?.status !== ProducaoStatusEnum.COLHIDA
-        ) {
-          setMostrarModalColheita(true);
-        }
-      }}
-      options={Object.entries(ProducaoStatusEnum).map(([key, val]) => ({
-        label: val,
-        value: val,
-      }))}
-      readOnly={formSomenteLeitura}
-      error={errors.status?.message}
-    />
-  )}
-/>
-{colheitaTemp && (
-  <View className="bg-gray-100 p-3 rounded-xl mt-2">
-    <Text className="text-sm font-semibold mb-1 text-gray-700">
-      Dados da Colheita
-    </Text>
-    <Text className="text-x text-gray-600">
-      Quantidade Colhida: {colheitaTemp.quantidadeColhida}
-    </Text>
-    <Text className="text-x text-gray-600">
-      Perdas: {colheitaTemp.perdas}
-    </Text>
-    <Text className="text-x text-gray-600">
-      Custo de Produção: R$ {colheitaTemp.custo.toFixed(2)}
-    </Text>
-    <Text className="text-x text-gray-600">
-      Preço de Venda Final: R$ {colheitaTemp.precoFinal.toFixed(2)}
-    </Text>
-    <Button
-      text="Editar"
-      onPress={() => setMostrarModalColheita(true)}
-      className="px-2 py-1 mt-2 self-end bg-green-350 rounded-md"
+              if (
+                novoStatus === ProducaoStatusEnum.COLHIDA &&
+                !colheitaTemp &&
+                producao?.status !== ProducaoStatusEnum.COLHIDA
+              ) {
+                setMostrarModalColheita(true);
+              }
+            }}
+            options={Object.entries(ProducaoStatusEnum).map(([key, val]) => ({
+              label: val,
+              value: val,
+            }))}
+            readOnly={formSomenteLeitura}
+            error={errors.status?.message}
+          />
+        )}
       />
-  </View>
-)}
-      
+      {colheitaTemp && (
+        <View className="bg-gray-100 p-3 rounded-xl mt-2">
+          <Text className="text-sm font-semibold mb-1 text-gray-700">
+            Dados da Colheita
+          </Text>
+          <Text className="text-x text-gray-600">
+            Quantidade Colhida: {colheitaTemp.quantidadeColhida}
+          </Text>
+          <Text className="text-x text-gray-600">
+            Perdas: {colheitaTemp.perdas}
+          </Text>
+          <Text className="text-x text-gray-600">
+            Custo de Produção: R$ {colheitaTemp.custo.toFixed(2)}
+          </Text>
+          <Text className="text-x text-gray-600">
+            Preço de Venda Final: R$ {colheitaTemp.precoFinal.toFixed(2)}
+          </Text>
+          <Button
+            text="Editar"
+            onPress={() => setMostrarModalColheita(true)}
+            className="px-2 py-1 mt-2 self-end bg-green-350 rounded-md"
+          />
+        </View>
+      )}
+
       {/* Datas */}
       <View className="flex-row gap-3">
         <Controller
@@ -318,7 +324,7 @@ useEffect(() => {
 
       {/* Botões */}
       <View className="flex-row gap-3 mt-4">
-      <Button
+        <Button
           className="flex-1"
           text="Cancelar"
           color="red"
@@ -328,19 +334,19 @@ useEffect(() => {
           className="flex-1"
           text="Salvar"
           onPress={handleSubmit(onSubmit)}
-          disabled={submitting} 
+          disabled={submitting}
         />
       </View>
       <ModalColheita
         visible={mostrarModalColheita}
         onClose={() => setMostrarModalColheita(false)}
         onConfirm={(dados) => {
-          setColheitaTemp(dados); 
-          setMostrarModalColheita(false)
-  }}
-  quantidadePlanejada={watch("quantidadePlanejada") || 0}
-  precoPlanejado={watch("precoPlanejado") || 0}
-/>
+          setColheitaTemp(dados);
+          setMostrarModalColheita(false);
+        }}
+        quantidadePlanejada={watch("quantidadePlanejada") || 0}
+        precoPlanejado={watch("precoPlanejado") || 0}
+      />
     </ScrollView>
   );
 }
