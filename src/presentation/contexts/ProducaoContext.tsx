@@ -13,7 +13,6 @@ import { ProducaoInserirDTO } from "@/application/dtos/producao/Producao/Produca
 import { ProducaoApiService } from "@/infrastructure/services/producao/ProducaoApiService";
 import { ProducaoAtualizarDTO } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 
-
 interface ProducaoContextData {
   producao: Producao[];
   loading: boolean;
@@ -21,18 +20,20 @@ interface ProducaoContextData {
   adicionar(producao: ProducaoInserirDTO): Promise<boolean>;
   atualizar(producao: ProducaoAtualizarDTO): Promise<boolean>;
 }
-const ProducaoContext = createContext<ProducaoContextData | undefined>(undefined);
+const ProducaoContext = createContext<ProducaoContextData | undefined>(
+  undefined
+);
 
 export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const userId = user?.userId  
+  const userId = user?.userId;
   const [producao, setProducao] = useState<Producao[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
   const producaoService = new ProducaoService(new ProducaoApiService());
- 
+
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
 
@@ -45,7 +46,9 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setProducao((prev) => (reset ? result.dados : [...prev, ...result.dados]));
+      setProducao((prev) =>
+        reset ? result.dados : [...prev, ...result.dados]
+      );
     } catch (error) {
       setHasMore(false);
       ShowToast("error", "Erro ao carregar produções.");
@@ -83,13 +86,15 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   }, [userId]);
 
   return (
-    <ProducaoContext.Provider value={{ 
-      producao,
-      loading,
-      carregar,
-      adicionar,
-      atualizar,
-    }}>
+    <ProducaoContext.Provider
+      value={{
+        producao,
+        loading,
+        carregar,
+        adicionar,
+        atualizar,
+      }}
+    >
       {children}
     </ProducaoContext.Provider>
   );
@@ -99,7 +104,7 @@ export const useProducao = () => {
   const context = useContext(ProducaoContext);
   if (!context) {
     throw new Error(
-      "Contexto não encontrado. useProdutos deve estar dentro de ProdutosProvider."
+      "Contexto não encontrado. useProducao deve estar dentro de ProducaoProvider."
     );
   }
   return context;

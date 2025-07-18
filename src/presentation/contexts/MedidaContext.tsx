@@ -13,28 +13,25 @@ import { UnidadeMedidaInserirDTO } from "@/application/dtos/producao/UnidadeMedi
 import { UnidadeMedidaApiService } from "@/infrastructure/services/producao/UnidadeMedidaApiService";
 import { UnidadeMedidaAtualizarDTO } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaAtualizarDTO";
 
-
 interface MedidaContextData {
   medida: Medida[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(unidade: UnidadeMedidaInserirDTO): Promise<boolean>;
-  atualizar(medida:UnidadeMedidaAtualizarDTO): Promise<boolean>;
+  atualizar(medida: UnidadeMedidaAtualizarDTO): Promise<boolean>;
 }
-
 
 const MedidaContext = createContext<MedidaContextData | undefined>(undefined);
 
 export const MedidaProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth(); 
-  const userId = user?.userId 
+  const { user } = useAuth();
+  const userId = user?.userId;
   const [medida, setMedida] = useState<Medida[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
-  const medidaService = new MedidasService(new UnidadeMedidaApiService);
-
+  const medidaService = new MedidasService(new UnidadeMedidaApiService());
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
@@ -79,24 +76,24 @@ export const MedidaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
- useEffect(() => {
+  useEffect(() => {
     carregar();
   }, [userId]);
 
   return (
-    <MedidaContext.Provider value={{
-      medida,
-      loading,
-      carregar,
-      adicionar,
-      atualizar
-    }}
-  >
+    <MedidaContext.Provider
+      value={{
+        medida,
+        loading,
+        carregar,
+        adicionar,
+        atualizar,
+      }}
+    >
       {children}
     </MedidaContext.Provider>
   );
-}
+};
 
 export const useMedida = () => {
   const context = useContext(MedidaContext);

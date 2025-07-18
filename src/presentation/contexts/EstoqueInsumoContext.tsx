@@ -13,27 +13,32 @@ import { EstoqueInsumoInserirDTO } from "@/application/dtos/producao/EstoqueInsu
 import { EstoqueInsumoApiService } from "@/infrastructure/services/producao/EstoqueInsumoApiService";
 import { EstoqueInsumoAtualizarDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
 
-
-
 interface EstoqueInsumoContextData {
   estoqueInsumos: EstoqueInsumo[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(estoqueInsumo: EstoqueInsumoInserirDTO): Promise<boolean>;
-  atualizar(estoque:EstoqueInsumoAtualizarDTO): Promise<boolean>;
+  atualizar(estoque: EstoqueInsumoAtualizarDTO): Promise<boolean>;
 }
-const EstoqueInsumoContext = createContext<EstoqueInsumoContextData | undefined>(undefined);
+const EstoqueInsumoContext = createContext<
+  EstoqueInsumoContextData | undefined
+>(undefined);
 
-export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => {
+export const EstoqueInsumoProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { user } = useAuth();
-  const userId = user?.userId  
+  const userId = user?.userId;
   const [estoqueInsumos, setEstoqueInsumos] = useState<EstoqueInsumo[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
-  const estoqueInsumoService = new EstoqueInsumoService(new EstoqueInsumoApiService());
-
+  const estoqueInsumoService = new EstoqueInsumoService(
+    new EstoqueInsumoApiService()
+  );
 
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
@@ -47,7 +52,9 @@ export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => 
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setEstoqueInsumos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
+      setEstoqueInsumos((prev) =>
+        reset ? result.dados : [...prev, ...result.dados]
+      );
     } catch (error) {
       setHasMore(false);
       ShowToast("error", "Erro ao carregar estoque de insumos.");
@@ -79,26 +86,24 @@ export const EstoqueInsumoProvider = ({ children }: { children: ReactNode }) => 
     }
   };
 
- useEffect(() => {
-     carregar();
+  useEffect(() => {
+    carregar();
   }, [userId]);
 
   return (
-    <EstoqueInsumoContext.Provider value={{ estoqueInsumos,
-      loading,
-      carregar,
-      adicionar,
-      atualizar }}>
+    <EstoqueInsumoContext.Provider
+      value={{ estoqueInsumos, loading, carregar, adicionar, atualizar }}
+    >
       {children}
     </EstoqueInsumoContext.Provider>
   );
-}
+};
 
-export const useProducao = () => {
+export const useEstoqueInsumo = () => {
   const context = useContext(EstoqueInsumoContext);
   if (!context) {
     throw new Error(
-      "Contexto não encontrado. useProdutos deve estar dentro de ProdutosProvider."
+      "Contexto não encontrado. useEstoqueInsumo deve estar dentro de ProdutosProvider."
     );
   }
   return context;
