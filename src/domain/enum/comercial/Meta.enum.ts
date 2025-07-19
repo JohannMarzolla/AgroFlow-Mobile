@@ -5,6 +5,12 @@ export enum MetaTipoEnum {
   PRODUCAO = "PRODUCAO",
 }
 
+export enum MetaTipoFiltroEnum {
+  TODOS = "TODOS",
+  VENDA = "VENDA",
+  PRODUCAO = "PRODUCAO",
+}
+
 export enum MetaStatusEnum {
   ATIVA = "ATIVA",
   INICIALIZADA = "INICIALIZADA",

@@ -10,6 +10,7 @@ import PageHeader from "@/presentation/components/ui/PageHeader";
 import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaItem } from "@/presentation/components/comercial/meta/MetaItem";
 import PaginatedList from "@/presentation/components/ui/PaginatedList";
+import { MetaTipoFiltroEnum } from "@/domain/enum/comercial/Meta.enum";
 
 type MetaNavigationProp = NativeStackNavigationProp<
   MetaStackParamList,
@@ -18,7 +19,7 @@ type MetaNavigationProp = NativeStackNavigationProp<
 
 export function Tela() {
   const navigation = useNavigation<MetaNavigationProp>();
-  const { metas, loading, carregar } = useMeta();
+  const { metas, loading, filtroTipo, carregar, setFiltroTipo } = useMeta();
 
   return (
     <View className="flex-1 bg-white">
@@ -32,7 +33,9 @@ export function Tela() {
         <InputSelect
           label="Tipo"
           labelTextBold={false}
-          options={MetaConsts.Tipos}
+          options={MetaConsts.TiposFiltro}
+          value={filtroTipo}
+          onValueChanged={(value: MetaTipoFiltroEnum) => setFiltroTipo(value)}
         />
       </View>
 

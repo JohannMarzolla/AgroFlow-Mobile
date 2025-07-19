@@ -11,10 +11,16 @@ import { MetaService } from "@/application/services/comercial/MetaService";
 import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiService";
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
+import {
+  MetaTipoEnum,
+  MetaTipoFiltroEnum,
+} from "@/domain/enum/comercial/Meta.enum";
 
 interface MetaContextData {
   metas: Meta[];
   loading: boolean;
+  filtroTipo: MetaTipoFiltroEnum;
+  setFiltroTipo: React.Dispatch<React.SetStateAction<MetaTipoFiltroEnum>>;
   carregar(): Promise<void>;
   adicionar(meta: MetaInserirDTO): Promise<boolean>;
   atualizar(meta: MetaAtualizarDTO): Promise<boolean>;
@@ -27,6 +33,9 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
+  const [filtroTipo, setFiltroTipo] = useState<MetaTipoFiltroEnum>(
+    MetaTipoFiltroEnum.TODOS
+  );
   const metaService = new MetaService(new MetaApiService());
 
   const carregar = async (reset = false) => {
@@ -38,6 +47,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
       const result = await metaService.buscarTodos({
         limite: 5,
         ultimoId: !reset ? lastId : null,
+        tipo: filtroTipo !== MetaTipoFiltroEnum.TODOS ? getFiltroTipo() : null,
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
@@ -74,13 +84,27 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getFiltroTipo = () => {
+    return filtroTipo === MetaTipoFiltroEnum.PRODUCAO
+      ? MetaTipoEnum.PRODUCAO
+      : MetaTipoEnum.VENDA;
+  };
+
   useEffect(() => {
     carregar(true);
-  }, []);
+  }, [filtroTipo]);
 
   return (
     <MetaContext.Provider
-      value={{ metas, loading, carregar, adicionar, atualizar }}
+      value={{
+        metas,
+        loading,
+        filtroTipo,
+        setFiltroTipo,
+        carregar,
+        adicionar,
+        atualizar,
+      }}
     >
       {children}
     </MetaContext.Provider>

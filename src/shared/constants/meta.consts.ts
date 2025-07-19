@@ -3,12 +3,19 @@ import {
   MetaCalculoPorEnum,
   MetaStatusEnum,
   MetaTipoEnum,
+  MetaTipoFiltroEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 
 export default class MetaConsts {
   static readonly Tipos: SelectOption[] = [
     { value: MetaTipoEnum.VENDA, label: "Venda" },
     { value: MetaTipoEnum.PRODUCAO, label: "Produção" },
+  ];
+
+  static readonly TiposFiltro: SelectOption[] = [
+    { value: MetaTipoFiltroEnum.TODOS, label: "Todos" },
+    { value: MetaTipoFiltroEnum.VENDA, label: "Venda" },
+    { value: MetaTipoFiltroEnum.PRODUCAO, label: "Produção" },
   ];
 
   static readonly CalculoPor: SelectOption[] = [
