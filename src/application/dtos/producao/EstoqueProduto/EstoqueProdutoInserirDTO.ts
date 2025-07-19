@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const EstoqueProdutoInserirSchema = z.object({
   produtoId: z.string().min(1, "produto deve ter pelo menos 1 caracteres"),
+  fazendaId: z.string().min(1, "produto deve ter pelo menos 1 caracteres"),
   quantidade: z
     .number()
     .positive("Quantidade deve ser positiva")
@@ -11,6 +12,7 @@ export const EstoqueProdutoInserirSchema = z.object({
     .positive("Preço deve ser positivo")
     .min(0.01, "Preço mínimo: 0.01"),
   lote: z.string().min(1, "Lote é obrigatório"),
+  
   producaoId: z.string().uuid("ProducaoId inválido"),
 });
 

@@ -11,6 +11,7 @@ export class EstoqueProduto {
     criadaEm: Date;
     atualizadaEm: Date;
     lote?: string;
+    precoUnitario?:string
 
     constructor(obj: EstoqueProduto) {
         this.id = obj.id;
@@ -22,6 +23,7 @@ export class EstoqueProduto {
         this.unidadeMedidaSigla = obj.unidadeMedidaSigla;
         this.criadaEm = obj.criadaEm;
         this.atualizadaEm = obj.atualizadaEm;
-        this.lote = obj.lote
+        this.lote = obj.lote;
+        this.precoUnitario = obj.precoUnitario;
     }
 } 

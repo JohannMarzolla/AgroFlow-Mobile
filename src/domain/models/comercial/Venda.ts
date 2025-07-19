@@ -11,6 +11,7 @@ export class Venda {
   valorTotal: number;
   status: VendaStatusEnum;
   itens: ItemVenda[];
+ 
 
   constructor(obj: Venda) {
     this.id = obj.id;
@@ -21,6 +22,7 @@ export class Venda {
     this.valorTotal = obj.valorTotal;
     this.status = obj.status;
     this.itens = obj.itens;
+   
 
   }
 }

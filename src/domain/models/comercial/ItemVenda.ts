@@ -6,7 +6,8 @@ export class ItemVenda {
     produtoId: string;
     fazendaId?: string;
     precoUnitario: number;
-    lucroUnitario: number
+    lucroUnitario: number;
+    produtoNome?: string;
   
     constructor(obj: ItemVenda) {
       this.id = obj.id;
@@ -16,6 +17,8 @@ export class ItemVenda {
       this.fazendaId = obj.fazendaId;
       this.precoUnitario = obj.precoUnitario;
       this.lucroUnitario = obj.lucroUnitario;
+      this.produtoNome = obj.produtoNome;
+    
     }
   }
   
