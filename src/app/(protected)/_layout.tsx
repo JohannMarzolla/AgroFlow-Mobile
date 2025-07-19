@@ -20,6 +20,7 @@ import { useNotificacaoWS } from "@/presentation/hooks/useNotificacaoWS";
 import { Redirect, SplashScreen } from "expo-router";
 import ComercialStack from "./features/comercial/ComercialStack";
 import OutrosStack from "./features/outros/OutrosStack";
+import { VendaProvider } from "@/presentation/contexts/comercial/VendaContext";
 
 const Drawer = createDrawerNavigator();
 
@@ -57,6 +58,7 @@ export default function App() {
             <ProdutosProvider>
               <ProducaoProvider>
                 <EstoqueProdutoProvider>
+                  <VendaProvider>
                   <Drawer.Navigator
                     screenOptions={customScreenOptions}
                     drawerContent={(props) => (
@@ -75,6 +77,7 @@ export default function App() {
                     <Drawer.Screen name="Outros" component={OutrosStack} />
                     <Drawer.Screen name="Sair" component={Logout} />
                   </Drawer.Navigator>
+                  </VendaProvider>
                 </EstoqueProdutoProvider>
               </ProducaoProvider>
             </ProdutosProvider>

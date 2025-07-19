@@ -47,7 +47,11 @@ const menuItems: MenuItem[] = [
     label: "Comercial",
     submenuKey: "comercial",
     setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.COMERCIAL],
-    submenu: [{ label: "Metas", screen: "Meta" }],
+    submenu: [
+      { label: "Metas", screen: "Meta" },
+      { label: "Vendas", screen: "Venda" }
+    ],
+   
     parentScreen: "Comercial",
   },
   {

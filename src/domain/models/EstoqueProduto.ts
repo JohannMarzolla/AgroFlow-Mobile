@@ -3,6 +3,7 @@ import { Produto } from "./Produto";
 export class EstoqueProduto {
     id: string;
     produtoId: string;
+    fazendaId:string;
     quantidade: number;
     preco?: number;
     produtoNome?: string;
@@ -11,12 +12,10 @@ export class EstoqueProduto {
     atualizadaEm: Date;
     lote?: string;
 
-
-    
-
     constructor(obj: EstoqueProduto) {
         this.id = obj.id;
         this.produtoId = obj.produtoId;
+        this.fazendaId = obj.fazendaId;
         this.quantidade = obj.quantidade;
         this.preco = obj.preco;
         this.produtoNome = obj.produtoNome;

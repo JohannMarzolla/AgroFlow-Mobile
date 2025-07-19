@@ -3,7 +3,6 @@ import { View, Text, Pressable } from "react-native";
 import { formatarData } from "@/shared/utils/formatarData";
 import { Meta } from "@/domain/models/comercial/Meta";
 import {
-  MetaStatusEnum,
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";

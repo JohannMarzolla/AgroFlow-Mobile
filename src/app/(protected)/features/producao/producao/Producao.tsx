@@ -12,7 +12,7 @@ import { Producao as ProducaoModel } from "@/domain/models/Producao";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<
   ProducaoStackParamList,
-  "Lista"
+  "Producao"
 >;
 
 export function TelaDeProducao() {

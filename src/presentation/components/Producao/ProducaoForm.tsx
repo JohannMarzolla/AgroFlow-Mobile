@@ -312,13 +312,12 @@ export default function ProducaoForm({
           color="red"
           onPress={onCancel}
         />
-        {readOnly && (
-          <Button
+        <Button
             className="flex-1"
             text="Salvar"
             onPress={handleSubmit(onSubmit)}
           />
-        )}
+      
       </View>
 
       <ModalColheita

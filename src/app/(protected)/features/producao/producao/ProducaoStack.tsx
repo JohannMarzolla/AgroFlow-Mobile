@@ -6,7 +6,7 @@ import { Producao as ProducaoModel } from "@/domain/models/Producao";
 import EditarProducao from "./Editar";
 
 export type ProducaoStackParamList = {
-  Lista: undefined;
+  Producao: undefined;
   AdicionarProducao: undefined;
   EditarProducao: { producao: ProducaoModel };
 };
@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator<ProducaoStackParamList>();
 export default function ProducaoStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Lista" component={Producao} />
+      <Stack.Screen name="Producao" component={Producao} />
       <Stack.Screen
         name="AdicionarProducao"
         component={AdicionarProducao}
