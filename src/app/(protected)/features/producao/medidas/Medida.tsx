@@ -28,7 +28,7 @@ export function TelaDeProducao() {
   return (
     <View className="flex-1">
       <PageHeader
-        pageName="Medida"
+        pageName="Unidades de Medida"
         showAdd={userCanEdit}
         onAdicionar={() => navigation.navigate("AdicionarMedida")}
       ></PageHeader>

@@ -4,10 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import FazendaForm from "@/presentation/components/Fazenda/FazendaForm";
 import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
 
-
 export default function AdicionarFazenda() {
-   const navigation = useNavigation();
-   
+  const navigation = useNavigation();
+
   return (
     <PageAdicionarLayout pageName="Adicionar Fazenda">
       <FazendaForm onCancel={() => navigation.goBack()} />

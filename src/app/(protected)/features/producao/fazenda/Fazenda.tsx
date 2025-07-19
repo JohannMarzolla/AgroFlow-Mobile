@@ -13,7 +13,7 @@ import { Fazenda as FazendaModel } from "@/domain/models/Fazenda";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<
   FazendaStackParamList,
-  "Fazenda"
+  "Lista"
 >;
 
 export function TelaDeProducao() {
@@ -28,7 +28,7 @@ export function TelaDeProducao() {
   return (
     <View className="flex-1 ">
       <PageHeader
-        pageName="Fazenda"
+        pageName="Fazendas"
         showAdd={userCanEdit}
         onAdicionar={() => navigation.navigate("AdicionarFazenda")}
       ></PageHeader>

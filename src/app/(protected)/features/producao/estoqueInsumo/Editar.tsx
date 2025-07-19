@@ -8,11 +8,14 @@ export default function EditarEstoqueInsumo() {
   const route = useRoute();
   const { estoqueInsumo } = route.params as { estoqueInsumo: EstoqueInsumo };
   const navigation = useNavigation();
-  console.log("estoque insumo", estoqueInsumo)
+  console.log("estoque insumo", estoqueInsumo);
 
   return (
-    <PageAdicionarLayout  pageName="Editar estoqueInsumo">
-     <EstoqueInsumoForm estoqueInsumo={estoqueInsumo} onCancel={() => navigation.goBack()}/>
+    <PageAdicionarLayout pageName="Editar Estoque de Insumo">
+      <EstoqueInsumoForm
+        estoqueInsumo={estoqueInsumo}
+        onCancel={() => navigation.goBack()}
+      />
     </PageAdicionarLayout>
   );
 }

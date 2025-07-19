@@ -28,7 +28,7 @@ export function TelaDeProdutos() {
   return (
     <View className="flex-1">
       <PageHeader
-        pageName="Produto"
+        pageName="Produtos"
         showAdd={userCanEdit}
         onAdicionar={() => navigation.navigate("AdicionarProduto")}
       ></PageHeader>

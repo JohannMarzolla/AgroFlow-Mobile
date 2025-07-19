@@ -10,7 +10,7 @@ export default function EditarUsuario() {
   const navigation = useNavigation();
 
   return (
-    <PageAdicionarLayout pageName="Editar usuario">
+    <PageAdicionarLayout pageName="Editar Usuário">
       <UsuarioForm usuario={usuario} onCancel={() => navigation.goBack()} />
     </PageAdicionarLayout>
   );

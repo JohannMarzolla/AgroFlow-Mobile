@@ -18,28 +18,28 @@ const menuItems: MenuItem[] = [
     label: "Produção",
     submenuKey: "producao",
     submenu: [
-      { label: "Fazenda", screen: "Fazenda" },
-      { label: "Medidas", screen: "Medidas" },
+      { label: "Fazendas", screen: "Fazenda" },
       { label: "Produtos", screen: "Produtos" },
       {
-        label: "Insumo",
+        label: "Insumos",
         screen: "Insumo",
         setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.PRODUCAO],
       },
       {
-        label: "Produção",
+        label: "Produções",
         screen: "Producao",
         setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.PRODUCAO],
-      },
-      {
-        label: "Estoque de Produtos",
-        screen: "EstoqueProduto",
       },
       {
         label: "Estoque de Insumos",
         screen: "EstoqueInsumo",
         setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.PRODUCAO],
       },
+      {
+        label: "Estoque de Produtos",
+        screen: "EstoqueProduto",
+      },
+      { label: "Unidades de Medida", screen: "Medidas" },
     ],
     parentScreen: "Producao",
   },
@@ -47,7 +47,7 @@ const menuItems: MenuItem[] = [
     label: "Comercial",
     submenuKey: "comercial",
     setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.COMERCIAL],
-    submenu: [{ label: "Meta", screen: "Meta" }],
+    submenu: [{ label: "Metas", screen: "Meta" }],
     parentScreen: "Comercial",
   },
   {
@@ -55,7 +55,7 @@ const menuItems: MenuItem[] = [
     submenuKey: "outros",
     submenu: [
       {
-        label: "Usuarios",
+        label: "Usuários",
         screen: "Usuario",
         setores: [UsuarioSetorEnum.ADMIN],
       },

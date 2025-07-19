@@ -21,7 +21,7 @@ function TelaDeEstoqueProduto() {
 
   return (
     <View className="flex-1 ">
-      <PageHeader pageName="Estoque de produtos"></PageHeader>
+      <PageHeader pageName="Estoque de Produtos"></PageHeader>
 
       <PaginatedList
         data={estoqueProdutos}

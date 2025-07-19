@@ -7,7 +7,7 @@ export default function AdicionarUsuario() {
   const navigation = useNavigation();
 
   return (
-    <PageAdicionarLayout pageName="Adicionar usuario">
+    <PageAdicionarLayout pageName="Adicionar Usuário">
       <UsuarioForm onCancel={() => navigation.goBack()} />
     </PageAdicionarLayout>
   );

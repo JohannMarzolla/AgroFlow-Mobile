@@ -10,7 +10,7 @@ export default function EditarMeta() {
   const navigation = useNavigation();
 
   return (
-    <PageAdicionarLayout pageName="Editar meta">
+    <PageAdicionarLayout pageName="Editar Meta">
       <MetaForm meta={meta} onCancel={() => navigation.goBack()} />
     </PageAdicionarLayout>
   );

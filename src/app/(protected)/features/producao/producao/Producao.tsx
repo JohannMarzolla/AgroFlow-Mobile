@@ -22,7 +22,7 @@ export function TelaDeProducao() {
   return (
     <View className="flex-1">
       <PageHeader
-        pageName="Producao"
+        pageName="Produções"
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarProducao")}
       ></PageHeader>

@@ -22,7 +22,7 @@ export default function EstoqueInsumo() {
   return (
     <View className="flex-1 ">
       <PageHeader
-        pageName="Estoque Insumo"
+        pageName="Estoque de Insumos"
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarEstoqueInsumo")}
       ></PageHeader>

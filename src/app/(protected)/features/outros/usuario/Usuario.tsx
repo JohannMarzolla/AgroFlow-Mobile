@@ -23,7 +23,7 @@ export function Tela() {
   return (
     <View className="flex-1">
       <PageHeader
-        pageName="Usuarios"
+        pageName="Usuários"
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarUsuario")}
       ></PageHeader>

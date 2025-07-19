@@ -10,7 +10,7 @@ export default function EditarMedida() {
   const navigation = useNavigation();
 
   return (
-    <PageAdicionarLayout pageName="Editar unidadeMedida">
+    <PageAdicionarLayout pageName="Editar Unidade de Medida">
       <MedidaForm medida={medida} onCancel={() => navigation.goBack()} />
     </PageAdicionarLayout>
   );

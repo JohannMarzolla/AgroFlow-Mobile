@@ -7,7 +7,7 @@ export default function AdicionarMeta() {
   const navigation = useNavigation();
 
   return (
-    <PageAdicionarLayout pageName="Adicionar meta">
+    <PageAdicionarLayout pageName="Adicionar Meta">
       <MetaForm onCancel={() => navigation.goBack()} />
     </PageAdicionarLayout>
   );
