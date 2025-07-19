@@ -1,23 +1,23 @@
 import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 
-interface IListaGenerica<T> {
+interface IPaginatedListGenerica<T> {
   data: T[];
+  loadingMore: boolean;
   renderItem: ({ item }: { item: T }) => React.ReactElement;
   keyExtractor: (item: T) => string;
-  loadingMore: boolean;
   onEndReached: () => void;
   onEdit?: (item: T) => void;
 }
 
-export default function Lista<T>({
+export default function PaginatedList<T>({
   data,
   renderItem,
   keyExtractor,
   loadingMore,
   onEndReached,
   onEdit,
-}: IListaGenerica<T>) {
+}: IPaginatedListGenerica<T>) {
   if (!data?.length) {
     return <Text className="text-agroflow-gray text-center">Não há itens</Text>;
   }

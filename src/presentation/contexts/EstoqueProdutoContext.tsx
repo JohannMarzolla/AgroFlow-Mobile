@@ -19,12 +19,18 @@ interface EstoqueProdutoContextData {
   loading: boolean;
   carregar: (reset?: boolean) => Promise<void>;
   adicionar: (estoqueProduto: EstoqueProdutoInserirDTO) => Promise<boolean>;
-  atualizar(estoque:EstoqueProdutoAtualizarDTO): Promise<boolean>;
+  atualizar(estoque: EstoqueProdutoAtualizarDTO): Promise<boolean>;
 }
 
-const EstoqueProdutoContext = createContext<EstoqueProdutoContextData | undefined>(undefined);
+const EstoqueProdutoContext = createContext<
+  EstoqueProdutoContextData | undefined
+>(undefined);
 
-export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) => {
+export const EstoqueProdutoProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { user } = useAuth();
   const userId = user?.userId;
 
@@ -34,10 +40,11 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   const [lastId, setLastId] = useState<string | null>(null);
 
   const estoqueProdutoApiService = new EstoqueProdutoApiService();
-  
-  const estoqueProdutoService = useMemo(() => 
-    new EstoqueProdutoService(new EstoqueProdutoApiService()), 
-  []);
+
+  const estoqueProdutoService = useMemo(
+    () => new EstoqueProdutoService(new EstoqueProdutoApiService()),
+    []
+  );
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
     if (!userId) return;
@@ -50,7 +57,9 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setEstoqueProdutos(prev => reset ? result.dados : [...prev, ...result.dados]);
+      setEstoqueProdutos((prev) =>
+        reset ? result.dados : [...prev, ...result.dados]
+      );
     } catch (error) {
       setHasMore(false);
       ShowToast("error", "Erro ao carregar estoque de produtos.");
@@ -82,12 +91,11 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
     }
   };
 
-
   useEffect(() => {
     if (!userId) return;
 
     const unsubscribe = estoqueProdutoService.escutarAlteracoes(() => {
-      console.log("chamando carregar de estoqueProdutos")
+      console.log("chamando carregar de estoqueProdutos");
       carregar(true); // recarrega sempre que houver alteração no Firestore
     });
 
@@ -95,11 +103,13 @@ export const EstoqueProdutoProvider = ({ children }: { children: ReactNode }) =>
   }, [userId]);
 
   useEffect(() => {
-    if (userId) carregar();
+    if (userId) carregar(true);
   }, [userId]);
 
   return (
-    <EstoqueProdutoContext.Provider value={{ estoqueProdutos, loading, carregar, adicionar, atualizar }}>
+    <EstoqueProdutoContext.Provider
+      value={{ estoqueProdutos, loading, carregar, adicionar, atualizar }}
+    >
       {children}
     </EstoqueProdutoContext.Provider>
   );

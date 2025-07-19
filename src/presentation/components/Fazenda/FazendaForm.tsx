@@ -15,6 +15,8 @@ import {
   FazendaAtualizarDTO,
   FazendaAtualizarSchema,
 } from "@/application/dtos/producao/fazenda/FazendaAtualizarDTO";
+import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
+import { useAuth } from "@/presentation/contexts/AuthContext";
 
 interface FazendaFormProps {
   fazenda?: Fazenda;
@@ -23,7 +25,9 @@ interface FazendaFormProps {
 
 const useFazendaForm = (fazenda: Fazenda | undefined) => {
   return useForm<FazendaInserirDTO | FazendaAtualizarDTO>({
-    resolver: zodResolver(!!fazenda ? FazendaAtualizarSchema : FazendaInserirSchema),
+    resolver: zodResolver(
+      !!fazenda ? FazendaAtualizarSchema : FazendaInserirSchema
+    ),
     defaultValues: {
       id: fazenda?.id,
       nome: fazenda?.nome ?? "",
@@ -32,6 +36,7 @@ const useFazendaForm = (fazenda: Fazenda | undefined) => {
 };
 
 export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
+  const { user } = useAuth();
   const { adicionar, atualizar } = useFazenda();
   const {
     control,
@@ -39,10 +44,13 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
     formState: { errors },
     reset,
   } = useFazendaForm(fazenda);
-  const readOnly = false; 
+
+  const userCanEdit =
+    user?.setor === UsuarioSetorEnum.ADMIN ||
+    user?.setor === UsuarioSetorEnum.PRODUCAO;
+  const readOnly = !userCanEdit;
 
   const onSubmit = async (data: FazendaInserirDTO | FazendaAtualizarDTO) => {
-   
     try {
       Loading.show();
       const success = !!fazenda
@@ -57,7 +65,11 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
   return (
     <View className="gap-4">
       {!!fazenda?.criadaEm && (
-        <Input label="Criada em" readOnly={true} value={new Date(fazenda.criadaEm).toLocaleDateString()} />
+        <Input
+          label="Criada em"
+          readOnly={true}
+          value={new Date(fazenda.criadaEm).toLocaleDateString()}
+        />
       )}
       <Controller
         control={control}
@@ -79,11 +91,13 @@ export default function FazendaForm({ fazenda, onCancel }: FazendaFormProps) {
           color="red"
           onPress={onCancel}
         />
-        <Button
-          className="flex-1"
-          text="Salvar"
-          onPress={handleSubmit(onSubmit)}
-        />
+        {userCanEdit && (
+          <Button
+            className="flex-1"
+            text="Salvar"
+            onPress={handleSubmit(onSubmit)}
+          />
+        )}
       </View>
     </View>
   );

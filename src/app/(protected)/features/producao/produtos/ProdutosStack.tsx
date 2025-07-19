@@ -6,9 +6,8 @@ import AdicionarProduto from "./adicionar";
 import EditarProduto from "./Editar";
 import { Produto } from "@/domain/models/Produto";
 
-
 export type ProdutosStackParamList = {
-  Produtos: undefined;
+  Lista: undefined;
   AdicionarProduto: undefined;
   EditarProduto: { produto: Produto };
 };
@@ -17,19 +16,20 @@ const Stack = createNativeStackNavigator<ProdutosStackParamList>();
 
 export default function ProdutosStack() {
   return (
-   <Stack.Navigator screenOptions={{ headerShown: false }}>
-     <Stack.Screen name="Produtos" component={Produtos}   />
-     <Stack.Screen
-    name="AdicionarProduto"
-    component={AdicionarProduto}
-    options={{
-        headerShown: false, 
-    }}
-  />
-  <Stack.Screen
-          name="EditarProduto"
-          component={EditarProduto}
-          options={{ headerShown: false }}
-        />
-</Stack.Navigator>
-)}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Lista" component={Produtos} />
+      <Stack.Screen
+        name="AdicionarProduto"
+        component={AdicionarProduto}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditarProduto"
+        component={EditarProduto}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}

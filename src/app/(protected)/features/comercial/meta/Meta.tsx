@@ -6,9 +6,10 @@ import { MetaStackParamList } from "./MetaStack";
 import { useMeta } from "@/presentation/contexts/comercial/MetaContext";
 import InputSelect from "@/presentation/components/ui/InputSelect";
 import MetaConsts from "@/shared/constants/meta.consts";
-import MetaLista from "@/presentation/components/comercial/meta/MetaLista";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import { Meta } from "@/domain/models/comercial/Meta";
+import { MetaItem } from "@/presentation/components/comercial/meta/MetaItem";
+import PaginatedList from "@/presentation/components/ui/PaginatedList";
 
 type MetaNavigationProp = NativeStackNavigationProp<
   MetaStackParamList,
@@ -33,33 +34,17 @@ export function Tela() {
           labelTextBold={false}
           options={MetaConsts.Tipos}
         />
-        {/* onValueChanged={setTipoFiltro} */}
-        {/* value={tipoFiltro} */}
-
-        {/* <InputDate
-                    label="Data inicio:"
-                    labelTextBold={false}
-                    value={dataInicio}
-                    showClearButton={true}
-                    onValueChanged={setDataInicio}
-                  />
-                  <InputDate
-                    label="Data fim:"
-                    labelTextBold={false}
-                    value={dataFim}
-                    showClearButton={true}
-                    onValueChanged={setDataFim}
-                  />
-                </View> */}
       </View>
 
-      <MetaLista
-        metas={metas}
+      <PaginatedList
+        data={metas}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <MetaItem meta={item} />}
+        loadingMore={loading}
         onEndReached={() => carregar()}
         onEdit={(item: Meta) =>
           navigation.navigate("EditarMeta", { meta: item })
         }
-        loadingMore={loading}
       />
     </View>
   );

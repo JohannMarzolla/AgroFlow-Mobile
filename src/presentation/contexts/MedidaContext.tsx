@@ -77,7 +77,7 @@ export const MedidaProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, [userId]);
 
   return (

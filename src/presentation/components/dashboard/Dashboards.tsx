@@ -18,8 +18,8 @@ export default function Dashboards() {
       <View className="px-5 pt-3 pb-20 gap-5">
         {user?.setor !== UsuarioSetorEnum.COMERCIAL && (
           <>
-            <DashboardProduzidoXPerdas />
             <DashboardProducaoPorStatus />
+            <DashboardProduzidoXPerdas />
           </>
         )}
         {user?.setor !== UsuarioSetorEnum.PRODUCAO && (

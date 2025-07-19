@@ -18,7 +18,7 @@ interface FazendaContextData {
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(fazenda: FazendaInserirDTO): Promise<boolean>;
-  atualizar(fazenda:FazendaAtualizarDTO): Promise<boolean>;
+  atualizar(fazenda: FazendaAtualizarDTO): Promise<boolean>;
 }
 
 const FazendaContext = createContext<FazendaContextData | undefined>(undefined);
@@ -31,7 +31,7 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
   const fazendaService = new FazendaService(new FazendaApiService());
- 
+
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
 
@@ -65,7 +65,7 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   const atualizar = async (fazenda: FazendaAtualizarDTO) => {
-    console.log("chamando atualizar fazenda context", fazenda)
+    console.log("chamando atualizar fazenda context", fazenda);
     try {
       await fazendaService.atualizar(fazenda);
       await carregar(true);
@@ -77,19 +77,18 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, [userId]);
 
   return (
     <FazendaContext.Provider
-      value={{ 
-        fazenda, 
-        loading,   
-        carregar,  
+      value={{
+        fazenda,
+        loading,
+        carregar,
         adicionar,
-        atualizar
+        atualizar,
       }}
     >
       {children}

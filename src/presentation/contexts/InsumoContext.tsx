@@ -13,20 +13,19 @@ import { InsumoInserirDTO } from "@/application/dtos/producao/Insumos/InsumoInse
 import { InsumoApiService } from "@/infrastructure/services/producao/InsumoApiService";
 import { InsumoAtualizarDTO } from "@/application/dtos/producao/Insumos/InsumoAtualizarDTO";
 
-
 interface InsumoContextData {
   insumos: Insumo[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(insumo: InsumoInserirDTO): Promise<boolean>;
-  atualizar(insumo:InsumoAtualizarDTO): Promise<boolean>;
+  atualizar(insumo: InsumoAtualizarDTO): Promise<boolean>;
 }
 
 const InsumoContext = createContext<InsumoContextData | undefined>(undefined);
 
 export const InsumoProvider = ({ children }: { children: ReactNode }) => {
-  const { user} = useAuth(); 
-  const userId = user?.userId 
+  const { user } = useAuth();
+  const userId = user?.userId;
   const [insumos, setInsumos] = useState<Insumo[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -78,21 +77,24 @@ export const InsumoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
- useEffect(() => {
-    carregar();
+  useEffect(() => {
+    carregar(true);
   }, [userId]);
 
   return (
-    <InsumoContext.Provider value={{  
-      insumos,
-      loading,
-      carregar,
-      adicionar, 
-      atualizar}}>
+    <InsumoContext.Provider
+      value={{
+        insumos,
+        loading,
+        carregar,
+        adicionar,
+        atualizar,
+      }}
+    >
       {children}
     </InsumoContext.Provider>
   );
-}
+};
 
 export const useInsumo = () => {
   const context = useContext(InsumoContext);

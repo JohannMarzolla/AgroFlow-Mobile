@@ -13,20 +13,21 @@ import { ProdutoApiService } from "@/infrastructure/services/producao/ProdutoApi
 import { ProdutoInserirDTO } from "@/application/dtos/producao/Produtos/ProdutoInserirDTO";
 import { ProdutoAtualizarDTO } from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
 
-
 interface ProdutoContextData {
   produtos: Produto[];
   loading: boolean;
   carregar(): Promise<void>;
   adicionar(produto: ProdutoInserirDTO): Promise<boolean>;
-  atualizar(produto:ProdutoAtualizarDTO):Promise<boolean>
+  atualizar(produto: ProdutoAtualizarDTO): Promise<boolean>;
 }
 
-const ProdutosContext = createContext<ProdutoContextData | undefined>(undefined);
+const ProdutosContext = createContext<ProdutoContextData | undefined>(
+  undefined
+);
 
 export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth(); 
-  const userId = user?.userId 
+  const { user } = useAuth();
+  const userId = user?.userId;
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -46,7 +47,9 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
-      setProdutos((prev) => (reset ? result.dados : [...prev, ...result.dados]));
+      setProdutos((prev) =>
+        reset ? result.dados : [...prev, ...result.dados]
+      );
     } catch (error) {
       setHasMore(false);
       ShowToast("error", "Erro ao carregar produtos.");
@@ -78,22 +81,18 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
- useEffect(() => {
-    carregar();
-   
+  useEffect(() => {
+    carregar(true);
   }, [userId]);
 
   return (
-    <ProdutosContext.Provider value={{ produtos,
-      loading,
-      carregar,
-      adicionar,
-      atualizar}}>
+    <ProdutosContext.Provider
+      value={{ produtos, loading, carregar, adicionar, atualizar }}
+    >
       {children}
     </ProdutosContext.Provider>
   );
-}
+};
 
 export const useProdutos = () => {
   const context = useContext(ProdutosContext);

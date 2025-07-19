@@ -2,7 +2,7 @@ import React from "react";
 import { View, TouchableHighlight, Text } from "react-native";
 import { useEstoqueInsumo } from "@/presentation/contexts/EstoqueInsumoContext";
 import EstoqueInsumoItem from "@/presentation/components/estoqueInsumo/EstoqueInsumoItem";
-import Lista from "@/shared/utils/Lista";
+import PaginatedList from "@/presentation/components/ui/PaginatedList";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { EstoqueInsumoStackParamList } from "./EstoqueInsumoStack";
@@ -12,7 +12,7 @@ import { EstoqueInsumo as EstoqueInsumoModel } from "@/domain/models/EstoqueInsu
 
 type EstoqueInsumoNavigationProp = NativeStackNavigationProp<
   EstoqueInsumoStackParamList,
-  "EstoqueInsumo"
+  "Lista"
 >;
 
 export default function EstoqueInsumo() {
@@ -20,16 +20,14 @@ export default function EstoqueInsumo() {
   const navigation = useNavigation<EstoqueInsumoNavigationProp>();
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 ">
       <PageHeader
         pageName="Estoque Insumo"
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarEstoqueInsumo")}
       ></PageHeader>
-      <View className="px-6 pb-4">
-        <InputSelect label="Tipo" labelTextBold={false} />
-      </View>
-      <Lista
+
+      <PaginatedList
         data={estoqueInsumos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <EstoqueInsumoItem estoqueInsumo={item} />}

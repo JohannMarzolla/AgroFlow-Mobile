@@ -87,7 +87,7 @@ export const EstoqueInsumoProvider = ({
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, [userId]);
 
   return (

@@ -82,7 +82,7 @@ export const ProducaoProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, [userId]);
 
   return (

@@ -5,16 +5,15 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProdutosStackParamList } from "./ProdutosStack";
 import { useProdutos } from "@/presentation/contexts/ProdutoContext";
 import ProdutoItem from "@/presentation/components/Produto/ProdutoItem";
-import Lista from "@/shared/utils/Lista";
+import PaginatedList from "@/presentation/components/ui/PaginatedList";
 import PageHeader from "@/presentation/components/ui/PageHeader";
-import InputSelect from "@/presentation/components/ui/InputSelect";
 import { useAuth } from "@/presentation/contexts/AuthContext";
 import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
-import { Produto  as ProdutoModel} from "@/domain/models/Produto";
+import { Produto as ProdutoModel } from "@/domain/models/Produto";
 
 type ProdutosNavigationProp = NativeStackNavigationProp<
   ProdutosStackParamList,
-  "Produtos"
+  "Lista"
 >;
 
 export function TelaDeProdutos() {
@@ -27,18 +26,14 @@ export function TelaDeProdutos() {
     user?.setor === UsuarioSetorEnum.PRODUCAO;
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1">
       <PageHeader
         pageName="Produto"
         showAdd={userCanEdit}
         onAdicionar={() => navigation.navigate("AdicionarProduto")}
       ></PageHeader>
 
-      <View className="px-6 pb-4">
-        <InputSelect label="Tipo" labelTextBold={false} />
-      </View>
-
-      <Lista
+      <PaginatedList
         data={produtos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <ProdutoItem produto={item} />}
@@ -48,7 +43,6 @@ export function TelaDeProdutos() {
           navigation.navigate("EditarProduto", { produto: item })
         }
       />
-       
     </View>
   );
 }

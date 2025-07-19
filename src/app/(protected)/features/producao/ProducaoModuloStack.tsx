@@ -11,7 +11,7 @@ export type ProducaoStackParamList = {
   Medidas: undefined;
   Fazenda: undefined;
   Produtos: undefined;
-  Producao: undefined;
+  Cadastro: undefined;
   Insumo: undefined;
   EstoqueProduto: undefined;
   EstoqueInsumo: undefined;
@@ -31,7 +31,7 @@ export default function ProducaoModuloStack() {
       <Stack.Screen name="Fazenda" component={FazendaStack} />
       <Stack.Screen name="Produtos" component={ProdutosStack} />
       <Stack.Screen name="Insumo" component={InsumoStack} />
-      <Stack.Screen name="Producao" component={ProducaoStack} />
+      <Stack.Screen name="Cadastro" component={ProducaoStack} />
       <Stack.Screen name="EstoqueProduto" component={EstoqueProdutoStack} />
       <Stack.Screen name="EstoqueInsumo" component={EstoqueInsumoStack} />
     </Stack.Navigator>

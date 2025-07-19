@@ -89,7 +89,7 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, []);
 
   return (

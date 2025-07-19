@@ -5,10 +5,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import InputSelect from "@/presentation/components/ui/InputSelect";
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import { UsuarioStackParamList } from "./UsuarioStack";
-import UsuarioLista from "@/presentation/components/outros/usuario/UsuarioLista";
 import { Usuario } from "@/domain/models/outros/Usuario";
 import { useUsuario } from "@/presentation/contexts/outros/UsuarioContext";
 import UsuarioConsts from "@/shared/constants/usuario.consts";
+import PaginatedList from "@/presentation/components/ui/PaginatedList";
+import { UsuarioItem } from "@/presentation/components/outros/usuario/UsuarioItem";
 
 type UsuarioNavigationProp = NativeStackNavigationProp<
   UsuarioStackParamList,
@@ -20,7 +21,7 @@ export function Tela() {
   const { usuarios, loading, carregar } = useUsuario();
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1">
       <PageHeader
         pageName="Usuarios"
         showAdd={true}
@@ -33,33 +34,17 @@ export function Tela() {
           labelTextBold={false}
           options={UsuarioConsts.Setor}
         />
-        {/* onValueChanged={setTipoFiltro} */}
-        {/* value={tipoFiltro} */}
-
-        {/* <InputDate
-                    label="Data inicio:"
-                    labelTextBold={false}
-                    value={dataInicio}
-                    showClearButton={true}
-                    onValueChanged={setDataInicio}
-                  />
-                  <InputDate
-                    label="Data fim:"
-                    labelTextBold={false}
-                    value={dataFim}
-                    showClearButton={true}
-                    onValueChanged={setDataFim}
-                  />
-                </View> */}
       </View>
 
-      <UsuarioLista
-        usuarios={usuarios}
+      <PaginatedList
+        data={usuarios}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <UsuarioItem usuario={item} />}
+        loadingMore={loading}
         onEndReached={() => carregar()}
         onEdit={(item: Usuario) =>
           navigation.navigate("EditarUsuario", { usuario: item })
         }
-        loadingMore={loading}
       />
     </View>
   );

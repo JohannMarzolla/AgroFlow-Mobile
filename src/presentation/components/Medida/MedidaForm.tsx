@@ -15,6 +15,8 @@ import {
   UnidadeMedidaAtualizarDTO,
   UnidadeMedidaAtualizarSchema,
 } from "@/application/dtos/producao/UnidadeMedida/UnidadeMedidaAtualizarDTO";
+import { useAuth } from "@/presentation/contexts/AuthContext";
+import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
 
 interface MedidaFormProps {
   medida?: Medida;
@@ -23,7 +25,9 @@ interface MedidaFormProps {
 
 const useMedidaForm = (medida: Medida | undefined) => {
   return useForm<UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO>({
-    resolver: zodResolver(!!medida ? UnidadeMedidaAtualizarSchema : MedidaSchema),
+    resolver: zodResolver(
+      !!medida ? UnidadeMedidaAtualizarSchema : MedidaSchema
+    ),
     defaultValues: {
       id: medida?.id,
       nome: medida?.nome ?? "",
@@ -33,6 +37,7 @@ const useMedidaForm = (medida: Medida | undefined) => {
 };
 
 export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
+  const { user } = useAuth();
   const { adicionar, atualizar } = useMedida();
   const {
     control,
@@ -40,10 +45,16 @@ export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
     formState: { errors },
     reset,
   } = useMedidaForm(medida);
-  const readOnly = false;
 
-  const onSubmit = async (data: UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO) => {
-    console.log("medida data", data)
+  const userCanEdit =
+    user?.setor === UsuarioSetorEnum.ADMIN ||
+    user?.setor === UsuarioSetorEnum.PRODUCAO;
+  const readOnly = !userCanEdit;
+
+  const onSubmit = async (
+    data: UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO
+  ) => {
+    console.log("medida data", data);
     try {
       Loading.show();
       const success = !!medida
@@ -85,6 +96,7 @@ export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
           />
         )}
       />
+
       <View className="flex-row gap-3 min-w-0">
         <Button
           className="flex-1"
@@ -92,11 +104,13 @@ export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
           color="red"
           onPress={onCancel}
         />
-        <Button
-          className="flex-1"
-          text="Salvar"
-          onPress={handleSubmit(onSubmit)}
-        />
+        {userCanEdit && (
+          <Button
+            className="flex-1"
+            text="Salvar"
+            onPress={handleSubmit(onSubmit)}
+          />
+        )}
       </View>
     </View>
   );

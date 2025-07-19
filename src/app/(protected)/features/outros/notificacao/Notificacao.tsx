@@ -1,28 +1,26 @@
 import React from "react";
-import { View, FlatList, Text } from "react-native";
+import { View } from "react-native";
 import {
   NotificacaoProvider,
   useNotificacaoContext,
 } from "@/presentation/contexts/outros/NotificacaoContext";
 import { NotificacaoItem } from "@/presentation/components/outros/notificacao/NotificacaoItem";
 import PageHeader from "@/presentation/components/ui/PageHeader";
+import PaginatedList from "@/presentation/components/ui/PaginatedList";
 
 function Tela() {
-  const { notificacoes, loading } = useNotificacaoContext();
+  const { notificacoes, loading, carregar } = useNotificacaoContext();
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1">
       <PageHeader pageName="Notificações"></PageHeader>
 
-      {!notificacoes?.length && !loading && (
-        <Text className="text-agroflow-gray text-center">Não há dados</Text>
-      )}
-
-      <FlatList
+      <PaginatedList
         data={notificacoes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NotificacaoItem notificacao={item} />}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
+        loadingMore={loading}
+        onEndReached={() => carregar()}
       />
     </View>
   );

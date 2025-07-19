@@ -75,7 +75,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
   }, []);
 
   return (

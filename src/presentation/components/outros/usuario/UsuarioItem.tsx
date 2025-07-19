@@ -5,15 +5,11 @@ import UsuarioConsts from "@/shared/constants/usuario.consts";
 
 interface Props {
   usuario: Usuario;
-  onPress?: () => void;
 }
 
-export const UsuarioItem: React.FC<Props> = ({ usuario, onPress }) => {
+export const UsuarioItem: React.FC<Props> = ({ usuario }) => {
   return (
-    <TouchableOpacity
-      className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200"
-      onPress={() => onPress?.()}
-    >
+    <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
       <View className="flex-row justify-between items-center">
         <Text className="text-gray-900 font-semibold capitalize text-lg">
           {usuario.nome}
@@ -30,6 +26,6 @@ export const UsuarioItem: React.FC<Props> = ({ usuario, onPress }) => {
           Primeiro acesso pendente
         </Text>
       )}
-    </TouchableOpacity>
+    </View>
   );
 };

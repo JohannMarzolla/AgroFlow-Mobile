@@ -52,7 +52,7 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
+    carregar(true);
 
     const atualizarDados = async () => {
       carregar(true);

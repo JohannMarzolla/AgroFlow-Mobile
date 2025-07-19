@@ -19,6 +19,8 @@ import {
 } from "@/application/dtos/producao/Produtos/ProdutoAtualizarDTO";
 import { SelectOption } from "@/shared/models/SelectOption";
 import { useInsumo } from "@/presentation/contexts/InsumoContext";
+import { UsuarioSetorEnum } from "@/domain/enum/outros/usuario.enum";
+import { useAuth } from "@/presentation/contexts/AuthContext";
 
 interface ProdutoFormProps {
   produto?: Produto;
@@ -33,22 +35,27 @@ const useProdutoForm = (produto: Produto | undefined) => {
       nome: produto?.nome ?? "",
       unidadeMedidaId: produto?.unidadeMedidaId ?? "",
       insumos: produto?.insumos ?? [],
-      
     },
   });
 };
 
 export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
+  const { user } = useAuth();
   const { adicionar, atualizar } = useProdutos();
   const { medida } = useMedida();
   const { insumos } = useInsumo();
+
+  const userCanEdit =
+    user?.setor === UsuarioSetorEnum.ADMIN ||
+    user?.setor === UsuarioSetorEnum.PRODUCAO;
+  const readOnly = !userCanEdit;
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
   } = useProdutoForm(produto);
-  const readOnly = false;
 
   const medidaOptions: SelectOption[] = medida.map((m) => ({
     value: m.id,
@@ -58,15 +65,13 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
     value: i.id,
     label: i.nome,
   }));
-  const [insumosSelecionados, setInsumosSelecionados] = useState<string[]>(produto?.insumos || []);
+  const [insumosSelecionados, setInsumosSelecionados] = useState<string[]>(
+    produto?.insumos || []
+  );
   const [insumoSelecionado, setInsumoSelecionado] = useState<string>("");
 
   const handleAdicionarInsumo = () => {
-
-    if (
-      insumoSelecionado &&
-      !insumosSelecionados.includes(insumoSelecionado)
-    ) {
+    if (insumoSelecionado && !insumosSelecionados.includes(insumoSelecionado)) {
       setInsumosSelecionados((prev) => [...prev, insumoSelecionado]);
       setInsumoSelecionado("");
     }
@@ -76,13 +81,12 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
     setInsumosSelecionados((prev) => prev.filter((i) => i !== id));
   };
 
-
   const onSubmit = async (data: ProdutoInserirDTO | ProdutoAtualizarDTO) => {
     const dadosComInsumos = {
       ...data,
-      insumos: insumosSelecionados, 
+      insumos: insumosSelecionados,
     };
-  
+
     try {
       Loading.show();
       const success = !!produto
@@ -96,7 +100,6 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
 
   return (
     <View className="gap-4">
-      
       <Controller
         control={control}
         name="nome"
@@ -125,35 +128,42 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
         )}
       />
 
-<View className="gap-2">
+      <View className="gap-2">
         <InputSelect
           label="Insumo"
+          readOnly={readOnly}
           value={insumoSelecionado}
           options={insumoOptions}
           onValueChanged={setInsumoSelecionado}
         />
-        <Button text="Adicionar Insumo" onPress={handleAdicionarInsumo} />
+        {userCanEdit && (
+          <Button text="Adicionar Insumo" onPress={handleAdicionarInsumo} />
+        )}
       </View>
 
-     
       <View className="mt-3">
         <Text className="font-semibold">Insumos Adicionados:</Text>
         {insumosSelecionados.length === 0 ? (
-          <Text className="italic text-gray-500">Nenhum insumo adicionado.</Text>
+          <Text className="italic text-gray-500">
+            Nenhum insumo adicionado.
+          </Text>
         ) : (
           insumosSelecionados.map((id) => {
-            const nome = insumos.find((i) => i.id === id)?.nome || "Desconhecido";
+            const nome =
+              insumos.find((i) => i.id === id)?.nome || "Desconhecido";
             return (
               <View
                 key={id}
                 className="flex-row justify-between items-center mt-2"
               >
                 <Text className="text-gray-800">• {nome}</Text>
-                <Button
-                  text="Remover"
-                  color="red"
-                  onPress={() => handleRemoverInsumo(id)}
-                />
+                {userCanEdit && (
+                  <Button
+                    text="Remover"
+                    color="red"
+                    onPress={() => handleRemoverInsumo(id)}
+                  />
+                )}
               </View>
             );
           })
@@ -166,11 +176,13 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
           color="red"
           onPress={onCancel}
         />
-        <Button
-          className="flex-1"
-          text="Salvar"
-          onPress={handleSubmit(onSubmit)}
-        />
+        {userCanEdit && (
+          <Button
+            className="flex-1"
+            text="Salvar"
+            onPress={handleSubmit(onSubmit)}
+          />
+        )}
       </View>
     </View>
   );
