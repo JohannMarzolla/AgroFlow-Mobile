@@ -67,10 +67,7 @@ export default function ProducaoForm({
     custo: number;
   } | null>(null);
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const formSomenteLeitura =
-    !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
+  const readOnly = !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
 
   const {
     control,
@@ -81,21 +78,7 @@ export default function ProducaoForm({
     formState: { errors },
   } = useProducaoForm(producao);
 
-  const status = watch("status");
-  const readOnly = isReadOnly(producao);
-
-  function isReadOnly(producao?: Producao): boolean {
-    if (!producao) return false;
-    const hoje = new Date();
-    const dataInicio = new Date(producao.dataInicio);
-    return dataInicio.getTime() < hoje.getTime();
-  }
-
-  const { fields } = useFieldArray({
-    control,
-    name: "insumos",
-  });
-
+  const { fields } = useFieldArray({ control, name: "insumos" });
   const produtoId = watch("produtoId");
   const produtoSelecionado = produtos.find((p) => p.id === produtoId);
 
@@ -145,7 +128,7 @@ export default function ProducaoForm({
             options={fazenda.map((f) => ({ label: f.nome, value: f.id }))}
             value={value}
             onValueChanged={onChange}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.fazendaId?.message}
           />
         )}
@@ -161,7 +144,7 @@ export default function ProducaoForm({
             options={produtos.map((p) => ({ label: p.nome, value: p.id }))}
             value={value}
             onValueChanged={onChange}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.produtoId?.message}
           />
         )}
@@ -186,7 +169,7 @@ export default function ProducaoForm({
                     type="number"
                     value={value !== undefined ? value.toString() : "0"}
                     onValueChanged={(text) => onChange(Number(text))}
-                    readOnly={formSomenteLeitura}
+                    readOnly={readOnly}
                     error={errors.insumos?.[index]?.quantidade?.message}
                   />
                 )}
@@ -206,7 +189,7 @@ export default function ProducaoForm({
             type="number"
             value={value !== undefined ? value.toString() : "0"}
             onValueChanged={(text) => onChange(Number(text))}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.quantidadePlanejada?.message}
           />
         )}
@@ -220,7 +203,7 @@ export default function ProducaoForm({
             label="Lote"
             value={value}
             onValueChanged={onChange}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.lote?.message}
           />
         )}
@@ -234,7 +217,7 @@ export default function ProducaoForm({
             type="number"
             value={value !== undefined ? value.toString() : "0"}
             onValueChanged={(text) => onChange(Number(text))}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.precoPlanejado?.message}
           />
         )}
@@ -262,7 +245,7 @@ export default function ProducaoForm({
               label: val,
               value: val,
             }))}
-            readOnly={formSomenteLeitura}
+            readOnly={readOnly}
             error={errors.status?.message}
           />
         )}
@@ -303,7 +286,7 @@ export default function ProducaoForm({
               label="Data Início"
               value={value}
               onValueChanged={onChange}
-              readOnly={formSomenteLeitura}
+              readOnly={readOnly}
             />
           )}
         />
@@ -316,13 +299,12 @@ export default function ProducaoForm({
               label="Data Fim"
               value={value}
               onValueChanged={onChange}
-              readOnly={formSomenteLeitura}
+              readOnly={readOnly}
             />
           )}
         />
       </View>
 
-      {/* Botões */}
       <View className="flex-row gap-3 mt-4">
         <Button
           className="flex-1"
@@ -330,13 +312,15 @@ export default function ProducaoForm({
           color="red"
           onPress={onCancel}
         />
-        <Button
-          className="flex-1"
-          text="Salvar"
-          onPress={handleSubmit(onSubmit)}
-          disabled={submitting}
-        />
+        {readOnly && (
+          <Button
+            className="flex-1"
+            text="Salvar"
+            onPress={handleSubmit(onSubmit)}
+          />
+        )}
       </View>
+
       <ModalColheita
         visible={mostrarModalColheita}
         onClose={() => setMostrarModalColheita(false)}
