@@ -21,7 +21,7 @@ import {
   ProducaoAtualizarDTO,
   ProducaoAtualizarSchema,
 } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
-import ModalColheita from "./Modal";
+import ModalColheita from "./ModalColheita";
 
 interface ProducaoFormProps {
   producao?: Producao;
@@ -117,7 +117,7 @@ export default function ProducaoForm({
   }, [produtoSelecionado]);
 
   return (
-    <ScrollView className="p-4 gap-4">
+    <ScrollView className="gap-4">
       {/* Seleção de Fazenda */}
       <Controller
         control={control}
@@ -313,11 +313,10 @@ export default function ProducaoForm({
           onPress={onCancel}
         />
         <Button
-            className="flex-1"
-            text="Salvar"
-            onPress={handleSubmit(onSubmit)}
-          />
-      
+          className="flex-1"
+          text="Salvar"
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
 
       <ModalColheita

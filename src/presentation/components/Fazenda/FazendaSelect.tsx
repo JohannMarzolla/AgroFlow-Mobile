@@ -4,8 +4,8 @@ import { useFazenda } from "@/presentation/contexts/FazendaContext";
 import { SelectOption } from "@/shared/models/SelectOption";
 import { FazendaLista } from "./FazendaLista";
 import { Fazenda } from "@/domain/models/Fazenda";
-import Modal from "../ui/Modal";
-import InputLabel from "../ui/InputLabel";
+import Modal from "@/presentation/components/ui/Modal";
+import InputLabel from "@/presentation/components/ui/InputLabel";
 
 interface FazendaSelectProps {
   /** Texto do label */
