@@ -61,6 +61,7 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
   });
 
   const onSubmit = async (data: VendaInserirDTO | VendaAtualizarDTO) => {
+    console.log("data venda front ", data)
     try {
       Loading.show();
       if (venda) {
@@ -76,20 +77,19 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
 
   const confirmarSelecionados = (selecionados: any[]) => {
     const existingProductIds = fields.map(item => item.produtoId);
-
-    selecionados.forEach(produto => {
-      if (!existingProductIds.includes(produto.id)) {
+  
+    selecionados.forEach(estoqueProduto => {
+      if (!existingProductIds.includes(estoqueProduto.produtoId)) { // ← Usar produtoId
         append({
-          produtoId: produto.id,
-          fazendaId: produto.fazendaId,
+          produtoId: estoqueProduto.produtoId, // ← CORRETO: ID do produto
+          fazendaId: estoqueProduto.fazendaId,
           quantidade: 1,
           desconto: 0,
-          precoUnitario: produto.precoUnitario ?? 0, // <-- CORRIGIDO
+          precoUnitario: estoqueProduto.precoUnitario ?? 0, 
           lucroUnitario: 0,
         });
       }
     });
-
     setModalVisible(false);
   };
 

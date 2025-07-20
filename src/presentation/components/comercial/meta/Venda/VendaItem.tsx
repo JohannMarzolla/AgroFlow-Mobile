@@ -71,14 +71,13 @@ export default function VendaItem({ venda }: VendaItemProps) {
         </View>
         
         {venda.itens && venda.itens.length > 0 && (
-          <View className="flex-row flex-wrap mt-1">
+          <View className="flex-row flex-wrap gap-2">
             {venda.itens.slice(0, 3).map((item, index) => (
-              <View 
+              <View> 
                 key={`${item.id}-${index}`} 
                 className="bg-gray-100 rounded-lg px-3 py-1 mr-2 mb-2"
-              >
                 <Text className="text-gray-700 text-sm">
-                  {item.produtoNome }
+                {item.produtoNome || `Produto ${index + 1}`}
                 </Text>
               </View>
             ))}
