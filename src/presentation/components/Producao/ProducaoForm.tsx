@@ -22,6 +22,7 @@ import {
   ProducaoAtualizarSchema,
 } from "@/application/dtos/producao/Producao/ProducaoAtualizarDTO";
 import ModalColheita from "./ModalColheita";
+import FazendaSelect from "../Fazenda/FazendaSelect";
 
 interface ProducaoFormProps {
   producao?: Producao;
@@ -58,7 +59,6 @@ export default function ProducaoForm({
 }: ProducaoFormProps) {
   const { adicionar, atualizar } = useProducao();
   const { produtos } = useProdutos();
-  const { fazenda } = useFazenda();
   const [mostrarModalColheita, setMostrarModalColheita] = useState(false);
   const [colheitaTemp, setColheitaTemp] = useState<{
     quantidadeColhida: number;
@@ -123,12 +123,11 @@ export default function ProducaoForm({
         control={control}
         name="fazendaId"
         render={({ field: { onChange, value } }) => (
-          <InputSelect
+          <FazendaSelect
             label="Fazenda"
-            options={fazenda.map((f) => ({ label: f.nome, value: f.id }))}
+            readOnly={readOnly}
             value={value}
             onValueChanged={onChange}
-            readOnly={readOnly}
             error={errors.fazendaId?.message}
           />
         )}
