@@ -35,7 +35,7 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await metaService.buscarTodas({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

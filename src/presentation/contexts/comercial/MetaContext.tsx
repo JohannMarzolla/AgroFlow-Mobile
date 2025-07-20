@@ -45,7 +45,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await metaService.buscarTodos({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
         tipo: filtroTipo !== MetaTipoFiltroEnum.TODOS ? getFiltroTipo() : null,
       });

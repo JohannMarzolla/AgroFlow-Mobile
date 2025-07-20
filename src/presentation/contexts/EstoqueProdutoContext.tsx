@@ -52,7 +52,7 @@ export const EstoqueProdutoProvider = ({
     try {
       setLoading(true);
       const result = await estoqueProdutoService.buscarTodos({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

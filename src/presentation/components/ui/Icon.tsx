@@ -8,7 +8,6 @@ export interface IconProps {
   size?: number;
   color?: string;
   className?: string;
-  onPress?: () => void;
 }
 
 export default function Icon({

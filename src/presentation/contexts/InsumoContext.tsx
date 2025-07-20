@@ -40,7 +40,7 @@ export const InsumoProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await insumoService.buscarTodos({
-        limite: 5,
+        limite: 15,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

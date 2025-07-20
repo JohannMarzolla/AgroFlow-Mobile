@@ -42,7 +42,7 @@ export const ProdutosProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await produtoService.buscarTodos({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

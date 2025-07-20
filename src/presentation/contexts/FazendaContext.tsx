@@ -39,7 +39,7 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await fazendaService.buscarTodos({
-        limite: 5,
+        limite: 15,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

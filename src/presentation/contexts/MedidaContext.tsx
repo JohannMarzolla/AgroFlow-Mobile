@@ -40,7 +40,7 @@ export const MedidaProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await medidaService.buscarTodos({
-        limite: 5,
+        limite: 15,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);

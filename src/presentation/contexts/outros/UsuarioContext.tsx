@@ -37,7 +37,7 @@ export const UsuarioProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       const result = await usuarioService.buscarTodos({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);
