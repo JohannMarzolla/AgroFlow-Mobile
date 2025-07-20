@@ -19,6 +19,7 @@ interface EstoqueInsumoContextData {
   carregar(): Promise<void>;
   adicionar(estoqueInsumo: EstoqueInsumoInserirDTO): Promise<boolean>;
   atualizar(estoque: EstoqueInsumoAtualizarDTO): Promise<boolean>;
+  
 }
 const EstoqueInsumoContext = createContext<
   EstoqueInsumoContextData | undefined
@@ -85,6 +86,16 @@ export const EstoqueInsumoProvider = ({
       return false;
     }
   };
+  // const verificarDisponibilidade = async (
+  //   insumos: { insumoId: string; quantidade: number }[]
+  // ): Promise<boolean> => {
+  //   try {
+  //     return await estoqueInsumoService.verificarDisponibilidade(insumos);
+  //   } catch (error) {
+  //     ShowToast("error", "Erro ao verificar estoque de insumos.");
+  //     return false;
+  //   }
+  // };
 
   useEffect(() => {
     carregar(true);

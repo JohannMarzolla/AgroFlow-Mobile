@@ -26,6 +26,7 @@ export default function VendaItem({ venda }: VendaItemProps) {
 
   return (
     <TouchableOpacity className="bg-white rounded-2xl p-5 mb-4 border border-gray-100">
+      
       {/* Primeira linha - Cliente e Status */}
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-lg font-bold text-gray-900 max-w-[70%]">
@@ -72,16 +73,17 @@ export default function VendaItem({ venda }: VendaItemProps) {
         
         {venda.itens && venda.itens.length > 0 && (
           <View className="flex-row flex-wrap gap-2">
-            {venda.itens.slice(0, 3).map((item, index) => (
-              <View> 
-                key={`${item.id}-${index}`} 
+            {venda.itens.slice(0, 3).map((item) => (
+              <View
+                key={item.id}
                 className="bg-gray-100 rounded-lg px-3 py-1 mr-2 mb-2"
+              >
                 <Text className="text-gray-700 text-sm">
-                {item.produtoNome || `Produto ${index + 1}`}
+                  {item.produtoNome}
                 </Text>
               </View>
             ))}
-            
+
             {venda.itens.length > 3 && (
               <View className="bg-gray-100 rounded-lg px-3 py-1">
                 <Text className="text-gray-500 text-sm">

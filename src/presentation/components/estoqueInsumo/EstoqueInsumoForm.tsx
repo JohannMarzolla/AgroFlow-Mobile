@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProducao } from "@/presentation/contexts/EstoqueInsumoContext";
+
 import { useInsumo } from "@/presentation/contexts/InsumoContext";
 import { Loading } from "../ui/Loading";
 import Button from "../ui/Button";
@@ -18,6 +18,7 @@ import {
   EstoqueInsumoAtualizarSchema,
 } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
 import { SelectOption } from "@/shared/models/SelectOption";
+import { useEstoqueInsumo } from "@/presentation/contexts/EstoqueInsumoContext";
 
 interface EstoqueInsumoFormProps {
   estoqueInsumo?: EstoqueInsumo;
@@ -37,7 +38,7 @@ const useEstoqueInsumoForm = (estoqueInsumo: EstoqueInsumo | undefined) => {
 };
 
 export default function EstoqueInsumoForm({ estoqueInsumo, onCancel }: EstoqueInsumoFormProps) {
-  const { adicionar, atualizar } = useProducao();
+  const { adicionar, atualizar } = useEstoqueInsumo();
   const { insumos } = useInsumo();
   const {
     control,
