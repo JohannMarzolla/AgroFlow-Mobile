@@ -27,7 +27,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: "Produções",
-        screen: "Producao",
+        screen: "Cadastro",
         setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.PRODUCAO],
       },
       {
@@ -49,9 +49,9 @@ const menuItems: MenuItem[] = [
     setores: [UsuarioSetorEnum.ADMIN, UsuarioSetorEnum.COMERCIAL],
     submenu: [
       { label: "Metas", screen: "Meta" },
-      { label: "Vendas", screen: "Venda" }
+      { label: "Vendas", screen: "Venda" },
     ],
-   
+
     parentScreen: "Comercial",
   },
   {

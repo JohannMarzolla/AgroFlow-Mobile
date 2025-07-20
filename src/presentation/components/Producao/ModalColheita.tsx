@@ -74,7 +74,15 @@ export default function ModalColheita({
           />
         </View>
 
-        <Button text="Confirmar" onPress={confirmar} />
+        <View className="flex-row justify-between gap-4 mt-4">
+          <Button
+            text="Cancelar"
+            color="red"
+            onPress={onClose}
+            className="flex-1"
+          />
+          <Button text="Confirmar" onPress={confirmar} className="flex-1" />
+        </View>
       </View>
     </Modal>
   );
