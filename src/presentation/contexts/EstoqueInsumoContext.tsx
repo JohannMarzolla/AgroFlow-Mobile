@@ -19,7 +19,6 @@ interface EstoqueInsumoContextData {
   carregar(): Promise<void>;
   adicionar(estoqueInsumo: EstoqueInsumoInserirDTO): Promise<boolean>;
   atualizar(estoque: EstoqueInsumoAtualizarDTO): Promise<boolean>;
-  
 }
 const EstoqueInsumoContext = createContext<
   EstoqueInsumoContextData | undefined
@@ -48,7 +47,7 @@ export const EstoqueInsumoProvider = ({
       setLoading(true);
 
       const result = await estoqueInsumoService.buscarTodos({
-        limite: 5,
+        limite: 10,
         ultimoId: !reset ? lastId : null,
       });
       setHasMore(result.temMais);
