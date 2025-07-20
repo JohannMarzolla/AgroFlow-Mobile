@@ -117,7 +117,7 @@ export default function ProducaoForm({
   }, [produtoSelecionado]);
 
   return (
-    <ScrollView className="gap-4">
+    <View className="flex pb-20 gap-4 h-full">
       {/* Seleção de Fazenda */}
       <Controller
         control={control}
@@ -304,6 +304,16 @@ export default function ProducaoForm({
           )}
         />
       </View>
+      <View className="flex">
+        {errors.dataInicio?.message && (
+          <Text className="w-full text-red-500">
+            {errors.dataInicio?.message}
+          </Text>
+        )}
+        {errors.dataFim?.message && (
+          <Text className="w-full text-red-500">{errors.dataFim?.message}</Text>
+        )}
+      </View>
 
       <View className="flex-row gap-3 mt-4">
         <Button
@@ -329,6 +339,6 @@ export default function ProducaoForm({
         quantidadePlanejada={watch("quantidadePlanejada") || 0}
         precoPlanejado={watch("precoPlanejado") || 0}
       />
-    </ScrollView>
+    </View>
   );
 }
