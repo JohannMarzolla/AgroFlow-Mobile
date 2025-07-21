@@ -95,7 +95,6 @@ export const EstoqueProdutoProvider = ({
     if (!userId) return;
 
     const unsubscribe = estoqueProdutoService.escutarAlteracoes(() => {
-      console.log("chamando carregar de estoqueProdutos");
       carregar(true); // recarrega sempre que houver alteração no Firestore
     });
 

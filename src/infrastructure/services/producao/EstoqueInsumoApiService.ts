@@ -4,6 +4,8 @@ import { EstoqueInsumoBuscarTodosDTO } from "@/application/dtos/producao/Estoque
 import { EstoqueInsumoBuscarTodosResponseDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoBuscarTodosResponseDTO";
 import { IEstoqueInsumoApiService } from "@/application/interfaces/producao/IEstoqueInsumoApiService";
 import { EstoqueInsumoAtualizarDTO } from "@/application/dtos/producao/EstoqueInsumo/EstoqueInsumoAtualizarDTO";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../outros/FirebaseConfig";
 
 
 export class EstoqueInsumoApiService implements IEstoqueInsumoApiService {
@@ -44,5 +46,15 @@ export class EstoqueInsumoApiService implements IEstoqueInsumoApiService {
         ? error
         : new Error("Erro desconhecido ao tentar atualizar producao");
     }
+  }
+
+  escutarAlteracoes(callback: () => void): () => void {
+    const q = query(collection(db, "estoqueInsumo"));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      callback();
+    });
+  
+    return unsubscribe;
   }
 }

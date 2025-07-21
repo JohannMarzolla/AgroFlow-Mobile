@@ -85,16 +85,16 @@ export const EstoqueInsumoProvider = ({
       return false;
     }
   };
-  // const verificarDisponibilidade = async (
-  //   insumos: { insumoId: string; quantidade: number }[]
-  // ): Promise<boolean> => {
-  //   try {
-  //     return await estoqueInsumoService.verificarDisponibilidade(insumos);
-  //   } catch (error) {
-  //     ShowToast("error", "Erro ao verificar estoque de insumos.");
-  //     return false;
-  //   }
-  // };
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const unsubscribe = estoqueInsumoService.escutarAlteracoes(() => {
+      carregar(true); 
+    });
+
+    return unsubscribe;
+  }, [userId]);
 
   useEffect(() => {
     carregar(true);

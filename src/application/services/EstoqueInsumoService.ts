@@ -22,16 +22,7 @@ export class EstoqueInsumoService{
      async atualizar(estoqueInsumo: EstoqueInsumoAtualizarDTO): Promise<void> {
         return await this.apiService.atualizar(estoqueInsumo);
       }
-      // async verificarDisponibilidade(dto:EstoqueInsumoBuscarTodosDTO,insumos: { insumoId: string; quantidade: number }[]): Promise<boolean> {
-      //   const todos = await this.apiService.buscarTodos(dto); // ou crie um método por ID específico
-      
-      //   for (const insumo of insumos) {
-      //     const item = todos.dados.find((e) => e.insumoId === insumo.insumoId);
-      //     if (!item || item.quantidade < insumo.quantidade) {
-      //       return false;
-      //     }
-      //   }
-      
-      //   return true;
-      // }
+      escutarAlteracoes(callback: () => void): () => void {
+        return this.apiService.escutarAlteracoes(callback);
+      }
 }
