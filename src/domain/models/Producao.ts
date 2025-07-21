@@ -4,35 +4,37 @@ import { InsumoProducao } from "./InsumoProducao";
 export class Producao {
   id: string;
   quantidadePlanejada: number;
-  precoPlanejado: number;
   status: ProducaoStatusEnum;
-  produtoId: string;
-  fazendaId: string;
   lote: string;
-  dataInicio: Date;
-  dataFim: Date;
-  colheitaId?: string;
-  insumos: InsumoProducao[];
   criadaEm: Date;
   atualizadaEm: Date;
-  produtoNome?: string;
-  fazendaNome?: string;
+  produtoId: string;
+  fazendaId: string;
+  insumos: InsumoProducao[];
+  precoPlanejado?: number;
+  dataInicio: Date;
+  dataFim: Date;
+  quantidadeColhida?: number;
+  perdas?: number;
+  custoProducao?: number;
+  precoFinal?: number;
 
   constructor(obj: Producao) {
     this.id = obj.id;
     this.quantidadePlanejada = obj.quantidadePlanejada;
-    this.precoPlanejado = obj.precoPlanejado;
     this.status = obj.status;
+    this.criadaEm = obj.criadaEm;
+    this.lote = obj.lote;
     this.produtoId = obj.produtoId;
     this.fazendaId = obj.fazendaId;
-    this.lote = obj.lote;
-    this.dataInicio = new Date(obj.dataInicio);
-    this.dataFim = new Date(obj.dataFim);
-    this.colheitaId = obj.colheitaId;
-    this.insumos = obj.insumos;
-    this.criadaEm = new Date(obj.criadaEm);
-    this.atualizadaEm = new Date(obj.atualizadaEm);
-    this.produtoNome = obj.produtoNome;
-    this.fazendaNome = obj.fazendaNome;
+    this.insumos = obj.insumos || [];
+    this.precoPlanejado = obj.precoPlanejado ?? 0;
+    this.atualizadaEm = obj.atualizadaEm;
+    this.dataInicio = obj.dataInicio;
+    this.dataFim = obj.dataFim;
+    this.quantidadeColhida = obj.quantidadeColhida;
+    this.perdas = obj.perdas;
+    this.custoProducao = obj.custoProducao;
+    this.precoFinal = obj.precoFinal;
   }
 }

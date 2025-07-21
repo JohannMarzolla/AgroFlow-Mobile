@@ -57,7 +57,7 @@ export default function DashboardProduzidoXPerdas() {
             labels: { fontSize: 14, fill: "#1e293b", fontWeight: "bold" },
           }}
           height={380}
-          padding={{ top: 40, bottom: 40, left: 20, right: 55 }}
+          padding={{ top: 60, bottom: 60, left: 20, right: 55 }}
         />
       )}
     </View>

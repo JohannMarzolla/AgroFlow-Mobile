@@ -11,7 +11,7 @@ interface ModalColheitaProps {
     quantidadeColhida: number;
     perdas: number;
     precoFinal: number;
-    custo: number;
+    custoProducao: number;
   }) => void;
   quantidadePlanejada: number;
   precoPlanejado: number;
@@ -23,7 +23,7 @@ export default function ModalColheita({
   onConfirm,
 }: ModalColheitaProps) {
   const [quantidadeColhida, setQuantidadeColhida] = useState(0);
-  const [custo, setCusto] = useState(0);
+  const [custoProducao, setCustoProducao] = useState(0);
   const [precoFinal, setPrecoFinal] = useState(0);
   const [perdas, setPerdas] = useState(0);
 
@@ -32,7 +32,7 @@ export default function ModalColheita({
       quantidadeColhida,
       perdas,
       precoFinal,
-      custo,
+      custoProducao,
     });
     onClose();
   };
@@ -61,8 +61,8 @@ export default function ModalColheita({
 
           <Input
             label="Custo de Produção (R$)"
-            value={custo.toString()}
-            onValueChanged={(text) => setCusto(Number(text))}
+            value={custoProducao.toString()}
+            onValueChanged={(text) => setCustoProducao(Number(text))}
             type="number"
           />
 

@@ -49,6 +49,10 @@ const useProducaoForm = (producao: Producao | undefined) => {
         ? new Date(producao.dataFim)
         : DateUtils.nowToEndOfMonth(),
       insumos: producao?.insumos ?? [],
+      custoProducao: producao?.custoProducao,
+      precoFinal: producao?.precoFinal,
+      quantidadeColhida: producao?.quantidadeColhida,
+      perdas: producao?.perdas,
     },
   });
 };
@@ -64,7 +68,7 @@ export default function ProducaoForm({
     quantidadeColhida: number;
     perdas: number;
     precoFinal: number;
-    custo: number;
+    custoProducao: number;
   } | null>(null);
 
   const readOnly = !!producao && producao.status === ProducaoStatusEnum.COLHIDA;
@@ -90,6 +94,8 @@ export default function ProducaoForm({
         ...data,
         ...(data.status === ProducaoStatusEnum.COLHIDA ? colheitaTemp : {}),
       };
+
+      console.log(dataFinal);
 
       const success = !!producao
         ? await atualizar(dataFinal as ProducaoAtualizarDTO)
@@ -261,7 +267,7 @@ export default function ProducaoForm({
             Perdas: {colheitaTemp.perdas}
           </Text>
           <Text className="text-x text-gray-600">
-            Custo de Produção: R$ {colheitaTemp.custo.toFixed(2)}
+            Custo de Produção: R$ {colheitaTemp.custoProducao.toFixed(2)}
           </Text>
           <Text className="text-x text-gray-600">
             Preço de Venda Final: R$ {colheitaTemp.precoFinal.toFixed(2)}

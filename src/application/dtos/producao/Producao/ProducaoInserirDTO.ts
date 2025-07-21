@@ -21,6 +21,10 @@ export const ProducaoInserirBaseSchema = z.object({
   }),
   colheitaId: z.string().optional(),
   insumos: z.array(InsumoProducaoSchema),
+  quantidadeColhida: z.number().optional(),
+  perdas: z.number().optional(),
+  custoProducao: z.number().optional(),
+  precoFinal: z.number().optional(),
 });
 
 export const ProducaoInserirSchema = ProducaoInserirBaseSchema.superRefine(
