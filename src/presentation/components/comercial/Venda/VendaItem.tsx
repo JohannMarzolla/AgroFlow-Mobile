@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Venda } from "@/domain/models/comercial/Venda";
 import { Feather } from "@expo/vector-icons";
 import { VendaStatusEnum } from "@/domain/enum/comercial/Venda.enum";
+import { formatarData, FormatoDataEnum } from "@/shared/utils/formatarData";
+import { formatarMoeda } from "@/shared/utils/formatarMoeda";
 
 interface VendaItemProps {
   venda: Venda;
@@ -29,7 +31,7 @@ export default function VendaItem({ venda }: VendaItemProps) {
   };
 
   const statusColor = getStatusColor();
-  const totalVenda = venda.valorTotal?.toFixed(2) || "0,00";
+  const totalVenda = formatarMoeda(venda.valorTotal ?? 0);
 
   return (
     <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
@@ -58,7 +60,7 @@ export default function VendaItem({ venda }: VendaItemProps) {
         <View className="flex-row items-center">
           <Feather name="dollar-sign" size={20} color="#4B5563" />
           <Text className="text-xl font-bold text-gray-900 ml-2">
-            R$ {totalVenda}
+            {totalVenda}
           </Text>
         </View>
 
@@ -66,7 +68,7 @@ export default function VendaItem({ venda }: VendaItemProps) {
           <Feather name="calendar" size={16} color="#4B5563" />
           <Text className="text-gray-600 ml-2">
             {venda.dataVenda
-              ? new Date(venda.dataVenda).toLocaleDateString("pt-BR")
+              ? formatarData(new Date(venda.dataVenda), FormatoDataEnum.PADRAO)
               : "N/D"}
           </Text>
         </View>

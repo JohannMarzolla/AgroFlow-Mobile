@@ -74,7 +74,7 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
       const success = !!meta
         ? await atualizar(data as MetaAtualizarDTO)
         : await adicionar(data as MetaInserirDTO);
-      if (success) reset(data);
+      if (success) reset(!!meta ? data : undefined);
     } finally {
       Loading.hide();
     }

@@ -4,10 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { VendaStackParamList } from "./VendaStack";
 import { useVenda } from "@/presentation/contexts/comercial/VendaContext";
-
 import PageHeader from "@/presentation/components/ui/PageHeader";
 import { Venda as VendaModel } from "@/domain/models/comercial/Venda";
-import VendaItem from "@/presentation/components/comercial/meta/Venda/VendaItem";
+import VendaItem from "@/presentation/components/comercial/Venda/VendaItem";
 import PaginatedList from "@/presentation/components/ui/PaginatedList";
 
 type VendaNavigationProp = NativeStackNavigationProp<
@@ -20,7 +19,7 @@ export function Tela() {
   const { vendas, loading, carregar } = useVenda();
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1">
       <PageHeader
         pageName="Vendas"
         showAdd={true}

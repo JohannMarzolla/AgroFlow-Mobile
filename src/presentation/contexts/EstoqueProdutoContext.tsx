@@ -39,12 +39,11 @@ export const EstoqueProdutoProvider = ({
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lastId, setLastId] = useState<string | null>(null);
 
-  const estoqueProdutoApiService = new EstoqueProdutoApiService();
-
   const estoqueProdutoService = useMemo(
     () => new EstoqueProdutoService(new EstoqueProdutoApiService()),
     []
   );
+
   const carregar = async (reset = false) => {
     if (loading || (!reset && !hasMore)) return;
     if (!userId) return;
