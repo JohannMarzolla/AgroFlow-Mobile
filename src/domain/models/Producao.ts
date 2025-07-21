@@ -18,6 +18,8 @@ export class Producao {
   perdas?: number;
   custoProducao?: number;
   precoFinal?: number;
+  produtoNome?: string;
+  fazendaNome?: string;
 
   constructor(obj: Producao) {
     this.id = obj.id;
@@ -36,5 +38,7 @@ export class Producao {
     this.perdas = obj.perdas;
     this.custoProducao = obj.custoProducao;
     this.precoFinal = obj.precoFinal;
+    this.produtoNome = obj.produtoNome;
+    this.fazendaNome = obj.fazendaNome;
   }
 }
