@@ -11,11 +11,11 @@ import { ItemVenda } from "@/domain/models/comercial/ItemVenda";
 import {
   VendaInserirDTO,
   VendaInserirSchema,
-} from "@/application/dtos/comercial/meta/Venda/VendaInserirDTO";
+} from "@/application/dtos/comercial/Venda/VendaInserirDTO";
 import {
   VendaAtualizarDTO,
   VendaAtualizarSchema,
-} from "@/application/dtos/comercial/meta/Venda/VendaAtualizarDTO";
+} from "@/application/dtos/comercial/Venda/VendaAtualizarDTO";
 import { VendaStatusEnum } from "@/domain/enum/comercial/Venda.enum";
 import { useEstoqueProduto } from "@/presentation/contexts/EstoqueProdutoContext";
 import SelectProdutosModal from "./Modal";
@@ -39,14 +39,19 @@ const useVendaForm = (venda: Venda | undefined) => {
       valorTotal: venda?.valorTotal ?? 0,
       status: venda?.status ?? VendaStatusEnum.AGUARDANDO,
       itens:
-        venda?.itens?.map((item: ItemVenda) => ({
-          desconto: item.desconto,
-          quantidade: item.quantidade,
-          produtoId: item.produtoId,
-          fazendaId: item.fazendaId,
-          precoUnitario: item.precoUnitario,
-          lucroUnitario: item.lucroUnitario,
-        })) ?? [],
+        venda?.itens?.map(
+          (item: ItemVenda) =>
+            ({
+              id: item.id,
+              produtoNome: item.produtoNome,
+              desconto: item.desconto,
+              quantidade: item.quantidade,
+              produtoId: item.produtoId,
+              fazendaId: item.fazendaId,
+              precoUnitario: item.precoUnitario,
+              lucroUnitario: item.lucroUnitario,
+            } as ItemVenda)
+        ) ?? [],
     },
   });
 };
@@ -69,17 +74,32 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
     name: "itens",
   });
 
-  const onSubmit = async (data: VendaInserirDTO | VendaAtualizarDTO) => {
+  const onSubmitSalvar = async (data: VendaInserirDTO | VendaAtualizarDTO) => {
+    onSubmit(VendaStatusEnum.AGUARDANDO, data);
+  };
+
+  const onSubmitFinalizar = async (
+    data: VendaInserirDTO | VendaAtualizarDTO
+  ) => {
+    onSubmit(VendaStatusEnum.VENDIDA, data);
+  };
+
+  const onSubmit = async (
+    status: VendaStatusEnum,
+    data: VendaInserirDTO | VendaAtualizarDTO
+  ) => {
     if (fields.length === 0) return;
-    console.log("data venda front ", data);
+
     try {
       Loading.show();
-      if (venda) {
-        await atualizar(data as VendaAtualizarDTO);
-      } else {
-        await adicionar(data as VendaInserirDTO);
-      }
-      reset(data);
+
+      data.status = status;
+
+      const success = venda
+        ? await atualizar(data as VendaAtualizarDTO)
+        : await adicionar(data as VendaInserirDTO);
+
+      if (success) reset(!!venda ? data : undefined);
     } finally {
       Loading.hide();
     }
@@ -243,10 +263,16 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
         />
         <Button
           className="flex-1"
-          text="Finalizar"
-          onPress={handleSubmit(onSubmit)}
+          text="Salvar"
+          onPress={handleSubmit(onSubmitSalvar)}
         />
       </View>
+
+      <Button
+        className="flex-1 mt-4"
+        text="Finalizar"
+        onPress={handleSubmit(onSubmitFinalizar)}
+      />
     </View>
   );
 }

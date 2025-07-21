@@ -56,30 +56,21 @@ export default function App() {
         <InsumoProvider>
           <FazendaProvider>
             <ProdutosProvider>
-              <ProducaoProvider>
-                <EstoqueProdutoProvider>
-                  <VendaProvider>
-                  <Drawer.Navigator
-                    screenOptions={customScreenOptions}
-                    drawerContent={(props) => (
-                      <DrawerContentCustom {...props} />
-                    )}
-                  >
-                    <Drawer.Screen name="Home" component={Home} />
-                    <Drawer.Screen
-                      name="Producao"
-                      component={ProducaoModuloStack}
-                    />
-                    <Drawer.Screen
-                      name="Comercial"
-                      component={ComercialStack}
-                    />
-                    <Drawer.Screen name="Outros" component={OutrosStack} />
-                    <Drawer.Screen name="Sair" component={Logout} />
-                  </Drawer.Navigator>
-                  </VendaProvider>
-                </EstoqueProdutoProvider>
-              </ProducaoProvider>
+              <EstoqueProdutoProvider>
+                <Drawer.Navigator
+                  screenOptions={customScreenOptions}
+                  drawerContent={(props) => <DrawerContentCustom {...props} />}
+                >
+                  <Drawer.Screen name="Home" component={Home} />
+                  <Drawer.Screen
+                    name="Producao"
+                    component={ProducaoModuloStack}
+                  />
+                  <Drawer.Screen name="Comercial" component={ComercialStack} />
+                  <Drawer.Screen name="Outros" component={OutrosStack} />
+                  <Drawer.Screen name="Sair" component={Logout} />
+                </Drawer.Navigator>
+              </EstoqueProdutoProvider>
             </ProdutosProvider>
           </FazendaProvider>
         </InsumoProvider>

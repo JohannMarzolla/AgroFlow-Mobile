@@ -54,7 +54,6 @@ export default function MedidaForm({ medida, onCancel }: MedidaFormProps) {
   const onSubmit = async (
     data: UnidadeMedidaInserirDTO | UnidadeMedidaAtualizarDTO
   ) => {
-    console.log("medida data", data);
     try {
       Loading.show();
       const success = !!medida

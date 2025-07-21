@@ -65,7 +65,6 @@ export const FazendaProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   const atualizar = async (fazenda: FazendaAtualizarDTO) => {
-    console.log("chamando atualizar fazenda context", fazenda);
     try {
       await fazendaService.atualizar(fazenda);
       await carregar(true);

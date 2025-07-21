@@ -1,11 +1,10 @@
-
 // Importe a interface se você criar uma IVendaApiService
 // import { IVendaApiService } from "@/application/interfaces/comercial/IVendaApiService";
 
-import { VendaAtualizarDTO } from "@/application/dtos/comercial/meta/Venda/VendaAtualizarDTO";
-import { VendaBuscarTodosDTO } from "@/application/dtos/comercial/meta/Venda/VendaBuscarTodosDTO";
-import { VendaBuscarTodosResponseDTO } from "@/application/dtos/comercial/meta/Venda/VendaBuscarTodosResponseDTO";
-import { VendaInserirDTO } from "@/application/dtos/comercial/meta/Venda/VendaInserirDTO";
+import { VendaAtualizarDTO } from "@/application/dtos/comercial/Venda/VendaAtualizarDTO";
+import { VendaBuscarTodosDTO } from "@/application/dtos/comercial/Venda/VendaBuscarTodosDTO";
+import { VendaBuscarTodosResponseDTO } from "@/application/dtos/comercial/Venda/VendaBuscarTodosResponseDTO";
+import { VendaInserirDTO } from "@/application/dtos/comercial/Venda/VendaInserirDTO";
 
 export class VendaService {
   // Troque IVendaApiService se você criar a interface

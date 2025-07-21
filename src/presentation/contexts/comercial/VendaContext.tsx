@@ -1,5 +1,5 @@
-import { VendaAtualizarDTO } from "@/application/dtos/comercial/meta/Venda/VendaAtualizarDTO";
-import { VendaInserirDTO } from "@/application/dtos/comercial/meta/Venda/VendaInserirDTO";
+import { VendaAtualizarDTO } from "@/application/dtos/comercial/Venda/VendaAtualizarDTO";
+import { VendaInserirDTO } from "@/application/dtos/comercial/Venda/VendaInserirDTO";
 import { VendaService } from "@/application/services/comercial/VendaService";
 import { Venda } from "@/domain/models/comercial/Venda";
 import { VendaApiService } from "@/infrastructure/services/comercial/VendaApiService";
@@ -75,9 +75,9 @@ export const VendaProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar();
-    console.log("vendas", vendas);
+    carregar(true);
   }, []);
+
   return (
     <VendaContext.Provider
       value={{ vendas, loading, carregar, adicionar, atualizar }}

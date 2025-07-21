@@ -1,8 +1,8 @@
-import { VendaBuscarTodosDTO } from "@/application/dtos/comercial/meta/Venda/VendaBuscarTodosDTO";
-import { VendaBuscarTodosResponseDTO } from "@/application/dtos/comercial/meta/Venda/VendaBuscarTodosResponseDTO";
+import { VendaBuscarTodosDTO } from "@/application/dtos/comercial/Venda/VendaBuscarTodosDTO";
+import { VendaBuscarTodosResponseDTO } from "@/application/dtos/comercial/Venda/VendaBuscarTodosResponseDTO";
 import { HttpClient } from "../base/HttpClient";
-import { VendaInserirDTO } from "@/application/dtos/comercial/meta/Venda/VendaInserirDTO";
-import { VendaAtualizarDTO } from "@/application/dtos/comercial/meta/Venda/VendaAtualizarDTO";
+import { VendaInserirDTO } from "@/application/dtos/comercial/Venda/VendaInserirDTO";
+import { VendaAtualizarDTO } from "@/application/dtos/comercial/Venda/VendaAtualizarDTO";
 import { IVendaApiService } from "@/application/interfaces/comercial/IVendaApiService";
 
 export class VendaApiService implements IVendaApiService {
