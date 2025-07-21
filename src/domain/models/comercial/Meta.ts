@@ -18,5 +18,4 @@ export interface Meta {
   usuarioId: string;
   criadaEm: Date;
   atualizadaEm: Date;
-  fazendaId: string | null;
 }

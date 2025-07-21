@@ -3,6 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { formatarData } from "@/shared/utils/formatarData";
 import { Meta } from "@/domain/models/comercial/Meta";
 import {
+  MetaStatusEnum,
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";
@@ -16,9 +17,20 @@ interface Props {
 
 export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
   const progresso = Math.min((meta.valorAtual / meta.valorAlvo) * 100, 100);
-  const statusColor = MetaConsts.statusTextColors[meta.status];
+  const statusText = MetaConsts.Status.get(meta.status);
   const iconName: IconTypes =
     meta.tipo === MetaTipoEnum.VENDA ? "attach-money" : "agriculture";
+
+  function getStatusColor() {
+    switch (meta.status) {
+      case MetaStatusEnum.NAO_ALCANCADA:
+        return "color-agroflow-red";
+      case MetaStatusEnum.ALCANCADA:
+        return "color-agroflow-green";
+      default:
+        return "";
+    }
+  }
 
   return (
     <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
@@ -31,8 +43,8 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
           </Text>
         </View>
 
-        <Text className={cn("text-sm font-bold", statusColor)}>
-          {meta.status}
+        <Text className={`text-sm font-bold ${getStatusColor()}`}>
+          {statusText}
         </Text>
       </View>
 

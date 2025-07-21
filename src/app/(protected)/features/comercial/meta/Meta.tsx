@@ -10,7 +10,10 @@ import PageHeader from "@/presentation/components/ui/PageHeader";
 import { Meta } from "@/domain/models/comercial/Meta";
 import { MetaItem } from "@/presentation/components/comercial/meta/MetaItem";
 import PaginatedList from "@/presentation/components/ui/PaginatedList";
-import { MetaTipoFiltroEnum } from "@/domain/enum/comercial/Meta.enum";
+import {
+  MetaStatusFiltroEnum,
+  MetaTipoFiltroEnum,
+} from "@/domain/enum/comercial/Meta.enum";
 
 type MetaNavigationProp = NativeStackNavigationProp<
   MetaStackParamList,
@@ -19,7 +22,15 @@ type MetaNavigationProp = NativeStackNavigationProp<
 
 export function Tela() {
   const navigation = useNavigation<MetaNavigationProp>();
-  const { metas, loading, filtroTipo, carregar, setFiltroTipo } = useMeta();
+  const {
+    metas,
+    loading,
+    filtroTipo,
+    filtroStatus,
+    carregar,
+    setFiltroTipo,
+    setFiltroStatus,
+  } = useMeta();
 
   return (
     <View className="flex-1 bg-white">
@@ -29,13 +40,22 @@ export function Tela() {
         onAdicionar={() => navigation.navigate("AdicionarMeta")}
       ></PageHeader>
 
-      <View className="px-6 pb-4">
+      <View className="px-6 pb-4 gap-2">
         <InputSelect
           label="Tipo"
           labelTextBold={false}
           options={MetaConsts.TiposFiltro}
           value={filtroTipo}
           onValueChanged={(value: MetaTipoFiltroEnum) => setFiltroTipo(value)}
+        />
+        <InputSelect
+          label="Status"
+          labelTextBold={false}
+          options={MetaConsts.StatusFiltro}
+          value={filtroStatus}
+          onValueChanged={(value: MetaStatusFiltroEnum) =>
+            setFiltroStatus(value)
+          }
         />
       </View>
 

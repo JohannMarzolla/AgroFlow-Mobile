@@ -92,7 +92,7 @@ export default function ProdutoForm({ produto, onCancel }: ProdutoFormProps) {
       const success = !!produto
         ? await atualizar(dadosComInsumos as ProdutoAtualizarDTO)
         : await adicionar(dadosComInsumos as ProdutoInserirDTO);
-      if (success) reset(dadosComInsumos);
+      if (success) reset(!!produto ? dadosComInsumos : undefined);
     } finally {
       Loading.hide();
     }

@@ -12,6 +12,7 @@ import { MetaApiService } from "@/infrastructure/services/comercial/MetaApiServi
 import { ShowToast } from "@/presentation/components/ui/Toast";
 import { MetaAtualizarDTO } from "@/application/dtos/comercial/meta/MetaAtualizarDTO";
 import {
+  MetaStatusFiltroEnum,
   MetaTipoEnum,
   MetaTipoFiltroEnum,
 } from "@/domain/enum/comercial/Meta.enum";
@@ -20,7 +21,9 @@ interface MetaContextData {
   metas: Meta[];
   loading: boolean;
   filtroTipo: MetaTipoFiltroEnum;
+  filtroStatus: MetaStatusFiltroEnum;
   setFiltroTipo: React.Dispatch<React.SetStateAction<MetaTipoFiltroEnum>>;
+  setFiltroStatus: React.Dispatch<React.SetStateAction<MetaStatusFiltroEnum>>;
   carregar(): Promise<void>;
   adicionar(meta: MetaInserirDTO): Promise<boolean>;
   atualizar(meta: MetaAtualizarDTO): Promise<boolean>;
@@ -36,6 +39,9 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
   const [filtroTipo, setFiltroTipo] = useState<MetaTipoFiltroEnum>(
     MetaTipoFiltroEnum.TODOS
   );
+  const [filtroStatus, setFiltroStatus] = useState<MetaStatusFiltroEnum>(
+    MetaStatusFiltroEnum.TODOS
+  );
   const metaService = new MetaService(new MetaApiService());
 
   const carregar = async (reset = false) => {
@@ -48,6 +54,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
         limite: 10,
         ultimoId: !reset ? lastId : null,
         tipo: filtroTipo !== MetaTipoFiltroEnum.TODOS ? getFiltroTipo() : null,
+        status: filtroStatus,
       });
       setHasMore(result.temMais);
       setLastId(result.ultimoId);
@@ -92,7 +99,7 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     carregar(true);
-  }, [filtroTipo]);
+  }, [filtroTipo, filtroStatus]);
 
   return (
     <MetaContext.Provider
@@ -100,7 +107,9 @@ export const MetaProvider = ({ children }: { children: ReactNode }) => {
         metas,
         loading,
         filtroTipo,
+        filtroStatus,
         setFiltroTipo,
+        setFiltroStatus,
         carregar,
         adicionar,
         atualizar,

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { ScrollView, Text, View } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { Loading } from "@/presentation/components/ui/Loading";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/application/dtos/comercial/meta/MetaInserirDTO";
 import {
   MetaCalculoPorEnum,
-  MetaStatusEnum,
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { useMeta } from "@/presentation/contexts/comercial/MetaContext";
@@ -18,7 +17,6 @@ import Button from "@/presentation/components/ui/Button";
 import Input from "@/presentation/components/ui/Input";
 import InputDate from "@/presentation/components/ui/InputDate";
 import InputTextArea from "@/presentation/components/ui/InputTextArea";
-import FazendaSelect from "@/presentation/components/Fazenda/FazendaSelect";
 import {
   MetaAtualizarDTO,
   MetaAtualizarSchema,
@@ -38,7 +36,6 @@ const useMetaForm = (meta: Meta | undefined) => {
     defaultValues: {
       id: meta?.id,
       descricao: meta?.descricao,
-      fazendaId: meta?.fazendaId,
       tipo: meta?.tipo ?? MetaTipoEnum.PRODUCAO,
       calculoPor: meta?.calculoPor ?? MetaCalculoPorEnum.QUANTIDADE,
       titulo: meta?.titulo ?? "",
@@ -68,10 +65,7 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
     if (!meta) return false;
     const hoje = new Date();
     const dataInicio = new Date(meta.dataInicio);
-    return (
-      dataInicio.getTime() < hoje.getTime() ||
-      meta.status !== MetaStatusEnum.ATIVA
-    );
+    return dataInicio.getTime() < hoje.getTime();
   }
 
   const onSubmit = async (data: MetaInserirDTO | MetaAtualizarDTO) => {
@@ -94,6 +88,8 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
 
   return (
     <View className="gap-4">
+      {!!meta && <Input label="Status" readOnly={true} value={meta.status} />}
+
       <Controller
         control={control}
         name="tipo"
@@ -105,19 +101,6 @@ export default function MetaForm({ meta, onCancel }: MetaFormProps) {
             value={value}
             onValueChanged={onChange}
             error={errors.tipo?.message}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="fazendaId"
-        render={({ field: { onChange, value } }) => (
-          <FazendaSelect
-            label="Fazenda"
-            readOnly={readOnly}
-            value={value}
-            onValueChanged={onChange}
-            error={errors.fazendaId?.message}
           />
         )}
       />

@@ -1,8 +1,3 @@
-import { NotificacaoService } from "@/application/services/outros/NotificacaoService";
-import { Notificacao } from "@/domain/models/outros/Notificacao";
-import { NotificacaoApiService } from "@/infrastructure/services/outros/NotificacaoApiService";
-import { ShowToast } from "@/presentation/components/ui/Toast";
-import { eventBus } from "@/shared/utils/EventBus";
 import React, {
   createContext,
   ReactNode,
@@ -10,6 +5,11 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { NotificacaoService } from "@/application/services/outros/NotificacaoService";
+import { Notificacao } from "@/domain/models/outros/Notificacao";
+import { NotificacaoApiService } from "@/infrastructure/services/outros/NotificacaoApiService";
+import { ShowToast } from "@/presentation/components/ui/Toast";
+import { eventBus } from "@/shared/utils/EventBus";
 
 interface NotificacaoContextData {
   notificacoes: Notificacao[];
@@ -52,11 +52,13 @@ export const NotificacaoProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    carregar(true);
-
     const atualizarDados = async () => {
-      carregar(true);
+      await carregar(true);
+      metaService.marcarTodasComoLidas();
     };
+
+    atualizarDados();
+
     eventBus.on("notificacao:receive", atualizarDados);
 
     return () => {

@@ -96,7 +96,7 @@ export default function ProducaoForm({
         : await adicionar(dataFinal as ProducaoInserirDTO);
 
       if (success) {
-        reset(dataFinal);
+        reset(!!producao ? dataFinal : undefined);
         setColheitaTemp(null);
       }
     } finally {
