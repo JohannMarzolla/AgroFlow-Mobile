@@ -35,7 +35,11 @@ export class NotificacaoSocketService {
           trigger: null,
         });
 
-        NotificacaoToast.Recebida(data.tipo, data.titulo, data.descricao);
+        // para não dar conflito com as regras nas telas que faz reload da interface
+        setTimeout(() => {
+          NotificacaoToast.Recebida(data.tipo, data.titulo, data.descricao);
+        }, 20000);
+
         eventBus.emit("notificacao:receive", data);
       });
     }

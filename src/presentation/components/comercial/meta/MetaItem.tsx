@@ -3,12 +3,14 @@ import { View, Text, Pressable } from "react-native";
 import { formatarData } from "@/shared/utils/formatarData";
 import { Meta } from "@/domain/models/comercial/Meta";
 import {
+  MetaCalculoPorEnum,
   MetaStatusEnum,
   MetaTipoEnum,
 } from "@/domain/enum/comercial/Meta.enum";
 import { cn } from "@/presentation/utils/cn";
 import Icon, { IconTypes } from "../../ui/Icon";
 import MetaConsts from "@/shared/constants/meta.consts";
+import { formatarMoeda } from "@/shared/utils/formatarMoeda";
 
 interface Props {
   meta: Meta;
@@ -20,6 +22,7 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
   const statusText = MetaConsts.Status.get(meta.status);
   const iconName: IconTypes =
     meta.tipo === MetaTipoEnum.VENDA ? "attach-money" : "agriculture";
+  const valueText = getValueText();
 
   function getStatusColor() {
     switch (meta.status) {
@@ -30,6 +33,21 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
       default:
         return "";
     }
+  }
+
+  function getValueText() {
+    let valorAtual = meta.valorAtual.toString();
+    let valorAlvo = meta.valorAlvo.toString();
+
+    if (
+      meta.tipo === MetaTipoEnum.VENDA &&
+      meta.calculoPor === MetaCalculoPorEnum.VALOR
+    ) {
+      valorAtual = formatarMoeda(meta.valorAtual);
+      valorAlvo = formatarMoeda(meta.valorAlvo);
+    }
+
+    return `${valorAtual} / ${valorAlvo} (${Math.round(progresso)}%)`;
   }
 
   return (
@@ -48,9 +66,7 @@ export const MetaItem: React.FC<Props> = ({ meta, onPress }) => {
         </Text>
       </View>
 
-      <Text className="text-sm text-gray-800 mt-1">
-        {meta.valorAtual} / {meta.valorAlvo} ({Math.round(progresso)}%)
-      </Text>
+      <Text className="text-sm text-gray-800 mt-1">{valueText}</Text>
 
       {/* Barra de progresso */}
       <View className="w-full h-2 bg-gray-400 rounded-full mt-1">
