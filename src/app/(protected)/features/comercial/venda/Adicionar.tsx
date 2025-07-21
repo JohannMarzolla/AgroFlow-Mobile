@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
-import VendaForm from "@/presentation/components/comercial/meta/Venda/VendaForm";
+import VendaForm from "@/presentation/components/comercial/Venda/VendaForm";
 
 export default function AdicionarVenda() {
   const navigation = useNavigation();

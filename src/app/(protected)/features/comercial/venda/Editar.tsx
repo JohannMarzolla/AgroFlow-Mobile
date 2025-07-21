@@ -1,6 +1,5 @@
-
 import { Venda } from "@/domain/models/comercial/Venda";
-import VendaForm from "@/presentation/components/comercial/meta/Venda/VendaForm";
+import VendaForm from "@/presentation/components/comercial/Venda/VendaForm";
 import PageAdicionarLayout from "@/presentation/components/ui/PageAdicionarLayout";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
