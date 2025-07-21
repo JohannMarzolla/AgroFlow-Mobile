@@ -9,13 +9,20 @@ interface VendaItemProps {
 }
 
 export default function VendaItem({ venda }: VendaItemProps) {
-
   const getStatusColor = () => {
     switch (venda.status) {
       case VendaStatusEnum.VENDIDA:
-        return { bg: "bg-green-50", text: "text-green-700", icon: "check-circle" };
+        return {
+          bg: "bg-green-50",
+          text: "text-green-700",
+          icon: "check-circle",
+        };
       case VendaStatusEnum.AGUARDANDO:
-        return { bg: "bg-blue-50", text: "text-blue-700", icon: "alert-circle" };
+        return {
+          bg: "bg-blue-50",
+          text: "text-blue-700",
+          icon: "alert-circle",
+        };
       default:
         return { bg: "bg-gray-50", text: "text-gray-700", icon: "help-circle" };
     }
@@ -25,19 +32,20 @@ export default function VendaItem({ venda }: VendaItemProps) {
   const totalVenda = venda.valorTotal?.toFixed(2) || "0,00";
 
   return (
-    <TouchableOpacity className="bg-white rounded-2xl p-5 mb-4 border border-gray-100">
-      
+    <View className="rounded-xl p-4 mb-3 shadow-sm bg-gray-200">
       {/* Primeira linha - Cliente e Status */}
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-lg font-bold text-gray-900 max-w-[70%]">
           {venda.cliente || "Cliente não informado"}
         </Text>
-        
-        <View className={`flex-row items-center px-3 py-1 rounded-full ${statusColor.bg}`}>
-          <Feather 
-            name={statusColor.icon as any} 
-            size={16} 
-            className={statusColor.text} 
+
+        <View
+          className={`flex-row items-center px-3 py-1 rounded-full ${statusColor.bg}`}
+        >
+          <Feather
+            name={statusColor.icon as any}
+            size={16}
+            className={statusColor.text}
           />
           <Text className={`text-xs font-medium ml-1 ${statusColor.text}`}>
             {venda.status}
@@ -53,11 +61,13 @@ export default function VendaItem({ venda }: VendaItemProps) {
             R$ {totalVenda}
           </Text>
         </View>
-        
+
         <View className="flex-row items-center">
           <Feather name="calendar" size={16} color="#4B5563" />
           <Text className="text-gray-600 ml-2">
-            {venda.dataVenda ? new Date(venda.dataVenda).toLocaleDateString('pt-BR') : "N/D"}
+            {venda.dataVenda
+              ? new Date(venda.dataVenda).toLocaleDateString("pt-BR")
+              : "N/D"}
           </Text>
         </View>
       </View>
@@ -67,10 +77,11 @@ export default function VendaItem({ venda }: VendaItemProps) {
         <View className="flex-row items-center mb-2">
           <Feather name="package" size={16} color="#4B5563" />
           <Text className="text-gray-600 ml-2">
-            {venda.itens?.length || 0} {venda.itens?.length === 1 ? 'item' : 'itens'}
+            {venda.itens?.length || 0}{" "}
+            {venda.itens?.length === 1 ? "item" : "itens"}
           </Text>
         </View>
-        
+
         {venda.itens && venda.itens.length > 0 && (
           <View className="flex-row flex-wrap gap-2">
             {venda.itens.slice(0, 3).map((item) => (
@@ -94,7 +105,6 @@ export default function VendaItem({ venda }: VendaItemProps) {
           </View>
         )}
       </View>
-     
-    </TouchableOpacity>
+    </View>
   );
 }

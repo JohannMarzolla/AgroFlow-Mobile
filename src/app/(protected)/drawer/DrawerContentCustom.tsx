@@ -51,7 +51,6 @@ const menuItems: MenuItem[] = [
       { label: "Metas", screen: "Meta" },
       { label: "Vendas", screen: "Venda" },
     ],
-
     parentScreen: "Comercial",
   },
   {

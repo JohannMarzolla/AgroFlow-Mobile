@@ -6,7 +6,7 @@ import AdicionarVenda from "./Adicionar";
 import EditarVenda from "./Editar";
 
 export type VendaStackParamList = {
-  Venda: undefined;
+  Lista: undefined;
   AdicionarVenda: undefined;
   EditarVenda: { venda: VendaModel };
 };
@@ -17,7 +17,7 @@ export default function VendaStack() {
   return (
     <VendaProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Venda" component={Venda} />
+        <Stack.Screen name="Lista" component={Venda} />
         <Stack.Screen
           name="AdicionarVenda"
           component={AdicionarVenda}

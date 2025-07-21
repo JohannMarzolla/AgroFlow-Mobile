@@ -6,13 +6,13 @@ import { VendaStackParamList } from "./VendaStack";
 import { useVenda } from "@/presentation/contexts/comercial/VendaContext";
 
 import PageHeader from "@/presentation/components/ui/PageHeader";
-import { Venda  as VendaModel} from "@/domain/models/comercial/Venda";
+import { Venda as VendaModel } from "@/domain/models/comercial/Venda";
 import VendaItem from "@/presentation/components/comercial/meta/Venda/VendaItem";
 import PaginatedList from "@/presentation/components/ui/PaginatedList";
 
 type VendaNavigationProp = NativeStackNavigationProp<
   VendaStackParamList,
-  "Venda"
+  "Lista"
 >;
 
 export function Tela() {
@@ -26,22 +26,14 @@ export function Tela() {
         showAdd={true}
         onAdicionar={() => navigation.navigate("AdicionarVenda")}
       />
-       {/* <View className="px-6 pb-4">
-        <InputSelect
-          label="Tipo"
-          labelTextBold={false}
-         
-        />
-      </View> */}
 
-
-    <PaginatedList
+      <PaginatedList
         data={vendas}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <VendaItem venda={item} />}
         loadingMore={loading}
         onEndReached={() => carregar()}
-         onEdit={(item: VendaModel) =>
+        onEdit={(item: VendaModel) =>
           navigation.navigate("EditarVenda", { venda: item })
         }
       />
