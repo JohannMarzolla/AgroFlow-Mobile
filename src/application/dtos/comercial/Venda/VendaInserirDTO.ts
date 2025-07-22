@@ -8,6 +8,7 @@ export const ItemVendaInserirSchema = z.object({
   fazendaId: z.string().optional(),
   precoUnitario: z.number().min(0, "Preço unitário não pode ser negativo"),
   lucroUnitario: z.number().min(0, "Lucro unitário não pode ser negativo"),
+  produtoNome: z.string().min(1),
 });
 
 export const VendaInserirSchema = z.object({

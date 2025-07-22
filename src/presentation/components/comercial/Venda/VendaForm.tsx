@@ -118,6 +118,7 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
           desconto: 0,
           precoUnitario: estoqueProduto.precoUnitario ?? 0,
           lucroUnitario: 0,
+          produtoNome: estoqueProduto.produtoNome,
         });
       }
     });
@@ -182,9 +183,6 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
         {fields.length > 0 ? (
           <View className="">
             {fields.map((item, index) => {
-              const produtoInfo = estoqueProdutos.find(
-                (p) => p.id === item.produtoId
-              );
               const quantidade = watch(`itens.${index}.quantidade`);
               const precoUnitario = watch(`itens.${index}.precoUnitario`);
               const totalItem = (quantidade || 0) * (precoUnitario || 0);
@@ -196,7 +194,7 @@ export default function VendaForm({ venda, onCancel }: VendaFormProps) {
                 >
                   <View className="flex-row justify-between items-start mb-3">
                     <Text className="font-bold text-base text-gray-800 flex-1">
-                      {produtoInfo?.produtoNome ?? "Produto não encontrado"}
+                      {item?.produtoNome ?? "Produto não encontrado"}
                     </Text>
                     <TouchableOpacity onPress={() => remove(index)}>
                       <Feather name="trash-2" size={18} color="#dc2626" />
