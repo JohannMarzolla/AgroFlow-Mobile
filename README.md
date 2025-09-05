@@ -17,6 +17,20 @@ Este é um projeto **mobile** construído com **React Native** e **TypeScript** 
 
 ---
 
+## 🎬 Demonstração
+
+Vídeo demonstrando a **arquitetura e funcionalidades principais** versao web :
+
+[Assista à demonstração no Google Drive](https://drive.google.com/file/d/16gSY1Pjk_NB6fb8jDmzArp2Iw53fJJ5q/view?usp=sharing)
+
+O vídeo mostra:
+
+- Arquitetura do projeto 
+- Funcionalidades dos módulos Dashboard, Produção e Comercial
+- Simulação da venda de um produto
+
+---
+
 ## ⚙️ Variáveis de ambiente (.env)
 
 Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
